@@ -14,6 +14,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <hibernate.version>5.2.2.Final</hibernate.version>
         <primefaces.version>6.0</primefaces.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
 
     <repositories>
@@ -48,9 +50,7 @@
             <scope>test</scope>
         </dependency>
 
-
-
-        <!-- Jpa Hibernate Implementation -->
+        <!-- JPA Hibernate Implementation -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -97,14 +97,14 @@
             <version>2.4</version>
         </dependency>
 
-        <!-- APACHE COMMON LANG -->
+        <!-- Apache common lang -->
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
 
-        <!-- http://mvnrepository.com/artifact/jstl/jstl -->
+        <!-- jstl -->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
@@ -126,23 +126,24 @@
             <artifactId>itext</artifactId>
             <version>2.1.7</version>
         </dependency>
+
+        <!-- Junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito Freamwork -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
-
-    <!-- Junit -->
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
-    </dependency>
-
-    <!-- Mockito Freamwork -->
-    <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>1.10.19</version>
-        <scope>test</scope>
-    </dependency>
 
 <profiles>
     <profile>
