@@ -20,7 +20,7 @@
     </context-param>  
     
     <welcome-file-list>
-       <welcome-file>location.xhtml</welcome-file>
+       <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
 
 	<!-- Auto scan REST service -->
@@ -38,12 +38,12 @@
      
 	<servlet-mapping>
 		<servlet-name>resteasy-servlet</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
+		<url-pattern>/restful/*</url-pattern>
 	</servlet-mapping>
 
 	<context-param>
 		<param-name>resteasy.servlet.mapping.prefix</param-name>
-		<param-value>/rest</param-value>
+		<param-value>/restful</param-value>
 	</context-param>
 	
 	<context-param>
