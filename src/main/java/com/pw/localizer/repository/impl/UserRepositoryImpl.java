@@ -14,6 +14,7 @@ import com.pw.localizer.model.entity.User;
 import com.pw.localizer.repository.UserRepository;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class UserRepositoryImpl implements UserRepository{
 	@PersistenceContext
 	private EntityManager em;
