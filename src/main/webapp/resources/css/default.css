@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 94%;
+}
+
+.ui-panel{
+    padding: 0.8em !important;
+}
+
+.body{
+	background-image: url("../images/loginBackground.png");
+	background-size: 100% auto;
+}
+
+body{
+	background-image: url("../images/loginBackground.png");
+	background-size: 100% auto;
+}
+

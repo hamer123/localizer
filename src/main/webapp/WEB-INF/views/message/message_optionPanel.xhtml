@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:form id="optionForm" rendered="#{messageController.selectedArea != null}">
+     
+     <h:panelGrid rendered="#{messageController.selectedArea.areaMessageMail.areaMailMessageMode == 'ACCEPT'
+                              and messageController.selectedArea.areaMessageMail.accept == false}" columns="2">
+       <h:outputText value="Akceptuj powiadomienie o evencie (zalaczy od nowa wysylanie email w ramach eventu)" />
+       <p:commandButton value="AKCEPTUJ" action="#{messageController.onAcceptEvent}" style="margin-left:20px" update=":#{p:component('optionForm')}"/>
+     </h:panelGrid>
+   </h:form>
+   
+</ui:composition>

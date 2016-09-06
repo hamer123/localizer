@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+  <title>Login</title>
+  <h:outputStylesheet library="css" name="login.css"/>
+  <h:outputStylesheet library="css" name="default.css"/>
+  <f:metadata>
+    <f:event listener="#{lokalizatorSecurityController.redirectIfAlreadyLogged()}" type="preRenderView"/>
+  </f:metadata>
+</h:head> 
+
+<h:body styleClass="body">
+    
+    <h:form>
+
+        <p:messages id="messages" showDetail="false" />
+        <p:panel id="panel" header="Login" styleClass="panel">
+            
+            <h:panelGrid columns="3" cellpadding="5" styleClass="table" >
+                <p:outputLabel for="userName" value="User Name:" />
+                <p:inputText id="userName" value="#{lokalizatorSecurityController.login}"
+                    required="true" label="User name">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
+                <p:message for="userName" display="icon" />
+
+                <p:outputLabel for="password" value="Password:" />
+                <p:password id="password"
+                    value="#{lokalizatorSecurityController.password}" required="true"
+                    label="Password">
+                    <f:validateLength minimum="4" />
+                </p:password>
+                <p:message for="password" display="icon" />
+                
+                <p:commandButton value="Login" update="panel messages" action="#{lokalizatorSecurityController.login()}" />
+                <p:button value="Create" outcome="/account/create/personalData" styleClass="button"/>
+            </h:panelGrid>
+        </p:panel>
+        
+    </h:form>
+</h:body> 
+</html>

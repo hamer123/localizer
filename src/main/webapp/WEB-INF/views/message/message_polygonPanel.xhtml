@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:form>
+     <p:dataTable id="areaTable" var="area" value="#{messageController.areaList}"
+                  selectionMode="single" selection="#{messageController.selectedArea}" rowKey="#{area.id}">
+        <p:ajax event="rowSelect" listener="#{messageController.onAreaSelect}" 
+                update=":#{p:component('options')} :#{p:component('messages')}"/>
+                
+        <p:column headerText="Nazwa">
+          <h:outputText value="#{area.name}" />
+        </p:column>
+        
+        <p:column headerText="Target login">
+          <h:outputText value="#{area.target.login}" />
+        </p:column>
+        
+        <p:column headerText="Typ sledzenia">
+          <h:outputText value="#{area.areaFollowType}" />
+        </p:column> 
+        
+        <p:column headerText="Pokaz obszar">
+          <p:commandButton value="POKAZ" oncomplete="showGoogleMapDialog()" update=":#{p:component('locationDialog')}"
+                           actionListener="#{messageController.onDisplayAreaInDialog(area)}"/>
+        </p:column>
+     </p:dataTable>
+   </h:form>
+   
+</ui:composition>

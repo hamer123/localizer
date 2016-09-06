@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
+      
+      <p:dialog id="googleMapDialog" widgetVar="gmapDialogSingleUser" header="Ostatnie lokacje uzytkownika" style="width:650px;height:400px" modal="true">
+          
+         <p:growl id="growlDialog"/>
+         
+         <lokalizator:googleMap googleMapController="#{location.googleMapSingleUserDialogController}"
+                                onChangeState="#{location.googleMapSingleUserDialogController.onGoogleMapStateChange}"
+                                onOverlaySelect="#{location.googleMapSingleUserDialogController.onOverlaySelect}"
+                                overlaySelectUpdate=":#{p:component('growlDialog')}"
+                                style="width:620px;height:400px"/>
+                                
+          <h:form>
+          
+            <p:commandButton value="GPS"  update=":#{p:component('_gmap')}" disabled="#{!location.googleMapSingleUserDialogController.isGPSLastLocationExist()}"
+                             actionListener="#{location.googleMapSingleUserDialogController.onShowGPSLastLocation()}"/>
+            <p:commandButton value="NETWORK (OBCY)" update=":#{p:component('_gmap')}" disabled="#{!location.googleMapSingleUserDialogController.isNetworkObcyLastLocationExist()}"
+                             actionListener="#{location.googleMapSingleUserDialogController.onShowNetworkObcyLastLocation()}"/>
+            <p:commandButton value="NETWORK (NASZ)" update=":#{p:component('_gmap')}" disabled="#{!location.googleMapSingleUserDialogController.isNetworkNaszLastLocationExist()}"
+                             actionListener="#{location.googleMapSingleUserDialogController.onShowNetworkNaszLastLocation()}"/>
+          </h:form>
+         
+      </p:dialog> 
+
+</html>
