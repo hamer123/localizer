@@ -1,0 +1,11 @@
+.navigation-context{
+    padding-left: 20%;
+    padding-right: 20%;
+    text-align: center;
+}
+
+.button-back-home{
+    margin-top: 10px;
+    border: 4px;
+    border-bottom-color:#111111;
+}

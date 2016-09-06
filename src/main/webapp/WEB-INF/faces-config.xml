@@ -7,9 +7,12 @@
     version="2.0">
 	<application>
 		<resource-bundle>
-			<base-name>frontend.message</base-name>
+			<base-name>frontend</base-name>
 			<var>msg</var>
 		</resource-bundle>
+		<locale-config>
+			<default-locale>pl</default-locale>
+		</locale-config>
 	</application>
 	<!--
 	<factory>

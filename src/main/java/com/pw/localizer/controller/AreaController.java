@@ -161,7 +161,7 @@ public class AreaController implements Serializable{
 	}
 	
 	private void prepareAreaBeforeSave(){
-		User user = userRepository.findByLogins(area.getTarget().getLogin());
+		User user = userRepository.findByLogin(area.getTarget().getLogin());
 		area.setTarget(user);
 		area.setProvider(lokalizatorSession.getUser());
 		area.setPoints( convertLatLng(polygon.getPaths(), area) );

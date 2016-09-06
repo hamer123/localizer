@@ -13,7 +13,6 @@ import com.pw.localizer.repository.UserRepository;
 
 @FacesValidator(value = "loginUsedValidator")
 public class LoginUsedValidator implements Validator{
-
 	@Inject
 	private UserRepository userRepository;
 	
@@ -21,19 +20,11 @@ public class LoginUsedValidator implements Validator{
 	public void validate(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
 		String login = (String)value;
-		User user = null;
-		
-		try{
-			user = userRepository.findByLogins(login);
-		}catch(Exception e){
-			//
-		} finally{
-			if(user != null){
-				FacesMessage msg = new FacesMessage("Login: Login jest juz zajety");
-				msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-				throw new ValidatorException(msg);
-			}
+		boolean exist = userRepository.isLoginExist(login);
+		if(exist){
+			FacesMessage msg = new FacesMessage("Login: Login jest juz zajety");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			throw new ValidatorException(msg);
 		}
 	}
-
 }

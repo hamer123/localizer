@@ -36,20 +36,17 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public User findById(Long id) {
 		return em.find(User.class, id);
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<User> findAll() {
 		return em.createNamedQuery("USER.findAll", User.class)
 				 .getResultList();
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public User findUserFeatchRolesByLoginAndPassword(String login, String password) {
 		return em.createNamedQuery("USER.findUserFetchRolesByLoginAndPassword", User.class)
 		         .setParameter("login", login)
@@ -58,15 +55,13 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public User findByLogins(String login) {
+	public User findByLogin(String login) {
 		return em.createNamedQuery("USER.findByLogin", User.class)
 				 .setParameter("login", login)
 				 .getSingleResult();
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<String> findLoginByLoginLike(String loginLike) {
 		return em.createNamedQuery("USER.findLoginByLoginLike", String.class)
 				 .setParameter("login", loginLike + "%")
@@ -74,7 +69,6 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<User> findByIds(Set<Long> ids) {
 		return em.createNamedQuery("USER.findUsersByIds", User.class)
 		         .setParameter("ids", ids)
@@ -82,8 +76,7 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public List<User> findByLogins(List<String> logins) {
+	public List<User> findByLogin(List<String> logins) {
 		return em.createNamedQuery("USER.findByLogins", User.class)
 				 .setParameter("logins", logins)
 				 .getResultList();
@@ -103,10 +96,17 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public User findByEmail(String email) {
 		return em.createNamedQuery("USER.findByEmail", User.class)
 				 .setParameter("email", email)
 				 .getSingleResult();
+	}
+
+	@Override
+	public boolean isLoginExist(String login) {
+		List<User>result = em.createNamedQuery("USER.findByLogin",User.class)
+				.setParameter("login", login)
+				.getResultList();
+		return result.isEmpty() ? false : true;
 	}
 }

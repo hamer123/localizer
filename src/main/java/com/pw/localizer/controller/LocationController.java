@@ -216,7 +216,7 @@ public class LocationController implements Serializable{
 	}
 	
 	public void onShowOnlineUserLastLocations(String login){
-		User user = userRepository.findByLogins(login);
+		User user = userRepository.findByLogin(login);
 		List<GoogleLocation> googleLocations = googleMapUserComponentService.lastLocations(user, GoogleMapComponentVisible.NO_POLYGON);
 		
 		googleMapSingleUserDialogController.clear();

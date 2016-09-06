@@ -8,13 +8,13 @@ import com.pw.localizer.model.enums.Providers;
  * Created by wereckip on 30.08.2016.
  */
 class OverlayUUIDRaw {
-    private long id;
+    private Long id;
     private String login;
     private Overlays overlay;
     private Providers provider;
     private LocalizationServices localizationService;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
