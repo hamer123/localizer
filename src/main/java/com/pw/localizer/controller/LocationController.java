@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import com.pw.localizer.service.UserService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.map.Marker;
@@ -77,6 +78,8 @@ public class LocationController implements Serializable{
 	@Inject
 	private LocalizerSession localizerSession;
 	@Inject
+	private UserService userService;
+	@Inject
 	private Logger logger;
 	
 	static final String GOOGLE_MAP_STYLE_MIN_WIDTH = "googleMapMin";
@@ -122,7 +125,8 @@ public class LocationController implements Serializable{
 				JsfMessageBuilder.errorMessageBundle("user.already.on.follow.list");
 				return;
 			}
-			User user = getUserFetchComponents(login);
+			User user = this.userService.getUserFetchAreas(login);
+
 			users.put(user.getLogin(),user);
 			createAndAddComponentsToGoogleMap(user);
 			addUserToRouteManagers(user);
@@ -240,21 +244,6 @@ public class LocationController implements Serializable{
 		renderGoogleMap();
 	}
 
-	/**
-	 * Find user and fetch all needed components
-	 * @param login
-	 * @return
-     */
-	@Transactional
-	private User getUserFetchComponents(String login){
-		User user = userRepository.findByLogin(login);
-		//fetch areas
-		List<Area>areas = user.getAreas();
-		for(Area area : areas) area.getPoints().size();
-
-		return user;
-	}
-	
 	public void onEditUserSetting(User user){
 		userViewSettingDialog = new UserViewSettingDialog(user.getLogin());
 	}
