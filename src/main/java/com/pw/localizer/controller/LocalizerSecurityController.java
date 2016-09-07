@@ -25,7 +25,7 @@ public class LocalizerSecurityController implements Serializable{
 	
 	public String login(){
 		try{
-			User user = userRepository.findUserFeatchRolesByLoginAndPassword(login,password);
+			User user = userRepository.findByLoginAndPassword(login,password);
 			localizerSession.setUser(user);
 			return "/app/location.xhtml?faces-redirect=true";
 		} catch (Exception e){

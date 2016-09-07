@@ -7,11 +7,5 @@
    <title>Journaldev Tutorial</title>
 </h:head>
 <h:body>
-   <h:form enctype="multipart/form-data" style="width:500px">
-      <p:fileUpload value="#{avatarUploadController.uploadedFile}" mode="advanced" update="@form"
-                    fileUploadListener="#{avatarUploadController.handleFileUpload}"></p:fileUpload>
-
-      <p:graphicImage id="img" value="#{fileUploadManagedBean.streamedContent}"/>
-   </h:form>
 </h:body>
 </html>

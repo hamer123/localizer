@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
 import org.jboss.logging.Logger;
 import org.primefaces.event.ToggleEvent;
@@ -112,17 +113,16 @@ public class LocationController implements Serializable{
 	}
 
 	/**
-	 * Dodaje uzytkonwika do listy sledzenia
-	 * tworzymy komponenety i dodajemy do google map
-	 * tworzymy managerow do zarzadzania tworzeniem trasy sledzenia
+	 * Add user to follow list
 	 */
 	public void onAddUserToFollow(){
 		try{
-			if(isUserArleadyOnList(login)){
+			if(isUserArleadyOnList(login))
+			{
 				JsfMessageBuilder.errorMessageBundle("user.already.on.follow.list");
 				return;
 			}
-			User user = userRepository.findByLoginFetchArea(login);
+			User user = getUserFetchComponents(login);
 			users.put(user.getLogin(),user);
 			createAndAddComponentsToGoogleMap(user);
 			addUserToRouteManagers(user);
@@ -238,6 +238,21 @@ public class LocationController implements Serializable{
 			networkObcyRouteManager.clear();
 		}
 		renderGoogleMap();
+	}
+
+	/**
+	 * Find user and fetch all needed components
+	 * @param login
+	 * @return
+     */
+	@Transactional
+	private User getUserFetchComponents(String login){
+		User user = userRepository.findByLogin(login);
+		//fetch areas
+		List<Area>areas = user.getAreas();
+		for(Area area : areas) area.getPoints().size();
+
+		return user;
 	}
 	
 	public void onEditUserSetting(User user){

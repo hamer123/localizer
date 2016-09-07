@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	public User findUserFeatchRolesByLoginAndPassword(String login, String password) {
+	public User findByLoginAndPassword(String login, String password) {
 		return em.createNamedQuery("USER.findUserFetchRolesByLoginAndPassword", User.class)
 		         .setParameter("login", login)
 		         .setParameter("password", password)
@@ -67,34 +67,19 @@ public class UserRepositoryImpl implements UserRepository{
 				 .setParameter("login", loginLike + "%")
 				 .getResultList();
 	}
-
-	@Override
-	public List<User> findByIds(Set<Long> ids) {
-		return em.createNamedQuery("USER.findUsersByIds", User.class)
-		         .setParameter("ids", ids)
-		         .getResultList();
-	}
-
-	@Override
-	public List<User> findByLogin(List<String> logins) {
-		return em.createNamedQuery("USER.findByLogins", User.class)
-				 .setParameter("logins", logins)
-				 .getResultList();
-	}
-
-	@Override
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public User findByLoginFetchArea(String login) {
-		User user =  em.createNamedQuery("USER.findByLogin", User.class)
-			       .setParameter("login", login)
-			       .getSingleResult();
-		
-		List<Area>areas = user.getAreas();
-		for(Area area : areas)
-			area.getPoints().size();
-		
-		return user;
-	}
+//
+//	@Override
+//	public User findByLoginFetchArea(String login) {
+//		User user =  em.createNamedQuery("USER.findByLogin", User.class)
+//			       .setParameter("login", login)
+//			       .getSingleResult();
+//
+//		List<Area>areas = user.getAreas();
+//		for(Area area : areas)
+//			area.getPoints().size();
+//
+//		return user;
+//	}
 
 	@Override
 	public User findByEmail(String email) {

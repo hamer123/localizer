@@ -21,7 +21,7 @@ public class DatabaseAuthenticateService implements AuthenticateService {
     @Override
     public User authenticate(String login, String password) throws AuthenticateExcpetion {
         try{
-            User user = userRepository.findUserFeatchRolesByLoginAndPassword(login, password);
+            User user = userRepository.findByLoginAndPassword(login, password);
             return user;
         } catch(EJBTransactionRolledbackException e){
             if(e.getCause() instanceof NoResultException)
