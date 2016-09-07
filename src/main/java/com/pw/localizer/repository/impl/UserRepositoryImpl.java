@@ -83,6 +83,7 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public User findByLoginFetchArea(String login) {
 		User user =  em.createNamedQuery("USER.findByLogin", User.class)
 			       .setParameter("login", login)
