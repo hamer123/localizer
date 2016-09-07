@@ -25,7 +25,7 @@
           <p:fileUpload value="#{createAccount.file}" mode="advanced" skinSimple="true" update=":#{p:component('avatar_image')}"
                         allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="5242880" fileLimit="1"
                         fileUploadListener="#{createAccount.handleFileUpload}" style="margin: 0 auto;"
-                        invalidSizeMessage="#{msg['avatar.limit']}" fileLimitMessage="#{msg['avatar.limit']}"
+                        invalidSizeMessage="#{msg['avatar.size']}" fileLimitMessage="#{msg['avatar.limit']}"
                         invalidFileMessage="#{msg['avatar.invalid.file']}"/>
           <p:graphicImage value="#{createAccount.avatarStream}" id="avatar_image" height="125" width="185"/>
         </h:form>

@@ -3,7 +3,7 @@ package com.pw.localizer.identyfikator.exception;
 /**
  * Created by wereckip on 30.08.2016.
  */
-public class OverlayUUIDExpcetion extends Exception {
+public class OverlayUUIDExpcetion extends RuntimeException {
     public OverlayUUIDExpcetion(String msg){
         super(msg);
     }

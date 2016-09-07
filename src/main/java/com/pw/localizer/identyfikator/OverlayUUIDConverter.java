@@ -1,5 +1,10 @@
 package com.pw.localizer.identyfikator;
 
+import com.pw.localizer.identyfikator.exception.OverlayUUIDExpcetion;
+import com.pw.localizer.model.enums.LocalizationServices;
+import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.Providers;
+
 import java.util.regex.Pattern;
 
 /**
@@ -18,9 +23,9 @@ import java.util.regex.Pattern;
  * Id encji (Location,Area)
  *
  */
-class OverlayUUIDRawConverter {
+public final class OverlayUUIDConverter {
 
-    private OverlayUUIDRawConverter(){}
+    private OverlayUUIDConverter(){}
 
     public static String regex(OverlayUUIDRaw uuidRaw){
         StringBuilder builderRegex = new StringBuilder();
@@ -36,6 +41,18 @@ class OverlayUUIDRawConverter {
         builderRegex.append(uuidRaw.getId() == null ? "*" : uuidRaw.getId());
 
         return builderRegex.toString();
+    }
+
+    public static OverlayUUIDRaw uuidRaw(String uuid) {
+        String[] parts = uuid.split("-");
+        if(!(parts.length == 5)) throw new OverlayUUIDExpcetion("Nie poprawny format uuid");
+        return OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+                .overlay(parts[0] == "any" ? null : Overlays.valueOf(parts[0]))
+                .provider(parts[1] == "any" ? null : Providers.valueOf(parts[1]))
+                .localizationService(parts[2] == "any" ? null : LocalizationServices.valueOf(parts[2]))
+                .login(parts[3] == "any" ? null : parts[3])
+                .id(parts[4] == "any" ? null : Long.valueOf(parts[4]))
+                .build();
     }
 
     public static String uuid(OverlayUUIDRaw uuidRaw){

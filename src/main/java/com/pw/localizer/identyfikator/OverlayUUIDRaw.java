@@ -14,6 +14,11 @@ class OverlayUUIDRaw {
     private Providers provider;
     private LocalizationServices localizationService;
 
+    public boolean matches(String uuid){
+        OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(uuid);
+        return this.equals(uuidRaw);
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,7 +46,7 @@ class OverlayUUIDRaw {
             return new OverlayUUIDRawBuilder();
         }
 
-        public OverlayUUIDRawBuilder id(long id){
+        public OverlayUUIDRawBuilder id(Long id){
             this.overlayUUIDRaw.id = id;
             return this;
         }

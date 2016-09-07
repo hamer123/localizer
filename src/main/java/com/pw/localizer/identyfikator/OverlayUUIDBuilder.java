@@ -1,5 +1,6 @@
 package com.pw.localizer.identyfikator;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -11,4 +12,5 @@ public interface OverlayUUIDBuilder {
     String regex();
     String uuid();
     Pattern pattern();
+    OverlayUUIDRaw uuidRaw();
 }
