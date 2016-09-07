@@ -22,7 +22,7 @@ import com.pw.localizer.model.google.map.GoogleMapModel;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.GoogleMaps;
-import com.pw.localizer.singleton.LokalizatorProperties;
+import com.pw.localizer.singleton.LocalizerProperties;
 
 @Dependent
 @Default
@@ -38,14 +38,14 @@ public class GoogleMapController implements Serializable{
 	protected boolean displayMessageOnSelectOverlay;
 	
 	@Inject 
-	private LokalizatorProperties lokalizatorProperties;
+	private LocalizerProperties localizerProperties;
 	
 	@PostConstruct
 	public void postConstruct(){
 		GoogleMapModel googleMapModel = new GoogleMapModel();
 		this.googleMapModel = googleMapModel;
-		center = (String) lokalizatorProperties.getPropertie(LokalizatorProperties.GOOGLEMAP_DEFAULT_CENTER);
-	    zoom = (int) lokalizatorProperties.getPropertie(LokalizatorProperties.GOOGLEMAP_DEFAULT_ZOOM);
+		center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
+	    zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
 		googleMapType = GoogleMaps.HYBRID;
 		streetVisible = true;
 	}
@@ -189,12 +189,12 @@ public class GoogleMapController implements Serializable{
 		this.lastSelectedOverlay = lastSelectedOverlay;
 	}
 
-	public LokalizatorProperties getLokalizatorProperties() {
-		return lokalizatorProperties;
+	public LocalizerProperties getLocalizerProperties() {
+		return localizerProperties;
 	}
 
-	public void setLokalizatorProperties(LokalizatorProperties lokalizatorProperties) {
-		this.lokalizatorProperties = lokalizatorProperties;
+	public void setLocalizerProperties(LocalizerProperties localizerProperties) {
+		this.localizerProperties = localizerProperties;
 	}
 
 	public boolean isDisplayMessageOnSelectOverlay() {

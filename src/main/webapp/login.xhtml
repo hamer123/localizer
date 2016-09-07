@@ -9,7 +9,7 @@
   <h:outputStylesheet library="css" name="login.css"/>
   <h:outputStylesheet library="css" name="default.css"/>
   <f:metadata>
-    <f:event listener="#{lokalizatorSecurityController.redirectIfAlreadyLogged()}" type="preRenderView"/>
+    <f:event listener="#{localizerSecurityController.redirectIfAlreadyLogged()}" type="preRenderView"/>
   </f:metadata>
 </h:head> 
 
@@ -22,7 +22,7 @@
             
             <h:panelGrid columns="3" cellpadding="5" styleClass="table" >
                 <p:outputLabel for="userName" value="User Name:" />
-                <p:inputText id="userName" value="#{lokalizatorSecurityController.login}"
+                <p:inputText id="userName" value="#{localizerSecurityController.login}"
                     required="true" label="User name">
                     <f:validateLength minimum="4" />
                 </p:inputText>
@@ -30,13 +30,13 @@
 
                 <p:outputLabel for="password" value="Password:" />
                 <p:password id="password"
-                    value="#{lokalizatorSecurityController.password}" required="true"
+                    value="#{localizerSecurityController.password}" required="true"
                     label="Password">
                     <f:validateLength minimum="4" />
                 </p:password>
                 <p:message for="password" display="icon" />
                 
-                <p:commandButton value="Login" update="panel messages" action="#{lokalizatorSecurityController.login()}" />
+                <p:commandButton value="Login" update="panel messages" action="#{localizerSecurityController.login()}" />
                 <p:button value="Create" outcome="/account/create/personalData" styleClass="button"/>
             </h:panelGrid>
         </p:panel>

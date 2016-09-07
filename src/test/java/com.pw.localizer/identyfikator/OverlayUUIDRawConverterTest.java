@@ -37,7 +37,7 @@ public class OverlayUUIDRawConverterTest {
                 .id(1L)
                 .build();
 
-        String resultRegex = OverlayUUIDRawConverter.regex(uuidRaw);
+        String resultRegex = OverlayUUIDConverter.regex(uuidRaw);
         assertEquals(regex,resultRegex);
     }
 }

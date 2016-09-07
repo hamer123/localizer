@@ -1,8 +1,12 @@
 package com.pw.localizer.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
@@ -12,15 +16,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.model.entity.Avatar;
+import com.pw.localizer.model.enums.ImageTypes;
+import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.service.ImageService;
+import com.pw.localizer.service.impl.AvatarService;
+import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;
+import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.entity.User;
@@ -32,11 +41,15 @@ import com.pw.localizer.repository.UserRepository;
 public class CreateAccountConversationController implements Serializable{
 	private static final long serialVersionUID = -430267591398275516L;
 	@Inject
+	private AvatarUploadController avatarUploadController;
+	@Inject
 	private Conversation conversation;
 	@Inject 
 	private GoogleMapController googleMapController;
 	@Inject
 	private UserRepository userRepository;
+	@Inject
+	private ImageService avatarService;
 	@Inject
 	private Logger logger;
 
@@ -56,8 +69,7 @@ public class CreateAccountConversationController implements Serializable{
 	private String passwordRepeat;
 	private double latitude;
 	private double longtitude;
-	private UploadedFile file;
-	
+
 	@PostConstruct
 	public void postConstruct(){
 		googleMapController.setCenter("51.771822, 19.454155");
@@ -105,11 +117,19 @@ public class CreateAccountConversationController implements Serializable{
 			setting.setDefaultLatitude(latitude);
 			setting.setDefaultLongtitude(longtitude);
 		    setting.setgMapZoom(googleMapController.getZoom());
-		    
 		    user.setUserSetting(setting);
-		    userRepository.create(user);
-		    
-			logger.info("Zostalo utworzone konto" + user.toString());
+			user.setRoles(createUserRoles());
+
+			//tworzenie avatara jesli wybrano image
+			if(this.getAvatarUploadController().getAvatarContent() != null &&
+			   this.getAvatarUploadController().getUploadedFile() != null){
+				Avatar avatar = createAvatar();
+				this.avatarService.create(avatar, new ByteArrayInputStream(this.getAvatarUploadController().getAvatarContent()));
+				user.setAvatar(avatar);
+			}
+			userRepository.create(user);
+
+			logger.info("Utworzono nowe konto " + user.toString());
 			return REDIRECT_TO_SUCCESS;
 		} catch(Exception e){
 			logger.error(e);
@@ -119,15 +139,26 @@ public class CreateAccountConversationController implements Serializable{
 		}
 	}
 
+	private List<Roles> createUserRoles(){
+		List<Roles>roles = new ArrayList<>();
+		roles.add(Roles.USER);
+		return roles;
+	}
+
+	private Avatar createAvatar(){
+		Avatar avatar = new Avatar();
+		avatar.setFormat(ImageTypes.convert(this.getAvatarUploadController().getContentType()));
+		avatar.setName(this.getAvatarUploadController().getName());
+		avatar.setSize(this.getAvatarUploadController().getSize());
+		avatar.setUuid(UUID.randomUUID().toString());
+		return avatar;
+	}
+
 	public String onBackToHome(){
 		endConversation();
 		return REDIRECT_TO_HOME;
 	}
 
-	public void handleFileUpload(FileUploadEvent event){
-		this.file = event.getFile();
-		JsfMessageBuilder.infoMessageBundle("avatar.success.upload");
-	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////    UTILITIS    //////////////////////////////////////////////////////////////
@@ -154,14 +185,6 @@ public class CreateAccountConversationController implements Serializable{
 		conversation.end();
 	}
 
-	public StreamedContent getAvatarStream() throws IOException {
-		if(this.file != null){
-			return new DefaultStreamedContent(this.file.getInputstream(), this.file.getContentType(), this.file.getFileName());
-		} else {
-			return null;
-		}
-	}
-	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////     GETTERS   SETTERS    //////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,12 +269,12 @@ public class CreateAccountConversationController implements Serializable{
 		this.googleMapController = googleMapController;
 	}
 
-	public UploadedFile getFile() {
-		return file;
+	public AvatarUploadController getAvatarUploadController() {
+		return avatarUploadController;
 	}
 
-	public void setFile(UploadedFile file) {
-		this.file = file;
+	public void setAvatarUploadController(AvatarUploadController avatarUploadController) {
+		this.avatarUploadController = avatarUploadController;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

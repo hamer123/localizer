@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.pw.localizer.model.session.LokalizatorSession;
+import com.pw.localizer.model.session.LocalizerSession;
 
 
 /**
@@ -25,7 +25,7 @@ import com.pw.localizer.model.session.LokalizatorSession;
 })
 public class JsfRootFilter implements Filter {
 	@Inject
-	LokalizatorSession lokalizatorSession;
+	LocalizerSession localizerSession;
 	private final String LOGIN_URI = "/login.xhtml";
 	
     /**
@@ -48,7 +48,7 @@ public class JsfRootFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
-		if(!lokalizatorSession.isLogged())
+		if(!localizerSession.isLogged())
 			res.sendRedirect(req.getContextPath() + LOGIN_URI);
 		chain.doFilter(request, response);
 	}

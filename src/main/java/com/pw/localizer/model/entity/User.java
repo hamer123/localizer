@@ -72,7 +72,7 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private List<Roles> roles = new ArrayList<>();
 	
-	@OneToOne
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	private Avatar avatar;
 	
 	@OneToOne

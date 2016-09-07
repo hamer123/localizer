@@ -1,10 +1,12 @@
 package com.pw.localizer.service;
 
-import java.awt.image.BufferedImage;
+import com.pw.localizer.model.entity.Avatar;
+
+import java.io.InputStream;
 
 import javax.ejb.Local;
 
 @Local
-public interface ImageService extends ResourceService<String, BufferedImage> {
+public interface ImageService extends ResourceService<Avatar, InputStream> {
 	byte[] content(String uuid);
 }

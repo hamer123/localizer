@@ -1,40 +1,36 @@
 package com.pw.localizer.controller;
-
 import java.io.Serializable;
-
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.jboss.logging.Logger;
-
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.model.session.LokalizatorSession;
+import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.repository.UserRepository;
 
 @ViewScoped
-@Named(value="lokalizatorSecurityController")
-public class LokalizatorSecurityController implements Serializable{
+@Named(value="localizerSecurityController")
+public class LocalizerSecurityController implements Serializable{
 	@Inject
 	private UserRepository userRepository;
 	@Inject
-	private LokalizatorSession lokalizatorSession;
+	private LocalizerSession localizerSession;
 
 	private String login;
 	private String password;
 
-	Logger logger = Logger.getLogger(LokalizatorSession.class);
+	Logger logger = Logger.getLogger(LocalizerSession.class);
 	
 	public String login(){
 		try{
 			User user = userRepository.findUserFeatchRolesByLoginAndPassword(login,password);
-			lokalizatorSession.setUser(user);
+			localizerSession.setUser(user);
 			return "/app/location.xhtml?faces-redirect=true";
 		} catch (Exception e){
 			JsfMessageBuilder.errorMessage("Invalid or unknown credentials");
-			logger.info("[LokalizatorSecurityController] Nie udana proba logowania na konto " + login + e.getMessage());
+			logger.info("[LocalizerSecurityController] Nie udana proba logowania na konto " + login + e.getMessage());
 			return null;
 		}
 	}
@@ -42,12 +38,12 @@ public class LokalizatorSecurityController implements Serializable{
 	
 	public String logout(){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		logger.debug("[LokalizatorSecurityController] logout successful for " + login);
+		logger.debug("[LocalizerSecurityController] logout successful for " + login);
 		return "/login.xhtml?faces-redirect=true";
 	}
 	
 	public String redirectIfAlreadyLogged(){
-		if(lokalizatorSession.isLogged())
+		if(localizerSession.isLogged())
 			return "/app/logout.xhtml?faces-redirect=true";
 		return null;
 	}

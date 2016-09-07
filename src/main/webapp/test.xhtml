@@ -1,21 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html" 
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:o="http://omnifaces.org/ui">
-  
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
-  <title>TEST ONLY</title>
-</h:head> 
+   <title>Journaldev Tutorial</title>
+</h:head>
 <h:body>
-<h:form>
-   <h:commandButton action="#{jpaTest.onAction}" value="Action" />
-   <h:commandButton action="#{jpaTest.onFind}" value="Find" />
-   <p:graphicImage value="images/jbosscorp_logo.png"/>
-   <o:graphicImage value="#{jpaTest.image()}" width="400" height="320"/>
-   <o:graphicImage value="#{jpaTest.image()}" width="400" height="320"/>
-</h:form>
-</h:body> 
+   <h:form enctype="multipart/form-data" style="width:500px">
+      <p:fileUpload value="#{avatarUploadController.uploadedFile}" mode="advanced" update="@form"
+                    fileUploadListener="#{avatarUploadController.handleFileUpload}"></p:fileUpload>
+
+      <p:graphicImage id="img" value="#{fileUploadManagedBean.streamedContent}"/>
+   </h:form>
+</h:body>
 </html>

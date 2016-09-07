@@ -19,7 +19,7 @@ import com.pw.localizer.jsf.utilitis.CircleBuilder;
 import com.pw.localizer.jsf.utilitis.MarkerBuilder;
 import com.pw.localizer.jsf.utilitis.PolygonBuilder;
 import com.pw.localizer.model.google.map.GoogleMapModel;
-import com.pw.localizer.model.session.LokalizatorSession;
+import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.AreaMessageMail;
@@ -38,7 +38,7 @@ import com.pw.localizer.serivce.qualifier.UserGoogleMap;
 @Named("messageController")
 public class MessageController implements Serializable{
 	@Inject
-	private LokalizatorSession lokalizatorSession;
+	private LocalizerSession localizerSession;
 	@Inject
 	private AreaRepository areaRepository;
 	@Inject
@@ -58,7 +58,7 @@ public class MessageController implements Serializable{
 	
 	@PostConstruct
 	private void postConstruct(){
-		long id = lokalizatorSession.getUser().getId();
+		long id = localizerSession.getUser().getId();
 		areaList = areaRepository.findWithEagerFetchPointsAndTargetByProviderId(id); 
 	}
 	
@@ -157,12 +157,12 @@ public class MessageController implements Serializable{
 		return areaList;
 	}
 
-	public LokalizatorSession getLokalizatorSession() {
-		return lokalizatorSession;
+	public LocalizerSession getLocalizerSession() {
+		return localizerSession;
 	}
 
-	public void setLokalizatorSession(LokalizatorSession lokalizatorSession) {
-		this.lokalizatorSession = lokalizatorSession;
+	public void setLocalizerSession(LocalizerSession localizerSession) {
+		this.localizerSession = localizerSession;
 	}
 
 	public AreaRepository getAreaRepository() {

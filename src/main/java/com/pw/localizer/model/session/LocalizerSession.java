@@ -8,7 +8,7 @@ import com.pw.localizer.model.enums.Roles;
 
 @Named
 @SessionScoped
-public class LokalizatorSession implements Serializable{
+public class LocalizerSession implements Serializable{
 	private User user;
 
 	public boolean isInRole(Roles role){

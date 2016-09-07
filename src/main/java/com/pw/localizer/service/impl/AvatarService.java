@@ -1,23 +1,22 @@
 package com.pw.localizer.service.impl;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-import javax.transaction.Transactional;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
+import com.pw.localizer.model.entity.Avatar;
+import com.pw.localizer.repository.AvatarRepository;
 import com.pw.localizer.service.ImageService;
 import com.pw.localizer.singleton.ResourceDirectionStartup;
+import org.apache.commons.io.IOUtils;
 
-@Named
-@ApplicationScoped
-@Transactional
-public class AvatarService implements ImageService{
-	
+@Stateless
+public class AvatarService implements ImageService, Serializable{
+	@Inject
+	AvatarRepository avatarRepository;
+
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public byte[] content(String uuid) {
 		String path = path(uuid);
 		try {
@@ -28,31 +27,38 @@ public class AvatarService implements ImageService{
 		return null;
 	}
 
-	@Override
-	public BufferedImage create(String s, BufferedImage bufferedImage) {
-		return null;
-	}
-
-	@Override
-	public BufferedImage update(String s, BufferedImage bufferedImage) {
-		return null;
-	}
-
-	@Override
-	public void remove(String uuid) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public BufferedImage find(String s) {
-		return null;
-	}
-
 	private String path(String uuid){
 		return  ResourceDirectionStartup.ResourceDirectionURI.AVATAR
-				+ "/" 
+				+ "/"
 				+ uuid ;
 	}
 
+	@Override
+	public void create(Avatar avatar, InputStream inputStream) throws IOException {
+		this.avatarRepository.create(avatar);
+		OutputStream outputStream = new FileOutputStream(new File(path(avatar.getUuid())));
+		IOUtils.copy(inputStream,outputStream);
+		inputStream.close();
+		outputStream.close();
+	}
+
+	@Override
+	public void update(Avatar avatar, InputStream inputStream) throws IOException {
+		OutputStream outputStream = new FileOutputStream(new File(path(avatar.getUuid())));
+		IOUtils.copy(inputStream,outputStream);
+		inputStream.close();
+		outputStream.close();
+	}
+
+	@Override
+	public void remove(Avatar avatar) {
+		this.avatarRepository.delete(this.avatarRepository.findById(avatar.getId()));
+		File avatarFile = new File(path(avatar.getUuid()));
+		avatarFile.delete();
+	}
+
+	@Override
+	public InputStream find(Avatar avatar) throws FileNotFoundException {
+		return new FileInputStream(new File(path(avatar.getUuid())));
+	}
 }

@@ -12,7 +12,7 @@
                     <p:row>
                        <p:outputLabel for="findUserToFollow" value="Znajdz uzytkownika" styleClass="components"/>
                         <c:choose>
-                            <c:when test="#{lokalizatorSession.isInRole('ADMIN')}">
+                            <c:when test="#{localizerSession.isInRole('ADMIN')}">
                                 <p:autoComplete id="findUserToFollow" value="#{location.login}" completeMethod="#{location.onAutocompleteLogin}"
                                                 forceSelection="true" styleClass="components" required="true"/>
                             </c:when>

@@ -22,12 +22,10 @@
       <h:panelGrid columns="1" cellpadding="3" cellspacing="3" style="padding-bottom:5%; margin: 0 auto;">
         <h:form enctype="multipart/form-data">
           <p:growl id="messages"/>
-          <p:fileUpload value="#{createAccount.file}" mode="advanced" skinSimple="true" update=":#{p:component('avatar_image')}"
-                        allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="5242880" fileLimit="1"
-                        fileUploadListener="#{createAccount.handleFileUpload}" style="margin: 0 auto;"
-                        invalidSizeMessage="#{msg['avatar.size']}" fileLimitMessage="#{msg['avatar.limit']}"
-                        invalidFileMessage="#{msg['avatar.invalid.file']}"/>
-          <p:graphicImage value="#{createAccount.avatarStream}" id="avatar_image" height="125" width="185"/>
+          <p:fileUpload value="#{avatarUploadController.uploadedFile}" mode="advanced"  update="@form" sizeLimit="5242880" fileLimit="1"
+                        allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileUploadListener="#{avatarUploadController.handleFileUpload}"
+                        style="margin: 0 auto;" invalidFileMessage="#{msg['avatar.invalid.file']}"
+                        invalidSizeMessage="#{msg['avatar.size']}" fileLimitMessage="#{msg['avatar.limit']}"/>
         </h:form>
       </h:panelGrid>
     </p:panel>
@@ -66,6 +64,7 @@
   <ui:insert>
     <ui:include src="/WEB-INF/views/account/create/navigation.xhtml"/>
   </ui:insert>
+
 </h:body>
 
 </html>

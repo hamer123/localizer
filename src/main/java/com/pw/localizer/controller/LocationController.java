@@ -28,7 +28,7 @@ import com.pw.localizer.jsf.utilitis.RouteManager;
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator.OverlayIdentyfikatorBuilder;
 import com.pw.localizer.model.google.map.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.map.GoogleMapModel;
-import com.pw.localizer.model.session.LokalizatorSession;
+import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.google.component.GoogleLocation;
 import com.pw.localizer.model.google.component.Route;
 import com.pw.localizer.model.entity.Area;
@@ -74,7 +74,7 @@ public class LocationController implements Serializable{
 	@Inject
 	private RestSessionManager restSessionManager;
 	@Inject
-	private LokalizatorSession lokalizatorSession;
+	private LocalizerSession localizerSession;
 	@Inject
 	private Logger logger;
 	
@@ -106,7 +106,7 @@ public class LocationController implements Serializable{
 	public void init(){
 		initdefaultGoogleMapVisibility();
 		googleMapController.setDisplayMessageOnSelectOverlay(true);
-		activeAreaIds.addAll( areaRepository.findIdByProviderIdAndActive(lokalizatorSession.getUser().getId(), true) );
+		activeAreaIds.addAll( areaRepository.findIdByProviderIdAndActive(localizerSession.getUser().getId(), true) );
 		checkAreaEvent = true;
 		createRoutes = true;
 	}
@@ -678,12 +678,12 @@ public class LocationController implements Serializable{
 		this.restSessionManager = restSessionManager;
 	}
 
-	public LokalizatorSession getLokalizatorSession() {
-		return lokalizatorSession;
+	public LocalizerSession getLocalizerSession() {
+		return localizerSession;
 	}
 
-	public void setLokalizatorSession(LokalizatorSession lokalizatorSession) {
-		this.lokalizatorSession = lokalizatorSession;
+	public void setLocalizerSession(LocalizerSession localizerSession) {
+		this.localizerSession = localizerSession;
 	}
 
 	public Logger getLogger() {

@@ -19,7 +19,7 @@ import org.primefaces.model.map.Polygon;
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.jsf.utilitis.PolygonBuilder;
 import com.pw.localizer.model.google.map.GoogleMapModel;
-import com.pw.localizer.model.session.LokalizatorSession;
+import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaMessageMail;
 import com.pw.localizer.model.entity.AreaPoint;
@@ -35,7 +35,7 @@ import com.pw.localizer.serivce.qualifier.UserGoogleMap;
 @ViewScoped
 public class AreaController implements Serializable{
 	@Inject
-	private LokalizatorSession lokalizatorSession;
+	private LocalizerSession localizerSession;
 	@Inject
 	private UserRepository userRepository;
 	@Inject
@@ -59,7 +59,7 @@ public class AreaController implements Serializable{
 	private void postConstruct(){
 		clearArea();
 		polygon = PolygonBuilder.createEmpty();
-		areaList = areaRepository.findByProviderId( lokalizatorSession.getUser().getId() );
+		areaList = areaRepository.findByProviderId( localizerSession.getUser().getId() );
 		googleMapController.addOverlay(polygon);
 	}
 	
@@ -163,7 +163,7 @@ public class AreaController implements Serializable{
 	private void prepareAreaBeforeSave(){
 		User user = userRepository.findByLogin(area.getTarget().getLogin());
 		area.setTarget(user);
-		area.setProvider(lokalizatorSession.getUser());
+		area.setProvider(localizerSession.getUser());
 		area.setPoints( convertLatLng(polygon.getPaths(), area) );
 	}
 
@@ -287,12 +287,12 @@ public class AreaController implements Serializable{
 		this.area = area;
 	}
 
-	public LokalizatorSession getLokalizatorSession() {
-		return lokalizatorSession;
+	public LocalizerSession getLocalizerSession() {
+		return localizerSession;
 	}
 
-	public void setLokalizatorSession(LokalizatorSession lokalizatorSession) {
-		this.lokalizatorSession = lokalizatorSession;
+	public void setLocalizerSession(LocalizerSession localizerSession) {
+		this.localizerSession = localizerSession;
 	}
 
 	public UserRepository getUserRepository() {

@@ -10,11 +10,11 @@
       <h:outputStylesheet library="css" name="default.css"/> 
       <h:outputStylesheet library="css" name="login.css"/>	 
       <h:form>
-        <p:panel header="Logout" rendered="#{!lokalizatorSession.logged}">
+        <p:panel header="Logout" rendered="#{!localizerSession.logged}">
             <p>You are logged out.</p>
         </p:panel>
 
-        <p:panel header="Logout" rendered="#{lokalizatorSession.logged}">
+        <p:panel header="Logout" rendered="#{localizerSession.logged}">
             <p>You are still logged in, click below button to log
                 out!</p>
             <p:commandButton value="Logout"

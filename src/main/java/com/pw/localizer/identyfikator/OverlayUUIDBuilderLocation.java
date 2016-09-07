@@ -46,6 +46,11 @@ class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
         return null;
     }
 
+    @Override
+    public OverlayUUIDRaw uuidRaw() {
+        return null;
+    }
+
     private void buildRaw(){
         if(location instanceof LocationGPS){
             LocationGPS locationGPS = (LocationGPS)location;
