@@ -7,7 +7,7 @@ import com.pw.localizer.model.enums.Providers;
 /**
  * Created by wereckip on 30.08.2016.
  */
-class OverlayUUIDRaw {
+public class OverlayUUIDRaw {
     private Long id;
     private String login;
     private Overlays overlay;

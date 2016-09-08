@@ -44,8 +44,7 @@ public final class OverlayUUIDConverter {
     }
 
     public static OverlayUUIDRaw uuidRaw(String uuid) {
-        String[] parts = uuid.split("-");
-        if(!(parts.length == 5)) throw new OverlayUUIDExpcetion("Nie poprawny format uuid");
+        String[] parts = splitUUID(uuid);
         return OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
                 .overlay(parts[0] == "any" ? null : Overlays.valueOf(parts[0]))
                 .provider(parts[1] == "any" ? null : Providers.valueOf(parts[1]))
@@ -73,5 +72,36 @@ public final class OverlayUUIDConverter {
 
     public static Pattern pattern(OverlayUUIDRaw uuidRaw){
         return Pattern.compile(regex(uuidRaw));
+    }
+
+    public static Overlays extractOverlay(String uuid){
+        String[] parts = splitUUID(uuid);
+        return parts[0] == "any" ? null : Overlays.valueOf(parts[0]);
+    }
+
+    public static Providers extractProvider(String uuid){
+        String[] parts = splitUUID(uuid);
+        return parts[1] == "any" ? null : Providers.valueOf(parts[1]);
+    }
+
+    public static LocalizationServices extractService(String uuid){
+        String[] parts = splitUUID(uuid);
+        return parts[2] == "any" ? null : LocalizationServices.valueOf(parts[2]);
+    }
+
+    public static String extractLogin(String uuid){
+        String[] parts = splitUUID(uuid);
+        return parts[3] == "any" ? null : parts[3];
+    }
+
+    public static Long extractId(String uuid){
+        String[] parts = splitUUID(uuid);
+        return parts[4] == "any" ? null : Long.valueOf(parts[4]);
+    }
+
+    private static String[] splitUUID(String uuid){
+        String[] parts = uuid.split("-");
+        if(!(parts.length == 5)) throw new OverlayUUIDExpcetion("Nie poprawny format uuid");
+        return parts;
     }
 }
