@@ -76,6 +76,8 @@ public class UserGoogleMapController implements Serializable{
         userComponentVisibilityMap.put(user.getLogin(),new UserComponentVisibility());
     }
 
+
+
     public void remove(String login){
         removeCircle(login);
         removeMarker(login);
@@ -92,7 +94,9 @@ public class UserGoogleMapController implements Serializable{
 
     }
 
-    public void render(){}
+    public void render(){
+        //TODO
+    }
 
 
     public UserComponentVisibility UserComponentVisibility(String login){
@@ -104,18 +108,31 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void addMarker(User user){
-        List<Marker>markers = googleMapModel.getMarkers();
         Location location = user.getLastLocationGPS();
         if(location != null)
-            markers.add(MarkerBuilder.createMarker(location));
-
+            addGpsMarker(location);
         location = user.getLastLocationNetworkNaszaUsluga();
         if(location != null)
-            markers.add(MarkerBuilder.createMarker(location));
-
+            addNetworkMarker(location);
         location = user.getLastLocationNetworObcaUsluga();
         if(location != null)
-            markers.add(MarkerBuilder.createMarker(location));
+            addNetworkMarker(location);
+    }
+
+    private void addGpsMarker(Location location){
+        List<Marker>markers = googleMapModel.getMarkers();
+        Marker marker = MarkerBuilder.createMarker(location);
+        markers.add(marker);
+        if(filterGpsMarker(marker, OverlayUUIDConverter.uuidRaw(marker.getId())))
+            googleMapModelOutput.getMarkers().add(marker);
+    }
+
+    private void addNetworkMarker(Location location){
+        List<Marker>markers = googleMapModel.getMarkers();
+        Marker marker = MarkerBuilder.createMarker(location);
+        markers.add(marker);
+        if(filterNetworkMarker(marker,OverlayUUIDConverter.uuidRaw(marker.getId())))
+            googleMapModelOutput.getMarkers().add(marker);
     }
 
     private void addCircle(User user){
@@ -131,6 +148,12 @@ public class UserGoogleMapController implements Serializable{
         location = user.getLastLocationNetworObcaUsluga();
         if(location != null)
             circles.add(CircleBuilder.createCircle(location));
+    }
+
+    private void addCircleGps(Location location){
+        List<Circle>circles = googleMapModel.getCircles();
+        Circle circle = CircleBuilder.createCircle(location);
+        circles.add(circle);
     }
 
     private void addPolygon(User user){
@@ -194,7 +217,7 @@ public class UserGoogleMapController implements Serializable{
         }
     }
 
-    private void renderMarker(){
+    private void renderMarkers(){
         List<Marker>markers = googleMapModelOutput.getMarkers();
         markers.clear();
 
@@ -235,5 +258,57 @@ public class UserGoogleMapController implements Serializable{
         }
 
         return false;
+    }
+
+    private void renderCircles(){
+        List<Circle>circles = googleMapModelOutput.getCircles();
+        circles.clear();
+
+        for(Circle circle : googleMapModel.getCircles()){
+            OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(circle.getId());
+            if(uuidRaw.getProvider() == Providers.GPS){
+                if(filterCircleGps(circle,uuidRaw))
+                    circles.add(circle);
+            } else if(uuidRaw.getProvider() == Providers.NETWORK){
+                if(filterCircleNetwork(circle,uuidRaw))
+                    circles.add(circle);
+            } else {
+                throw new RuntimeException("Nie wspierany provider przez renderowanie circle " + uuidRaw.getProvider());
+            }
+        }
+    }
+
+    private boolean filterCircleGps(Circle circle, OverlayUUIDRaw uuidRaw){
+        if(googleMapComponentVisible.isCircleGps()){
+            UserComponentVisibility userComponentVisibility = userComponentVisibilityMap.get(uuidRaw.getLogin());
+            return userComponentVisibility.isGPSCircle();
+        } else {
+            return false;
+        }
+    }
+
+    private boolean filterCircleNetwork(Circle circle, OverlayUUIDRaw uuidRaw){
+        LocalizationServices service = uuidRaw.getLocalizationService();
+        UserComponentVisibility userComponentVisibility = userComponentVisibilityMap.get(uuidRaw.getLogin());
+        if(service == LocalizationServices.NASZ){
+            if(googleMapComponentVisible.isCircleNetworkNasz()){
+                return userComponentVisibility.isNetworkNaszCircle();
+            }
+        } else if(service == LocalizationServices.OBCY){
+            if(googleMapComponentVisible.isCircleNetworkObcy())
+                return userComponentVisibility.isNetworkObcyCircle();
+        } else {
+            throw new RuntimeException("Nie wspierany serwis przez filterCircleNetwork circle " + uuidRaw.getLocalizationService());
+        }
+
+        return false;
+    }
+
+    private void renderPolygons(){
+
+    }
+
+    private void renderPolylines(){
+
     }
 }
