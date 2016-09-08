@@ -2,10 +2,10 @@ package com.pw.localizer.google.map;
 
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
-import com.pw.localizer.jsf.utilitis.CircleBuilder;
-import com.pw.localizer.jsf.utilitis.MarkerBuilder;
-import com.pw.localizer.jsf.utilitis.PolygonBuilder;
-import com.pw.localizer.jsf.utilitis.PolylineBuilder;
+import com.pw.localizer.overlay.CircleBuilder;
+import com.pw.localizer.overlay.MarkerBuilder;
+import com.pw.localizer.overlay.PolygonBuilder;
+import com.pw.localizer.overlay.PolylineBuilder;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
@@ -33,7 +33,7 @@ import java.util.Map;
  * Created by wereckip on 08.09.2016.
  */
 
-@Named
+@Named(value = "userGoogleMap")
 @Dependent
 public class UserGoogleMapController implements Serializable{
     //Gotowy model po renderingu
@@ -74,9 +74,9 @@ public class UserGoogleMapController implements Serializable{
         addPolygon(user);
         addPolyline(user);
         userComponentVisibilityMap.put(user.getLogin(),new UserComponentVisibility());
+
+        //TODO render
     }
-
-
 
     public void remove(String login){
         removeCircle(login);
@@ -84,6 +84,8 @@ public class UserGoogleMapController implements Serializable{
         removePolygon(login);
         removePolyline(login);
         userComponentVisibilityMap.remove(login);
+
+        //TODO render
     }
 
     public void update(User user){
@@ -306,6 +308,10 @@ public class UserGoogleMapController implements Serializable{
 
     private void renderPolygons(){
 
+    }
+
+    private boolean filterPolygon(){
+        return false;
     }
 
     private void renderPolylines(){

@@ -1,8 +1,10 @@
-package com.pw.localizer.jsf.utilitis;
+package com.pw.localizer.overlay;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pw.localizer.identyfikator.OverlayUUIDFactory;
+import com.pw.localizer.jsf.utilitis.PropertiesReader;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
 
@@ -46,19 +48,16 @@ public class CircleBuilder {
 	}
 	
 	private static Circle createCircleInstance(Location location){
-		Circle circle = new Circle(new LatLng(location.getLatitude(), location.getLongitude()),
-                100);
-
-       circle.setData(location);
-       circle.setRadius(getRadius(location));
-       circle.setFillColor(chooseColor(location));
-       circle.setFillOpacity(CIRCLE_FILL_OPACITY);
-       circle.setStrokeColor(chooseStrokeColor(location));
-       circle.setStrokeOpacity(CIRCLE_STROKE_OPACITY);
-       OverlayIdentyfikator identyfikator = new OverlayIdentyfikator(location, Overlays.CIRCLE);
-       circle.setId(identyfikator.createIdentyfikator());
-       
-       return circle;
+		Circle circle = new Circle(new LatLng(location.getLatitude(), location.getLongitude()), 100);
+		circle.setData(location);
+		circle.setRadius(getRadius(location));
+		circle.setFillColor(chooseColor(location));
+		circle.setFillOpacity(CIRCLE_FILL_OPACITY);
+		circle.setStrokeColor(chooseStrokeColor(location));
+		circle.setStrokeOpacity(CIRCLE_STROKE_OPACITY);
+		String uuid = OverlayUUIDFactory.builder(location,Overlays.CIRCLE).uuid();
+		circle.setId(uuid);
+		return circle;
 	}
 	
 	private static double getRadius(Location location){

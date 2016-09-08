@@ -17,7 +17,7 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.jsf.utilitis.PolygonBuilder;
+import com.pw.localizer.overlay.PolygonBuilder;
 import com.pw.localizer.model.google.map.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;

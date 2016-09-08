@@ -13,10 +13,10 @@ import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Polygon;
 import org.primefaces.model.map.Polyline;
 
-import com.pw.localizer.jsf.utilitis.CircleBuilder;
-import com.pw.localizer.jsf.utilitis.MarkerBuilder;
-import com.pw.localizer.jsf.utilitis.PolygonBuilder;
-import com.pw.localizer.jsf.utilitis.PolylineBuilder;
+import com.pw.localizer.overlay.CircleBuilder;
+import com.pw.localizer.overlay.MarkerBuilder;
+import com.pw.localizer.overlay.PolygonBuilder;
+import com.pw.localizer.overlay.PolylineBuilder;
 import com.pw.localizer.model.google.map.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.component.GoogleLocation;
 import com.pw.localizer.model.google.component.Route;

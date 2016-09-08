@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.logging.Logger;
 
-import com.pw.localizer.jsf.utilitis.AreaEventBuilder;
+import com.pw.localizer.overlay.AreaEventBuilder;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.Location;

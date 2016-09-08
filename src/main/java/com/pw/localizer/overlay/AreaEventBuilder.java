@@ -1,4 +1,4 @@
-package com.pw.localizer.jsf.utilitis;
+package com.pw.localizer.overlay;
 
 import java.util.Date;
 

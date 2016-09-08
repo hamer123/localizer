@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by wereckip on 30.08.2016.
  */
 
-class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
+public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
 
     private Location location;
     private Overlays overlay;
