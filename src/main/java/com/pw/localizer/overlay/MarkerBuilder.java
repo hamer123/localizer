@@ -14,20 +14,33 @@ import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;
 
 public class MarkerBuilder {
+
+	private static MarkerBuilder markerBuilder;
+	private Icon icon;
+
+	public static MarkerBuilder getInstance(){
+		if(markerBuilder == null) {
+			synchronized (MarkerBuilder.class) {
+				if (markerBuilder == null)
+					markerBuilder = new MarkerBuilder();
+			}
+		}
+		return markerBuilder;
+	}
+
+	private MarkerBuilder(){
+		this.icon = new Icon();
+	}
 	
-	private MarkerBuilder(){}
-	
-	private static Marker createMarkerInstance(Location location){
+	private Marker createMarkerInstance(Location location){
 		Marker marker = new Marker(new LatLng(location.getLatitude(), location.getLongitude()));
 		marker.setIcon(chooseIcon(location));
 		marker.setData(location);
 		marker.setDraggable(false);
 		marker.setClickable(true);
 		marker.setTitle(createTitle(location));
-	
 		OverlayIdentyfikator identyfikator = new OverlayIdentyfikator(location, Overlays.MARKER);
 		marker.setId(identyfikator.createIdentyfikator());
-		
 		return marker;
 	}
 	
@@ -40,22 +53,22 @@ public class MarkerBuilder {
 		return title;
 	}
 
-	private static String chooseIcon(Location location){
+	private String chooseIcon(Location location){
 		switch(location.getProviderType()){
 		case GPS:
-			return Icon.GPS_MARKER_ICON_URL;
+			return icon.GPS_MARKER_ICON_URL;
 		case NETWORK:
 			LocationNetwork locationNetwork = (LocationNetwork)location;
 			if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ)
-				return Icon.NETWORK_MARKER_NASZA_USLUGA_ICON_URL;
+				return icon.NETWORK_MARKER_NASZA_USLUGA_ICON_URL;
 			else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
-				return Icon.NETWORK_MARKER_OBCA_USLUGA_ICON_URL;
+				return icon.NETWORK_MARKER_OBCA_USLUGA_ICON_URL;
 		default:
 			throw new IllegalArgumentException("Nie ma dla takiego providera icony");
 		}
 	}
 	
-	public static List<Marker> createMarker(List<Location>locationList){
+	public List<Marker> createMarker(List<Location>locationList){
 		List<Marker>markerList = new ArrayList<Marker>();
 		
 		for(Location location : locationList)
@@ -64,25 +77,23 @@ public class MarkerBuilder {
 		return markerList;
 	}
 	
-	public static Marker createMarker(Location location){
+	public Marker createMarker(Location location){
 		return createMarkerInstance(location);
 	}
 
-	public static class Icon{
-		public static String GPS_MARKER_ICON_URL;
-		public static String NETWORK_MARKER_OBCA_USLUGA_ICON_URL;
-		public static String NETWORK_MARKER_NASZA_USLUGA_ICON_URL;
-		public static String START_ROUTE_ICON_URL;
-		public static String END_ROUTE_ICON_URL;
-		
-		static{
+	private static class Icon{
+		public String GPS_MARKER_ICON_URL;
+		public String NETWORK_MARKER_OBCA_USLUGA_ICON_URL;
+		public String NETWORK_MARKER_NASZA_USLUGA_ICON_URL;
+		public String START_ROUTE_ICON_URL;
+		public String END_ROUTE_ICON_URL;
+
+		private Icon(){
 			PropertiesReader propertiesReader = new PropertiesReader("localizer");
 			findProperties(propertiesReader);
 		}
 		
-		private Icon(){}
-		
-		private static void findMarkerIconUrl(PropertiesReader propertiesReader){
+		private void findMarkerIconUrl(PropertiesReader propertiesReader){
 			GPS_MARKER_ICON_URL = propertiesReader.findPropertyByName("GPS_MARKER_ICON_URL");
 			NETWORK_MARKER_NASZA_USLUGA_ICON_URL = propertiesReader.findPropertyByName("NETWORK_MARKER_NASZA_USLUGA_ICON_URL");
 			NETWORK_MARKER_OBCA_USLUGA_ICON_URL  = propertiesReader.findPropertyByName("NETWORK_MARKER_OBCA_USLUGA_ICON_URL");
@@ -90,7 +101,7 @@ public class MarkerBuilder {
 		    END_ROUTE_ICON_URL = propertiesReader.findPropertyByName("END_ROUTE_ICON_URL");
 		}
 		
-		private static void findProperties(PropertiesReader propertiesReader){
+		private void findProperties(PropertiesReader propertiesReader){
 			findMarkerIconUrl(propertiesReader);
 		}
 	}

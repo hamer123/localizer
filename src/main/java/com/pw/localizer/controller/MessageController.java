@@ -75,8 +75,8 @@ public class MessageController implements Serializable{
 	public void onDisplayLocationInDialog(AreaEvent areaEvent){
 		dialogMap.clear();
 		Location location = areaEvent.getLocation();
-		dialogMap.addOverlay(CircleBuilder.createCircle(location));
-		dialogMap.addOverlay(MarkerBuilder.createMarker(location));
+		dialogMap.addOverlay(CircleBuilder.getInstance().createCircle(location));
+		dialogMap.addOverlay(MarkerBuilder.getInstance().createMarker(location));
 		dialogMap.setCenter(GoogleMapModel.center((location)));
 	}
 	
@@ -84,7 +84,7 @@ public class MessageController implements Serializable{
 		List<AreaPoint>areaPoints = areaPointRepository.findByAreaId(area.getId());
 		dialogMap.clear();
 		area.setPoints(mapAreaPoint(areaPoints));
-		Polygon polygon = PolygonBuilder.create(area);
+		Polygon polygon = PolygonBuilder.getInstance().create(area);
 		dialogMap.addOverlay(polygon);
 		AreaPoint areaPoint = areaPoints.get(0);
 		dialogMap.setCenter(GoogleMapModel.center(areaPoint.getLat(), areaPoint.getLng()));

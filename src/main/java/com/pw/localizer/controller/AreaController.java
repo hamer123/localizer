@@ -58,9 +58,9 @@ public class AreaController implements Serializable{
 	@PostConstruct
 	private void postConstruct(){
 		clearArea();
-		polygon = PolygonBuilder.createEmpty();
 		areaList = areaRepository.findByProviderId( localizerSession.getUser().getId() );
 		googleMapController.addOverlay(polygon);
+		this.polygon = PolygonBuilder.getInstance().empty();
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ public class AreaController implements Serializable{
 	}
 	
 	void clearPolygon(){
-		polygon = PolygonBuilder.createEmpty();
+		polygon = PolygonBuilder.getInstance().empty();
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

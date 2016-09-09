@@ -109,21 +109,21 @@ public class GoogleMapUserComponentServiceImpl implements GoogleMapUserComponent
 		List<Polygon>polygons = new ArrayList<Polygon>();
 		
 		for(Area area : user.getAreas())
-			polygons.add( PolygonBuilder.create(area) );
+			polygons.add( PolygonBuilder.getInstance().create(area) );
 		
 		return polygons;
 	}
 
 	@Override
 	public Polygon polygon(Area area) {
-		return PolygonBuilder.create(area);
+		return PolygonBuilder.getInstance().create(area);
 	}
 	
 
 	@Override
 	public Polygon polygon(Area area, GoogleMapComponentVisible visible) {
 		if(shoudlCreatePolygon(area, visible))
-			return PolygonBuilder.create(area);
+			return PolygonBuilder.getInstance().create(area);
 		
 		return null;
 	}

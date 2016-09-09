@@ -123,7 +123,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addGpsMarker(Location location){
         List<Marker>markers = googleMapModel.getMarkers();
-        Marker marker = MarkerBuilder.createMarker(location);
+        Marker marker = MarkerBuilder.getInstance().createMarker(location);
         markers.add(marker);
         if(filterGpsMarker(marker, OverlayUUIDConverter.uuidRaw(marker.getId())))
             googleMapModelOutput.getMarkers().add(marker);
@@ -131,7 +131,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addNetworkMarker(Location location){
         List<Marker>markers = googleMapModel.getMarkers();
-        Marker marker = MarkerBuilder.createMarker(location);
+        Marker marker = MarkerBuilder.getInstance().createMarker(location);
         markers.add(marker);
         if(filterNetworkMarker(marker,OverlayUUIDConverter.uuidRaw(marker.getId())))
             googleMapModelOutput.getMarkers().add(marker);
@@ -141,27 +141,27 @@ public class UserGoogleMapController implements Serializable{
         List<Circle>circles = googleMapModel.getCircles();
         Location location = user.getLastLocationGPS();
         if(location != null)
-            circles.add(CircleBuilder.createCircle(location));
+            circles.add(CircleBuilder.getInstance().createCircle(location));
 
         location = user.getLastLocationNetworkNaszaUsluga();
         if(location != null)
-            circles.add(CircleBuilder.createCircle(location));
+            circles.add(CircleBuilder.getInstance().createCircle(location));
 
         location = user.getLastLocationNetworObcaUsluga();
         if(location != null)
-            circles.add(CircleBuilder.createCircle(location));
+            circles.add(CircleBuilder.getInstance().createCircle(location));
     }
 
     private void addCircleGps(Location location){
         List<Circle>circles = googleMapModel.getCircles();
-        Circle circle = CircleBuilder.createCircle(location);
+        Circle circle = CircleBuilder.getInstance().createCircle(location);
         circles.add(circle);
     }
 
     private void addPolygon(User user){
         List<Polygon>polygons = googleMapModel.getPolygons();
         List<Area>areas = user.getAreas();
-        polygons.addAll(PolygonBuilder.createPolygons(areas));
+        polygons.addAll(PolygonBuilder.getInstance().create(areas));
     }
 
     private void addPolyline(User user){
@@ -307,14 +307,20 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void renderPolygons(){
+        List<Polygon>polygons = googleMapModelOutput.getPolygons();
+        polygons.clear();
 
+        for(Polygon polygon : googleMapModel.getPolygons()){
+            //W dacie jest referencja do obiektu na podstawie ktorego zostal stworzony overlay
+            Area area = (Area) polygon.getData();
+        }
     }
 
-    private boolean filterPolygon(){
+    private boolean filterPolygon(Polygon polygon, OverlayUUIDRaw uuidRaw){
         return false;
     }
 
-    private void renderPolylines(){
+    private void renderPolylines(Polygon polygon, OverlayUUIDRaw uuidRaw){
 
     }
 }
