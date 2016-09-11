@@ -33,17 +33,17 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
 
     @Override
     public String regex(){
-        return null;
+        return OverlayUUIDConverter.regex(overlayUUIDRaw);
     }
 
     @Override
     public String uuid() {
-        return null;
+        return OverlayUUIDConverter.uuid(overlayUUIDRaw);
     }
 
     @Override
     public Pattern pattern() {
-        return null;
+        return OverlayUUIDConverter.pattern(overlayUUIDRaw);
     }
 
     @Override

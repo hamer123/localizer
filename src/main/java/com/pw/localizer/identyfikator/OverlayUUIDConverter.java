@@ -46,11 +46,11 @@ public final class OverlayUUIDConverter {
     public static OverlayUUIDRaw uuidRaw(String uuid) {
         String[] parts = splitUUID(uuid);
         return OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
-                .overlay(parts[0] == "any" ? null : Overlays.valueOf(parts[0]))
-                .provider(parts[1] == "any" ? null : Providers.valueOf(parts[1]))
-                .localizationService(parts[2] == "any" ? null : LocalizationServices.valueOf(parts[2]))
-                .login(parts[3] == "any" ? null : parts[3])
-                .id(parts[4] == "any" ? null : Long.valueOf(parts[4]))
+                .overlay(parts[0].equals("any") ? null : Overlays.valueOf(parts[0]))
+                .provider(parts[1].equals("any") ? null : Providers.valueOf(parts[1]))
+                .localizationService(parts[2].equals("any") ? null : LocalizationServices.valueOf(parts[2]))
+                .login(parts[3].equals("any") ? null : parts[3])
+                .id(parts[4].equals("any") ? null : Long.valueOf(parts[4]))
                 .build();
     }
 
@@ -76,27 +76,27 @@ public final class OverlayUUIDConverter {
 
     public static Overlays extractOverlay(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[0] == "any" ? null : Overlays.valueOf(parts[0]);
+        return parts[0].equals("any") ? null : Overlays.valueOf(parts[0]);
     }
 
     public static Providers extractProvider(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[1] == "any" ? null : Providers.valueOf(parts[1]);
+        return parts[1].equals("any") ? null : Providers.valueOf(parts[1]);
     }
 
     public static LocalizationServices extractService(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[2] == "any" ? null : LocalizationServices.valueOf(parts[2]);
+        return parts[2].equals("any") ? null : LocalizationServices.valueOf(parts[2]);
     }
 
     public static String extractLogin(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[3] == "any" ? null : parts[3];
+        return parts[3].equals("any") ? null : parts[3];
     }
 
     public static Long extractId(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[4] == "any" ? null : Long.valueOf(parts[4]);
+        return parts[4].equals("any") ? null : Long.valueOf(parts[4]);
     }
 
     private static String[] splitUUID(String uuid){

@@ -6,6 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import com.pw.localizer.google.map.GoogleMapController;
 import org.omnifaces.cdi.Param;
 import org.primefaces.model.map.Polygon;
 import com.pw.localizer.model.google.map.GoogleMapModel;
@@ -19,7 +21,6 @@ import com.pw.localizer.repository.AreaEventGPSRepository;
 import com.pw.localizer.repository.AreaEventNetworkRepository;
 import com.pw.localizer.repository.AreaPointRepository;
 import com.pw.localizer.serivce.qualifier.UserGoogleMap;
-import com.pw.localizer.service.GoogleMapUserComponentService;
 
 @Named
 @ViewScoped
@@ -30,9 +31,9 @@ public class AreaEventController implements Serializable{
 	private AreaEventNetworkRepository areaEventNetworkRepository;
 	@Inject
 	private AreaPointRepository areaPointRepository;
+//	@Inject
+//	private GoogleMapUserComponentService googleMapUserComponentService;
 	@Inject
-	private GoogleMapUserComponentService googleMapUserComponentService;
-	@Inject @UserGoogleMap
 	private GoogleMapController googleMapController;
 	
 	@Param(name = "id") @Inject
@@ -55,9 +56,10 @@ public class AreaEventController implements Serializable{
 			if(validateAreaEvent()){
 				Area area = fetchAreaPoints(areaEvent.getArea());
 				areaEvent.setArea(area);
-				
-				Polygon polygon = googleMapUserComponentService.polygon(areaEvent.getArea());
-				GoogleLocation googleLocation = googleMapUserComponentService.position(areaEvent.getLocation());
+
+				//TODO
+				Polygon polygon = null;
+				GoogleLocation googleLocation = null;
 				
 				googleMapController.addOverlay(polygon);
 				googleMapController.addOverlay(googleLocation.overlays());
@@ -122,72 +124,66 @@ public class AreaEventController implements Serializable{
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////    GETTERS SETTERS     /////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public AreaEventGPSRepository getAreaEventGPSRepository() {
 		return areaEventGPSRepository;
 	}
-	public void setAreaEventGPSRepository(
-			AreaEventGPSRepository areaEventGPSRepository) {
-		this.areaEventGPSRepository = areaEventGPSRepository;
-	}
+
+	public void setAreaEventGPSRepository(AreaEventGPSRepository areaEventGPSRepository) {this.areaEventGPSRepository = areaEventGPSRepository;}
+
 	public AreaEventNetworkRepository getAreaEventNetworkRepository() {
 		return areaEventNetworkRepository;
 	}
-	public void setAreaEventNetworkRepository(
-			AreaEventNetworkRepository areaEventNetworkRepository) {
-		this.areaEventNetworkRepository = areaEventNetworkRepository;
-	}
+
+	public void setAreaEventNetworkRepository(AreaEventNetworkRepository areaEventNetworkRepository) { this.areaEventNetworkRepository = areaEventNetworkRepository; }
+
 	public Providers getProvider() {
 		return provider;
 	}
+
 	public void setProvider(Providers provider) {
 		this.provider = provider;
 	}
-	public AreaEvent getAreaEvent() {
-		return areaEvent;
 
-	}
+	public AreaEvent getAreaEvent() {return areaEvent;}
+
 	public void setAreaEvent(AreaEvent areaEvent) {
 		this.areaEvent = areaEvent;
 	}
+
 	public boolean isValidParams() {
 		return validParams;
 	}
+
 	public void setValidParams(boolean validParams) {
 		this.validParams = validParams;
 	}
+
 	public String getMsgError() {
 		return msgError;
 	}
+
 	public void setMsgError(String msgError) {
 		this.msgError = msgError;
 	}
+
 	public AreaPointRepository getAreaPointRepository() {
 		return areaPointRepository;
 	}
-	public void setAreaPointRepository(AreaPointRepository areaPointRepository) {
-		this.areaPointRepository = areaPointRepository;
-	}
-	public GoogleMapUserComponentService getGoogleMapUserComponentService() {
-		return googleMapUserComponentService;
-	}
-	public void setGoogleMapUserComponentService(
-			GoogleMapUserComponentService googleMapUserComponentService) {
-		this.googleMapUserComponentService = googleMapUserComponentService;
-	}
+
+	public void setAreaPointRepository(AreaPointRepository areaPointRepository) {this.areaPointRepository = areaPointRepository;}
 
 	public GoogleMapController getGoogleMapController() {
 		return googleMapController;
 	}
 
-	public void setGoogleMapController(GoogleMapController googleMapController) {
-		this.googleMapController = googleMapController;
-	}
-	
+	public void setGoogleMapController(GoogleMapController googleMapController) { this.googleMapController = googleMapController;}
 }

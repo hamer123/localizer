@@ -1,5 +1,6 @@
 package com.pw.localizer.overlay;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,14 @@ import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.model.enums.Providers;
+import org.primefaces.push.annotation.Singleton;
 
-public class CircleBuilder {
+import javax.annotation.PostConstruct;
+import javax.ejb.Startup;
+
+@Singleton
+@Startup
+public class CircleBuilder implements Serializable{
 	private static CircleBuilder circleBuilder;
 	private String GPS_CIRCLE_COLOR;
 	private String NETWORK_NASZ_CIRCLE_COLOR;
@@ -25,20 +32,13 @@ public class CircleBuilder {
 	private double CIRCLE_STROKE_OPACITY;
 	private double CIRCLE_FILL_OPACITY;
 
-	public static CircleBuilder getInstance(){
-		if(circleBuilder == null){
-			synchronized (CircleBuilder.class){
-				if(circleBuilder == null)
-					circleBuilder = new CircleBuilder();
-			}
-		}
-		return circleBuilder;
-	}
-
-	private CircleBuilder(){
+	@PostConstruct
+	private void init(){
 		PropertiesReader propertiesReader = new PropertiesReader("localizer");
 		findProperties(propertiesReader);
 	}
+
+	private CircleBuilder(){}
 
 	public List<Circle> createCircle(List<Location>locationList){
 		List<Circle>circleList = new ArrayList<Circle>();

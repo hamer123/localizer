@@ -109,7 +109,7 @@ public class AreaEventWorker {
 
 	private boolean shouldCheckArea(Area area){
 		return restSessionManager.isUserOnline(area.getTarget().getLogin()) &&
-			   area.isAktywny();
+			   area.isActive();
 	}
 	
 	private boolean shouldChangeMessageMail(Area area){

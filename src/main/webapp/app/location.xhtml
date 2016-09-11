@@ -26,22 +26,24 @@
       </h:form>
    
       <p:outputPanel id="gmap_follow" >
-        <p:gmap id="gmap" center="#{location.googleMapController.center}" zoom="#{location.googleMapController.zoom}" 
-                type="#{location.googleMapController.googleMapType}" streetView="#{location.googleMapController.streetVisible}"
-                model="#{location.googleMapController.googleMapModel}" 
+        <p:gmap id="gmap" center="#{userGoogleMap.center}" zoom="#{userGoogleMap.zoom}"
+                type="#{userGoogleMap.googleMapType}" streetView="#{userGoogleMap.streetVisible}"
+                model="#{userGoogleMap.googleMapModelOutput}"
                 styleClass="#{location.googleMapStyle}">
-          <p:ajax event="stateChange" listener="#{location.googleMapController.onGoogleMapStateChange}"/>
-          <p:ajax event="overlaySelect" listener="#{location.googleMapController.onOverlaySelect}" update="growl"/>
+          <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
+          <p:ajax event="overlaySelect" listener="#{userGoogleMap.onOverlaySelect}" update="growl"/>
+          <!--
           <p:gmapInfoWindow rendered="#{location.googleMapController.lastSelectedOverlay.class.name eq 'org.primefaces.model.map.Marker'}">
             <p:outputPanel style="text-align: center; display: block; margin: auto">
               <h:panelGrid columns="1">
-				<o:graphicImage value="#{avatarService.content(location.locationFromLastSelectedOverlay().user.avatar.uuid)}" width="120" height="150"/>
+				<o:graphicImage value="#{avatarApplicationService.content(location.locationFromLastSelectedOverlay().user.avatar.uuid)}" width="120" height="150"/>
                 <h:outputText value="#{location.locationFromLastSelectedOverlay().user.login}" />
                 <h:outputText value="#{location.locationFromLastSelectedOverlay().date}" />
                 <h:outputText value="#{location.locationFromLastSelectedOverlay().providerType}" />
               </h:panelGrid>
             </p:outputPanel>
           </p:gmapInfoWindow>
+          -->
         </p:gmap>
       </p:outputPanel>
       <p:panel id="mainPanel" header="Panel sledzenia uzytkownikow i danych" toggleable="true" toggleSpeed="500" widgetVar="panel">
@@ -63,8 +65,6 @@
       <lokalizator:detailsDialog location="#{location.locationToDisplayDetails}"/>
       
       <ui:insert>
-        <ui:include src="/WEB-INF/views/location/location_googleMapDialog.xhtml" />
-        <ui:include src="/WEB-INF/views/location/location_userViewSettingDialog.xhtml" />
         <ui:include src="/WEB-INF/views/location/location_userData.xhtml" />
       </ui:insert>
       

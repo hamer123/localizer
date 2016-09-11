@@ -1,4 +1,4 @@
-package com.pw.localizer.controller;
+package com.pw.localizer.google.map;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,7 +27,7 @@ import com.pw.localizer.singleton.LocalizerProperties;
 @Dependent
 @Default
 @Named
-public class GoogleMapController implements Serializable{
+public class  GoogleMapController implements Serializable{
 	private static final long serialVersionUID = -2245271606214880961L;
 	protected GoogleMapModel googleMapModel;
 	protected int zoom;
@@ -120,7 +120,7 @@ public class GoogleMapController implements Serializable{
 			   + " Typ: "
 			   + area.getAreaFollowType()
 			   + " Aktywny: "
-			   + area.isAktywny();
+			   + area.isActive();
 	}
 	
 	String messageCircle(Location location){

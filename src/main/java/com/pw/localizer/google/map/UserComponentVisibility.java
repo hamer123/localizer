@@ -12,8 +12,8 @@ public class UserComponentVisibility {
     private boolean networkNaszCircle = true;
     private boolean networkObcyCircle = true;
 
-    private boolean aktywneAreny = true;
-    private boolean nieAktywneAreny;
+    private boolean activeAreny = true;
+    private boolean NotActiveAreny;
 
     private boolean GPSPolyline;
     private boolean networkNaszPolyline;
@@ -67,20 +67,20 @@ public class UserComponentVisibility {
         this.networkObcyCircle = networkObcyCircle;
     }
 
-    public boolean isAktywneAreny() {
-        return aktywneAreny;
+    public boolean isActiveAreny() {
+        return activeAreny;
     }
 
-    public void setAktywneAreny(boolean aktywneAreny) {
-        this.aktywneAreny = aktywneAreny;
+    public void setActiveAreny(boolean activeAreny) {
+        this.activeAreny = activeAreny;
     }
 
-    public boolean isNieAktywneAreny() {
-        return nieAktywneAreny;
+    public boolean isNotActiveAreny() {
+        return NotActiveAreny;
     }
 
-    public void setNieAktywneAreny(boolean nieAktywneAreny) {
-        this.nieAktywneAreny = nieAktywneAreny;
+    public void setNotActiveAreny(boolean notActiveAreny) {
+        this.NotActiveAreny = notActiveAreny;
     }
 
     public boolean isGPSPolyline() {

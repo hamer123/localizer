@@ -9,19 +9,19 @@
               <h:panelGrid columns="3" cellpadding="4" cellspacing="4">
                   <c:if test="#{!location.userViewSettingDialog.disableGps}">
                       <p:outputLabel value="Trasa sledzenia GPS"/>
-                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.gpsRoute.visible}"/>
+                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.gpsPolyline.visible}"/>
                       <p:colorPicker value="#{location.userViewSettingDialog.gpsRouteColor}" />
                   </c:if>
 
                   <c:if test="#{!location.userViewSettingDialog.disableNetworkObcy}">
                       <p:outputLabel value="Trasa sledzenia Network Obcy"/>
-                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkNaszRoute.visible}"/>
+                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkNaszPolyline.visible}"/>
                       <p:colorPicker value="#{location.userViewSettingDialog.networkNaszColor}"/>
                   </c:if>
 
                   <c:if test="#{!location.userViewSettingDialog.disableNetworkNasz}">
                       <p:outputLabel value="Trasa sledzenia Network Nasz"/>
-                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkObcyRoute.visible}"/>
+                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkObcyPolyline.visible}"/>
                       <p:colorPicker value="#{location.userViewSettingDialog.networkObcyColor}"/>
                   </c:if>
 

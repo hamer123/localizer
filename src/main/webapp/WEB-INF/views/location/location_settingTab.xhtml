@@ -11,9 +11,8 @@
             <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
               
               <p:outputLabel for="console" value="Typ mapy" />
-              <p:selectOneMenu id="console" value="#{location.googleMapController.googleMapType}" style="width:125px">
+              <p:selectOneMenu id="console" value="#{userGoogleMap.googleMapType}" style="width:125px">
                 <p:ajax update=":gmap" />
-                
                 <f:selectItem itemLabel="Hybrid"   itemValue="HYBRID" />
                 <f:selectItem itemLabel="Terrain"  itemValue="TERRAIN" />
                 <f:selectItem itemLabel="Satelite" itemValue="SATELLITE" />
@@ -21,16 +20,16 @@
               </p:selectOneMenu>
               
               <p:outputLabel for="check" value="Pokaz ulice" />
-              <p:selectBooleanCheckbox id="check" value="#{location.googleMapController.streetVisible}">
+              <p:selectBooleanCheckbox id="check" value="#{userGoogleMap.streetVisible}">
                 <p:ajax update=":gmap" />
               </p:selectBooleanCheckbox>
               
               <p:outputLabel for="area_event" value="Powiadomienia o sledzeniu" />
-              <p:selectBooleanCheckbox id="area_event" value="#{location.checkAreaEvent}"/>
+              <p:selectBooleanCheckbox id="area_event" value="#{location.showAreaEventMessage}"/>
               
-              <p:outputLabel value="Włącz tworzenie trasy"/>
-              <p:selectBooleanCheckbox value="#{location.createRoutes}">
-                <p:ajax event="change" listener="#{location.onChangeCreateRoutes()}" update=":#{p:component('gmap')}"/>
+              <p:outputLabel value="Włącz tworzenie trasy GPS"/>
+              <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createGPSPolyline}">
+                <!--<p:ajax event="change" listener="#{location.onChangeCreateRoutes()}" update=":#{p:component('gmap')}"/>-->
               </p:selectBooleanCheckbox>
              
             </h:panelGrid>
@@ -45,17 +44,17 @@
               <h:panelGrid columns="2">
               
                 <p:outputLabel value="Marker"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.markerGps}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.markerGps}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
                 <p:outputLabel value="Circle"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.circleGps}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.circleGps}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
 
                 <p:outputLabel value="Trasa"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.gpsRoute}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.gpsPolyline}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
@@ -65,17 +64,17 @@
               <h:panelGrid columns="2">
               
                 <p:outputLabel value="Marker"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.markerNetworkNasz}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.markerNetworkNasz}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
                 <p:outputLabel value="Circle"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.circleNetworkNasz}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.circleNetworkNasz}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
 
                 <p:outputLabel value="Trasa"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.networkNaszRoute}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.networkNaszPolyline}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
@@ -86,17 +85,17 @@
               <h:panelGrid columns="2">
               
                 <p:outputLabel value="Marker"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.markerNetworkObcy}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.markerNetworkObcy}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
                 <p:outputLabel value="Circle"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.circleNetworkObcy}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.circleNetworkObcy}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
                 <p:outputLabel value="Trasa"/>
-                <p:selectBooleanCheckbox value="#{location.googleMapVisible.networkObcyRoute}">
+                <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.networkObcyPolyline}">
                   <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
                 </p:selectBooleanCheckbox>
                 
@@ -107,12 +106,12 @@
            <h:panelGrid columns="2">
            
              <p:outputLabel value="Aktywne areny"/>
-             <p:selectBooleanCheckbox value="#{location.googleMapVisible.activePolygon}">
+             <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.activePolygon}">
                <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
              </p:selectBooleanCheckbox>
              
              <p:outputLabel value="Nie aktywne areny"/> 
-             <p:selectBooleanCheckbox value="#{location.googleMapVisible.notActivePolygon}">
+             <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.notActivePolygon}">
                <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
              </p:selectBooleanCheckbox>
              

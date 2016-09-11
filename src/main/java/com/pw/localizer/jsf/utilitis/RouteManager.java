@@ -21,7 +21,7 @@ public class RouteManager {
 	 * */
 	public void add(String login, Location location){
 		if(location != null) {
-			Polyline polyline = PolylineBuilder.createNoData(location);
+			Polyline polyline = new PolylineBuilder().create(location);
 			Route route = Route.onlyPolyline(polyline);
 			routes.put(login, route);
 		} else {

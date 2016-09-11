@@ -44,9 +44,9 @@ import com.pw.localizer.model.enums.AreaFollows;
 		      @NamedQuery(name="Area.findWithEagerFetchPointsAndTargetByProviderId",
 		                  query="SELECT a FROM Area a JOIN FETCH a.target WHERE a.provider.id =:id"),
 		      @NamedQuery(name="Area.findByAktywny",
-		    		      query="SELECT a FROM Area a WHERE a.aktywny =:aktywny"),
+		    		      query="SELECT a FROM Area a WHERE a.active =:aktywny"),
 		      @NamedQuery(name="Area.findIdByProviderIdAndAktywny", 
-		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.aktywny =:active")
+		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.active =:active")
 })
 public class Area {
 	public static final String AREA_updateAktywnyById = "UPDATE Area a SET a.aktywny =:aktywny WHERE a.id =:id";
@@ -79,7 +79,7 @@ public class Area {
 	private User provider;
 	
 	@Column(name = "active")
-	private boolean aktywny;
+	private boolean active;
 	
 	@Column(name = "color")
 	private String color;
@@ -155,12 +155,12 @@ public class Area {
 		this.areaEventGPSs = areaEventGPSs;
 	}
 
-	public boolean isAktywny() {
-		return aktywny;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setAktywny(boolean aktywny) {
-		this.aktywny = aktywny;
+	public void setActive(boolean aktywny) {
+		this.active = aktywny;
 	}
 
 	public AreaFollows getPolygonFollowType() {

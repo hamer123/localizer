@@ -8,7 +8,7 @@
       xmlns:composite="http://java.sun.com/jsf/composite">
       
       <composite:interface>
-        <composite:attribute name="googleMapController" required="true" type="com.pw.localizer.controller.GoogleMapController"/>
+        <composite:attribute name="googleMapController" required="true" type="com.pw.localizer.google.map.GoogleMapController"/>
         <composite:attribute name="style" required="true" type="java.lang.String"/>
         <composite:attribute name="onChangeState" method-signature="java.lang.Void action(org.primefaces.event.map.StateChangeEvent)"/>
         <composite:attribute name="onOverlaySelect" method-signature="java.lang.Void action(org.primefaces.event.map.OverlaySelectEvent)"/>

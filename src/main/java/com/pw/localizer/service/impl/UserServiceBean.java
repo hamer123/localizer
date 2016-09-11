@@ -2,6 +2,7 @@ package com.pw.localizer.service.impl;
 
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.User;
+import com.pw.localizer.repository.AreaRepository;
 import com.pw.localizer.repository.UserRepository;
 import com.pw.localizer.service.UserService;
 
@@ -17,6 +18,8 @@ import java.util.List;
 public class UserServiceBean implements UserService{
     @Inject
     private UserRepository userRepository;
+    @Inject
+    private AreaRepository areaRepository;
 
     @Override
     public User getUserFetchAreas(String login) {
@@ -25,5 +28,13 @@ public class UserServiceBean implements UserService{
         List<Area> areas = user.getAreas();
         for(Area area : areas) area.getPoints().size();
         return user;
+    }
+
+    @Override
+    public List<Area> getUserAreasFetchAreaPoints(long userId) {
+        List<Area>areas = areaRepository.findByProviderId(userId);
+        for(Area area : areas)
+            area.getPoints().size();
+        return areas;
     }
 }

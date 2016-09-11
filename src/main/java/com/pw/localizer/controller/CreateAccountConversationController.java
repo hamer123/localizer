@@ -2,7 +2,6 @@ package com.pw.localizer.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +15,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import com.pw.localizer.google.map.GoogleMapController;
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.model.enums.ImageTypes;
 import com.pw.localizer.model.enums.Roles;
 import com.pw.localizer.service.ImageService;
-import com.pw.localizer.service.impl.AvatarService;
-import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.entity.User;

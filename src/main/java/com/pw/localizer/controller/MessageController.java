@@ -12,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.google.map.GoogleMapController;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.map.Polygon;
 
@@ -47,10 +48,16 @@ public class MessageController implements Serializable{
 	private AreaEventNetworkRepository areaEventNetworkRepository;
 	@Inject
 	private AreaPointRepository areaPointRepository;
-	@Inject @UserGoogleMap
+	@Inject
 	private GoogleMapController dialogMap;
 	@Inject
 	private AreaMessageMailRepository areaMessageMailRepository;
+
+	@Inject
+	private MarkerBuilder markerBuilder;
+	@Inject
+	private CircleBuilder circleBuilder;
+
 	
 	private Area selectedArea;
 	private List<Area> areaList;
@@ -75,8 +82,8 @@ public class MessageController implements Serializable{
 	public void onDisplayLocationInDialog(AreaEvent areaEvent){
 		dialogMap.clear();
 		Location location = areaEvent.getLocation();
-		dialogMap.addOverlay(CircleBuilder.getInstance().createCircle(location));
-		dialogMap.addOverlay(MarkerBuilder.getInstance().createMarker(location));
+		dialogMap.addOverlay(circleBuilder.createCircle(location));
+		dialogMap.addOverlay(markerBuilder.createMarker(location));
 		dialogMap.setCenter(GoogleMapModel.center((location)));
 	}
 	

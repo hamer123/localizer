@@ -10,6 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.google.map.GoogleMapController;
 import org.jboss.logging.Logger;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
@@ -24,7 +25,6 @@ import com.pw.localizer.repository.LocationGPSRepository;
 import com.pw.localizer.repository.LocationNetworkRepository;
 import com.pw.localizer.repository.UserRepository;
 import com.pw.localizer.serivce.qualifier.UserGoogleMap;
-import com.pw.localizer.service.GoogleMapUserComponentService;
 import com.pw.localizer.service.RouteService;
 
 @Named("locationHistory")
@@ -36,10 +36,8 @@ public class LocationHistoryController implements Serializable{
 	private LocationGPSRepository locationGPSRepository;
 	@Inject
 	private UserRepository userRepository;
-	@Inject @UserGoogleMap
-	private GoogleMapController googleMapController;
 	@Inject
-	private GoogleMapUserComponentService googleMapUserComponentService;
+	private GoogleMapController googleMapController;
 	@Inject
 	private RouteService routeService;
 	@Inject
@@ -66,7 +64,9 @@ public class LocationHistoryController implements Serializable{
 				notEnoughLocation();
 				return;
 			}
-			route = googleMapUserComponentService.route(locations);
+
+			//TODO
+			route = null;
 			googleMapController.replace(route.overlays());
 		} catch(Exception e){
 			JsfMessageBuilder.errorMessage("Nie mozna utworzyc sciezki");
@@ -228,15 +228,6 @@ public class LocationHistoryController implements Serializable{
 
 	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
-	}
-
-	public GoogleMapUserComponentService getGoogleMapUserComponentService() {
-		return googleMapUserComponentService;
-	}
-
-	public void setGoogleMapUserComponentService(
-			GoogleMapUserComponentService googleMapUserComponentService) {
-		this.googleMapUserComponentService = googleMapUserComponentService;
 	}
 
 	public RouteService getRouteService() {

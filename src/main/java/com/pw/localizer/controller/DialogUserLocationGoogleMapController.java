@@ -3,6 +3,7 @@ package com.pw.localizer.controller;
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 
+import com.pw.localizer.google.map.GoogleMapController;
 import org.primefaces.model.map.Overlay;
 
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
@@ -17,7 +18,7 @@ import com.pw.localizer.serivce.qualifier.DialogUserLocationGoogleMap;
 @Named
 @Dependent
 @DialogUserLocationGoogleMap
-public class DialogUserLocationGoogleMapController extends GoogleMapController{
+public class DialogUserLocationGoogleMapController extends GoogleMapController {
 
 	public void onShowGPSLastLocation(){
 		Overlay overlay = findGPSLastLocaitionMarker();

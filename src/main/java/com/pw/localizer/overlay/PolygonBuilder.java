@@ -1,4 +1,5 @@
 package com.pw.localizer.overlay;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,8 +11,13 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polygon;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaPoint;
+import org.primefaces.push.annotation.Singleton;
 
-public class PolygonBuilder {
+import javax.ejb.Startup;
+
+@Startup
+@Singleton
+public class PolygonBuilder implements Serializable {
 	private static PolygonBuilder polygonBuilder;
 	private String POLYGON_STROKE_COLOR;
 	private String POLYGON_FILL_COLOR;

@@ -14,6 +14,7 @@ public class OverlayUUIDRawBuilderArea implements OverlayUUIDBuilder{
 
     public OverlayUUIDRawBuilderArea(Area area){
         this.area = area;
+        buildUUIDRaw();
     }
 
     private void buildUUIDRaw(){

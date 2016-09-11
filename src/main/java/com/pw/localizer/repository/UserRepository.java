@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.ejb.Local;
 
+import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
 @Local
 public interface UserRepository extends JpaRepository<User, Long>, Serializable {
@@ -17,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long>, Serializable 
 //    List<User> findByIds(Set<Long>id);
     User findByEmail(String email);
 	boolean isLoginExist(String login);
+
+	Location findLastGpsLocationByUserId(long id);
+	Location findLastNetworkNaszLocationByUserId(long id);
+	Location findLastNetworkObcyLocationByUserId(long id);
 }

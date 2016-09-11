@@ -6,30 +6,30 @@ public class GoogleMapComponentVisible {
 	
 	static
 	{
-		NO_POLYGON.setActivePolygon(false);
-		NO_POLYGON.setNotActivePolygon(false);
+		NO_POLYGON.setActivePolygon(true);
+		NO_POLYGON.setNotActivePolygon(true);
 		NO_POLYGON.setCircleGps(true);
 		NO_POLYGON.setCircleNetworkNasz(true);
 		NO_POLYGON.setCircleNetworkObcy(true);
 		NO_POLYGON.setMarkerGps(true);
 		NO_POLYGON.setMarkerNetworkNasz(true);
 		NO_POLYGON.setMarkerNetworkObcy(true);
-		NO_POLYGON.setGpsRoute(true);
-		NO_POLYGON.setNetworkNaszRoute(true);
-		NO_POLYGON.setNetworkObcyRoute(true);
+		NO_POLYGON.setGpsPolyline(true);
+		NO_POLYGON.setNetworkNaszPolyline(true);
+		NO_POLYGON.setNetworkObcyPolyline(true);
 	}
 	
 	private boolean activePolygon;
 	private boolean notActivePolygon;
-	private boolean markerGps;
-	private boolean markerNetworkNasz;
-	private boolean markerNetworkObcy;
-	private boolean circleGps;
-	private boolean circleNetworkNasz;
-	private boolean circleNetworkObcy;
-	private boolean gpsRoute;
-	private boolean networkNaszRoute;
-	private boolean networkObcyRoute;
+	private boolean markerGps = true;
+	private boolean markerNetworkNasz = true;
+	private boolean markerNetworkObcy = true;
+	private boolean circleGps = true;
+	private boolean circleNetworkNasz = true;
+	private boolean circleNetworkObcy = true;
+	private boolean gpsPolyline;
+	private boolean networkNaszPolyline;
+	private boolean networkObcyPolyline;
 	
 	public boolean isNotActivePolygon() {
 		return notActivePolygon;
@@ -79,23 +79,23 @@ public class GoogleMapComponentVisible {
 	public void setCircleNetworkObcy(boolean circleNetworkObcy) {
 		this.circleNetworkObcy = circleNetworkObcy;
 	}
-	public boolean isGpsRoute() {
-		return gpsRoute;
+	public boolean isGpsPolyline() {
+		return gpsPolyline;
 	}
-	public void setGpsRoute(boolean gpsRoute) {
-		this.gpsRoute = gpsRoute;
+	public void setGpsPolyline(boolean gpsPolyline) {
+		this.gpsPolyline = gpsPolyline;
 	}
-	public boolean isNetworkNaszRoute() {
-		return networkNaszRoute;
+	public boolean isNetworkNaszPolyline() {
+		return networkNaszPolyline;
 	}
-	public void setNetworkNaszRoute(boolean networkNaszRoute) {
-		this.networkNaszRoute = networkNaszRoute;
+	public void setNetworkNaszPolyline(boolean networkNaszPolyline) {
+		this.networkNaszPolyline = networkNaszPolyline;
 	}
-	public boolean isNetworkObcyRoute() {
-		return networkObcyRoute;
+	public boolean isNetworkObcyPolyline() {
+		return networkObcyPolyline;
 	}
-	public void setNetworkObcyRoute(boolean networkObcyRoute) {
-		this.networkObcyRoute = networkObcyRoute;
+	public void setNetworkObcyPolyline(boolean networkObcyPolyline) {
+		this.networkObcyPolyline = networkObcyPolyline;
 	}
 
 }

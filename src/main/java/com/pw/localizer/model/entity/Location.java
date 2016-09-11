@@ -100,7 +100,6 @@ public abstract class Location implements Serializable{
 		this.date = date;
 	}
 
-
 	public Address getAddress() {
 		return address;
 	}
@@ -131,14 +130,6 @@ public abstract class Location implements Serializable{
 
 	public void setEventCheck(boolean eventCheck) {
 		this.eventCheck = eventCheck;
-	}
-
-	@Override
-	public String toString() {
-		return "Location [id=" + id + ", latitude=" + latitude + ", longitude="
-				+ longitude + ", user=" + user + ", date=" + date
-				+ ", providerType=" + providerType + ", address=" + address
-				+ "]";
 	}
 
 }

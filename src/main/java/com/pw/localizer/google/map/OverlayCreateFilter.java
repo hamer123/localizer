@@ -8,6 +8,8 @@ public class OverlayCreateFilter {
     private boolean createGPSPolyline;
     private boolean createNetworkNaszPolyline;
     private boolean createNetworkObcyPolyline;
+    private boolean createActivePolygon;
+    private boolean createNotActivePolygon;
 
     public boolean isCreateGPSPolyline() {
         return createGPSPolyline;
@@ -31,5 +33,21 @@ public class OverlayCreateFilter {
 
     public void setCreateNetworkObcyPolyline(boolean createNetworkObcyPolyline) {
         this.createNetworkObcyPolyline = createNetworkObcyPolyline;
+    }
+
+    public boolean isCreateActivePolygon() {
+        return createActivePolygon;
+    }
+
+    public void setCreateActivePolygon(boolean createActivePolygon) {
+        this.createActivePolygon = createActivePolygon;
+    }
+
+    public boolean isCreateNotActivePolygon() {
+        return createNotActivePolygon;
+    }
+
+    public void setCreateNotActivePolygon(boolean createNotActivePolygon) {
+        this.createNotActivePolygon = createNotActivePolygon;
     }
 }

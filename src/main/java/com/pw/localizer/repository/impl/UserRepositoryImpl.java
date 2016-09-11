@@ -9,8 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.pw.localizer.model.entity.Area;
-import com.pw.localizer.model.entity.User;
+import com.pw.localizer.model.entity.*;
 import com.pw.localizer.repository.UserRepository;
 
 @Stateless
@@ -94,5 +93,29 @@ public class UserRepositoryImpl implements UserRepository{
 				.setParameter("login", login)
 				.getResultList();
 		return result.isEmpty() ? false : true;
+	}
+
+	@Override
+	public Location findLastGpsLocationByUserId(long id) {
+		List<LocationGPS>result = em.createNamedQuery("USER.findLastGpsLocationByUserId", LocationGPS.class)
+				.setParameter("id",id)
+				.getResultList();
+		return result.isEmpty() ? null : result.get(0);
+	}
+
+	@Override
+	public Location findLastNetworkNaszLocationByUserId(long id) {
+		List<LocationNetwork>result = em.createNamedQuery("USER.findLastNetworkNaszLocationByUserId", LocationNetwork.class)
+				.setParameter("id",id)
+				.getResultList();
+		return result.isEmpty() ? null : result.get(0);
+	}
+
+	@Override
+	public Location findLastNetworkObcyLocationByUserId(long id) {
+		List<LocationNetwork>result = em.createNamedQuery("USER.findLastNetworkObcyLocationByUserId", LocationNetwork.class)
+				.setParameter("id",id)
+				.getResultList();
+		return result.isEmpty() ? null : result.get(0);
 	}
 }

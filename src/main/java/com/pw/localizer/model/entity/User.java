@@ -14,26 +14,33 @@ import com.pw.localizer.model.enums.Roles;
 @Table(name ="user")
 @NamedQueries(
 		value = {
-		  @NamedQuery(name ="USER.findAll", 
-				      query="SELECT u FROM User u"),
-		  @NamedQuery(name ="USER.findByLogins", 
-		              query="SELECT u FROM User u WHERE u.login IN (:logins)"),
-		  @NamedQuery(name ="USER.deleteByID", 
-		              query="DELETE FROM User u WHERE u.id = :id"),
-		  @NamedQuery(name ="USER.findByLogin", 
-		              query="SELECT u FROM User u WHERE u.login =:login"),
-		  @NamedQuery(name ="USER.findByLoginAndPassword",
-		              query="SELECT u FROM User u WHERE u.login = :login AND u.password =:password"),
-		  @NamedQuery(name ="USER.findLoginByLoginLike",
-		              query="SELECT u.login FROM User u WHERE u.login LIKE :login"),
-		  @NamedQuery(name ="USER.findUserWithPolygonsByLogin", 
-		              query="SELECT u FROM User u INNER JOIN FETCH u.areas WHERE u.login =:login"),
-		  @NamedQuery(name ="USER.findUsersByIds",
-		              query="SELECT u FROM User u WHERE u.id IN (:ids)"),
-		  @NamedQuery(name ="USER.findUserFetchRolesByLoginAndPassword",
-		              query="SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.login =:login AND u.password =:password"),
-		  @NamedQuery(name ="USER.findByEmail",
-		              query="SELECT u FROM User u WHERE u.email =:email")
+				@NamedQuery(name ="USER.findAll",
+						query="SELECT u FROM User u"),
+				@NamedQuery(name ="USER.findByLogins",
+						query="SELECT u FROM User u WHERE u.login IN (:logins)"),
+				@NamedQuery(name="USER.findLastGpsLocationByUserId",
+						query="SELECT u.lastLocationGPS FROM User u WHERE u.id =:id"),
+				@NamedQuery(name="USER.findLastNetworkNaszLocationByUserId",
+						query="SELECT u.lastLocationNetworkNaszaUsluga FROM User u WHERE u.id =:id"),
+				@NamedQuery(name="USER.findLastNetworkObcyLocationByUserId",
+						query="SELECT u.lastLocationNetworObcaUsluga FROM User u WHERE u.id =:id"),
+				@NamedQuery(name ="USER.findByLogin",
+						query="SELECT u FROM User u WHERE u.login =:login"),
+				@NamedQuery(name ="USER.findByLoginAndPassword",
+						query="SELECT u FROM User u WHERE u.login = :login AND u.password =:password"),
+				@NamedQuery(name ="USER.findLoginByLoginLike",
+						query="SELECT u.login FROM User u WHERE u.login LIKE :login"),
+				@NamedQuery(name ="USER.findUserWithPolygonsByLogin",
+						query="SELECT u FROM User u INNER JOIN FETCH u.areas WHERE u.login =:login"),
+				@NamedQuery(name ="USER.findUsersByIds",
+						query="SELECT u FROM User u WHERE u.id IN (:ids)"),
+				@NamedQuery(name ="USER.findUserFetchRolesByLoginAndPassword",
+						query="SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.login =:login AND u.password =:password"),
+				@NamedQuery(name ="USER.findByEmail",
+						query="SELECT u FROM User u WHERE u.email =:email"),
+
+				@NamedQuery(name ="USER.deleteByID",
+						query="DELETE FROM User u WHERE u.id = :id")
 		})
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

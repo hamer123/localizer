@@ -11,6 +11,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.google.map.GoogleMapController;
 import org.jboss.logging.Logger;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.model.map.LatLng;
@@ -42,7 +43,7 @@ public class AreaController implements Serializable{
 	private AreaRepository areaRepository;
 	@Inject
 	private AreaPointRepository polygonPointRepository;
-	@Inject @UserGoogleMap
+	@Inject
 	private GoogleMapController googleMapController;
 	@Inject 
 	private Logger logger;
@@ -94,13 +95,13 @@ public class AreaController implements Serializable{
 	
 	public void onChangeAreaActiveStatus(Area area){
 		try{	
-			if(area.isAktywny()){
+			if(area.isActive()){
 				areaRepository.updateAktywnyById(false, area.getId());
-				area.setAktywny(false);
+				area.setActive(false);
 				JsfMessageBuilder.infoMessage("Udalo sie dezaktywowac obszar sledzenia");
 			} else {
 				areaRepository.updateAktywnyById(true, area.getId());
-				area.setAktywny(true);
+				area.setActive(true);
 				JsfMessageBuilder.infoMessage("Udalo sie aktywowac obszar sledzenia");
 			}
 		} catch(Exception e) {
@@ -252,7 +253,7 @@ public class AreaController implements Serializable{
 	}
 
 	public String getAreaActiveButtonValue(Area area){
-		if(area.isAktywny())
+		if(area.isActive())
 			return "Dezaktywuj";
 		
 		return "Aktywuj";
