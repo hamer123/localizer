@@ -20,7 +20,6 @@ import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.repository.AreaEventGPSRepository;
 import com.pw.localizer.repository.AreaEventNetworkRepository;
 import com.pw.localizer.repository.AreaPointRepository;
-import com.pw.localizer.serivce.qualifier.UserGoogleMap;
 
 @Named
 @ViewScoped

@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
 import com.pw.localizer.google.map.GoogleMapController;
 import org.jboss.logging.Logger;
@@ -30,9 +31,8 @@ import com.pw.localizer.model.enums.AreaMailMessageModes;
 import com.pw.localizer.repository.AreaRepository;
 import com.pw.localizer.repository.AreaPointRepository;
 import com.pw.localizer.repository.UserRepository;
-import com.pw.localizer.serivce.qualifier.UserGoogleMap;
 
-@Named(value="polyglon")
+@Named(value= "area")
 @ViewScoped
 public class AreaController implements Serializable{
 	@Inject
@@ -60,8 +60,8 @@ public class AreaController implements Serializable{
 	private void postConstruct(){
 		clearArea();
 		areaList = areaRepository.findByProviderId( localizerSession.getUser().getId() );
-		googleMapController.addOverlay(polygon);
 		this.polygon = PolygonBuilder.getInstance().empty();
+		googleMapController.addOverlay(polygon);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +92,8 @@ public class AreaController implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
 	public void onChangeAreaActiveStatus(Area area){
 		try{	
 			if(area.isActive()){

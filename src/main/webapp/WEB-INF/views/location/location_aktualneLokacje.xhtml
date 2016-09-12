@@ -34,12 +34,10 @@
                            <p:commandButton icon="ui-icon-search" title="Pokaz" actionListener="#{location.onShowUserLastLocations(user)}" 
                                             update=":#{p:component('daneUser')}" value="Pokaz"/>
                        </p:column>
-                        <!--
-                       <p:column headerText="Edytuj ustawienia widoku" style="text-align:center !important;">
-                         <p:commandButton value="Edytuj" icon="fa fa-edit" title="Edytuj ustawienia wygladu dla uzytkownika" oncomplete="PF('userViewSettingDialog').show()" 
-                                          actionListener="#{location.onEditUserSetting(user)}" update=":#{p:component('userViewSetting')}"/>
+                       <p:column headerText="Widoczność" style="text-align:center !important;">
+                         <p:commandButton value="Edytuj" icon="fa fa-edit" title="Edytuj ustawienia widoku dla uzytkownika" oncomplete="PF('userViewSettingDialog').show()"
+                                          actionListener="#{location.selectUserComponentVisibility(user)}" update=":#{p:component('userViewSetting')}"/>
                        </p:column>
-                       -->
                        <p:column headerText="Usuń" style="text-align:center !important;">
                           <p:commandButton  icon="fa fa-fw fa-remove" actionListener="#{location.onRemoveUserFromFollow(user)}" title="usun uzytkownika z listy sledzenia" value="Usuń"
                                             update=":#{p:component('gmap')} :#{p:component('daneUser')} :#{p:component('followUsersTable')} :#{p:component('growl')}"/>

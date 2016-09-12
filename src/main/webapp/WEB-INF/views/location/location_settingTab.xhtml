@@ -107,12 +107,12 @@
            
              <p:outputLabel value="Aktywne areny"/>
              <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.activePolygon}">
-               <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
+               <p:ajax event="change" listener="#{userGoogleMap.render('POLYGON')}" update=":#{p:component('gmap')}"/>
              </p:selectBooleanCheckbox>
              
              <p:outputLabel value="Nie aktywne areny"/> 
              <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.notActivePolygon}">
-               <p:ajax event="change" listener="#{location.onChangeSetting}" update=":#{p:component('gmap')}"/>
+               <p:ajax event="change" listener="#{userGoogleMap.render('POLYGON')}" update=":#{p:component('gmap')}"/>
              </p:selectBooleanCheckbox>
              
            </h:panelGrid>

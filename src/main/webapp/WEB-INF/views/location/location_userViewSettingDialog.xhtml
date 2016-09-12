@@ -2,34 +2,115 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-      
-      <p:dialog id="userViewSetting" widgetVar="userViewSettingDialog" header="Ustawienia dla uzytkownika">
-        <h:form>
-            <p:panel header="Ustawienia widoku">
-              <h:panelGrid columns="3" cellpadding="4" cellspacing="4">
-                  <c:if test="#{!location.userViewSettingDialog.disableGps}">
-                      <p:outputLabel value="Trasa sledzenia GPS"/>
-                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.gpsPolyline.visible}"/>
-                      <p:colorPicker value="#{location.userViewSettingDialog.gpsRouteColor}" />
-                  </c:if>
 
-                  <c:if test="#{!location.userViewSettingDialog.disableNetworkObcy}">
-                      <p:outputLabel value="Trasa sledzenia Network Obcy"/>
-                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkNaszPolyline.visible}"/>
-                      <p:colorPicker value="#{location.userViewSettingDialog.networkNaszColor}"/>
-                  </c:if>
+<p:dialog id="userViewSetting" widgetVar="userViewSettingDialog" header="Ustawienia widocznosci">
+    <h:form>
+        <p:fieldset legend="Markers" toggleable="true" toggleSpeed="500">
+            <h:panelGrid columns="2" style="margin: 0 auto;">
 
-                  <c:if test="#{!location.userViewSettingDialog.disableNetworkNasz}">
-                      <p:outputLabel value="Trasa sledzenia Network Nasz"/>
-                      <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkObcyPolyline.visible}"/>
-                      <p:colorPicker value="#{location.userViewSettingDialog.networkObcyColor}"/>
-                  </c:if>
+                <p:outputLabel value="Gps"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.GPSMarker}">
+                    <p:ajax listener="#{userGoogleMap.render('MARKER')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
 
-                <p:commandButton value="Zapisz" update=":#{p:component('gmap')}" onclick="PF('userViewSettingDialog').hide()" 
-                                 actionListener="#{location.userViewSettingDialog.onSaveChangeSetting()}"/>
-              </h:panelGrid>
-            </p:panel>
-        </h:form> 
-      </p:dialog> 
+                <p:outputLabel value="Network (Nasz)"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.networkNaszMarker}">
+                    <p:ajax listener="#{userGoogleMap.render('MARKER')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+                <p:outputLabel value="Network (Obcy)"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.networkObcyMarker}">
+                    <p:ajax listener="#{userGoogleMap.render('MARKER')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+            </h:panelGrid>
+        </p:fieldset>
+        <p:fieldset legend="Circles" toggleable="true" toggleSpeed="500">
+            <h:panelGrid columns="2" style="margin: 0 auto;">
+
+                <p:outputLabel value="Gps"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.GPSCircle}">
+                    <p:ajax listener="#{userGoogleMap.render('CIRCLE')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+                <p:outputLabel value="Network (Nasz)"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.networkNaszCircle}">
+                    <p:ajax listener="#{userGoogleMap.render('CIRCLE')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+                <p:outputLabel value="Network (Obcy)"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.networkObcyCircle}">
+                    <p:ajax listener="#{userGoogleMap.render('CIRCLE')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+            </h:panelGrid>
+        </p:fieldset>
+        <p:fieldset legend="Polygons" toggleable="true" toggleSpeed="500">
+            <h:panelGrid columns="2" style="margin: 0 auto;">
+
+                <p:outputLabel value="Aktywne"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.activeAren}">
+                    <p:ajax listener="#{userGoogleMap.render('POLYGON')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+                <p:outputLabel value="Nie aktywne"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.notActiveAren}">
+                    <p:ajax listener="#{userGoogleMap.render('POLYGON')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+            </h:panelGrid>
+        </p:fieldset>
+        <p:fieldset legend="Polylines" toggleable="true" toggleSpeed="500">
+            <h:panelGrid columns="2" style="margin: 0 auto;">
+
+                <p:outputLabel value="Gps"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.GPSPolyline}">
+                    <p:ajax listener="#{userGoogleMap.render('POLYLINE')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+                <p:outputLabel value="Network (Nasz)"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.networkNaszPolyline}">
+                    <p:ajax listener="#{userGoogleMap.render('POLYLINE')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+
+                <p:outputLabel value="Network (Obcy)"/>
+                <p:selectBooleanCheckbox value="#{location.userComponentVisibility.networkObcyPolyline}">
+                    <p:ajax listener="#{userGoogleMap.render('POLYLINE')}" update=":#{p:component('gmap')} @form"/>
+                </p:selectBooleanCheckbox>
+
+            </h:panelGrid>
+        </p:fieldset>
+    </h:form>
+</p:dialog>
 
 </html>
+
+
+
+
+
+        <!--
+                      <h:panelGrid columns="3" cellpadding="4" cellspacing="4">
+                          <c:if test="#{!location.userViewSettingDialog.disableGps}">
+                              <p:outputLabel value="Trasa sledzenia GPS"/>
+                              <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.gpsPolyline.visible}"/>
+                              <p:colorPicker value="#{location.userViewSettingDialog.gpsRouteColor}" />
+                          </c:if>
+
+                          <c:if test="#{!location.userViewSettingDialog.disableNetworkObcy}">
+                              <p:outputLabel value="Trasa sledzenia Network Obcy"/>
+                              <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkNaszPolyline.visible}"/>
+                              <p:colorPicker value="#{location.userViewSettingDialog.networkNaszColor}"/>
+                          </c:if>
+
+                          <c:if test="#{!location.userViewSettingDialog.disableNetworkNasz}">
+                              <p:outputLabel value="Trasa sledzenia Network Nasz"/>
+                              <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkObcyPolyline.visible}"/>
+                              <p:colorPicker value="#{location.userViewSettingDialog.networkObcyColor}"/>
+                          </c:if>
+
+                        <p:commandButton value="Zapisz" update=":#{p:component('gmap')}" onclick="PF('userViewSettingDialog').hide()"
+                                         actionListener="#{location.userViewSettingDialog.onSaveChangeSetting()}"/>
+                      </h:panelGrid>
+        -->

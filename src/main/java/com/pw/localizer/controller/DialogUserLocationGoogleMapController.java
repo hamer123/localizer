@@ -13,11 +13,11 @@ import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.model.enums.Providers;
-import com.pw.localizer.serivce.qualifier.DialogUserLocationGoogleMap;
+import com.pw.localizer.serivce.qualifier.DialogGMap;
 
 @Named
 @Dependent
-@DialogUserLocationGoogleMap
+@DialogGMap
 public class DialogUserLocationGoogleMapController extends GoogleMapController {
 
 	public void onShowGPSLastLocation(){

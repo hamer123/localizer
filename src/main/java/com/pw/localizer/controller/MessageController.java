@@ -33,7 +33,6 @@ import com.pw.localizer.repository.AreaEventNetworkRepository;
 import com.pw.localizer.repository.AreaMessageMailRepository;
 import com.pw.localizer.repository.AreaRepository;
 import com.pw.localizer.repository.AreaPointRepository;
-import com.pw.localizer.serivce.qualifier.UserGoogleMap;
 
 @ViewScoped
 @Named("messageController")

@@ -2,12 +2,9 @@ package com.pw.localizer.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -15,25 +12,20 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.google.map.UserComponentVisibility;
 import com.pw.localizer.google.map.UserGoogleMapController;
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.service.UserService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.map.Marker;
-import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
-import com.pw.localizer.jsf.utilitis.RouteManager;
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator.OverlayIdentyfikatorBuilder;
 import com.pw.localizer.model.google.map.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.map.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.google.component.GoogleLocation;
-import com.pw.localizer.model.google.component.Route;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.repository.AreaEventGPSRepository;
 import com.pw.localizer.repository.AreaEventNetworkRepository;
@@ -41,14 +33,14 @@ import com.pw.localizer.repository.AreaRepository;
 import com.pw.localizer.repository.CellInfoMobileRepository;
 import com.pw.localizer.repository.UserRepository;
 import com.pw.localizer.repository.WifiInfoRepository;
-import com.pw.localizer.serivce.qualifier.DialogUserLocationGoogleMap;
+import com.pw.localizer.serivce.qualifier.DialogGMap;
 import com.pw.localizer.singleton.RestSessionManager;
 
 @ViewScoped
 @Named(value="location")
 public class LocationController implements Serializable{
 	private static final long serialVersionUID = -5534429129019431383L;
-	@Inject @DialogUserLocationGoogleMap
+	@Inject @DialogGMap
 	private DialogUserLocationGoogleMapController googleMapSingleUserDialogController;
 	@Inject
 	private UserGoogleMapController userGoogleMapController;
@@ -86,6 +78,8 @@ public class LocationController implements Serializable{
 	private Map<String,User>users = new HashMap<String,User>();
 	private boolean showAreaEventMessage;
 	private boolean updateUserAreasOnPolling;
+
+	private UserComponentVisibility userComponentVisibility;
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
@@ -237,7 +231,11 @@ public class LocationController implements Serializable{
 	public void onClickUserToDisplayData(User user){
 		selectUserForUserData = user;
 	}
-	
+
+	public void selectUserComponentVisibility(User user){
+		userComponentVisibility = userGoogleMapController.getUserComponentVisibilityMap().get(user.getLogin());
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////  UTILITIS  /////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -469,5 +467,11 @@ public class LocationController implements Serializable{
 		this.selectUserForUserData = selectUserForUserData;
 	}
 
+	public UserComponentVisibility getUserComponentVisibility() {
+		return userComponentVisibility;
+	}
 
+	public void setUserComponentVisibility(UserComponentVisibility userComponentVisibility) {
+		this.userComponentVisibility = userComponentVisibility;
+	}
 }

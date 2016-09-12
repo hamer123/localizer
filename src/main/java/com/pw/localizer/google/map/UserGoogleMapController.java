@@ -464,10 +464,10 @@ public class UserGoogleMapController implements Serializable{
         String login = uuidRaw.getLogin();
         if(active){
             if(googleMapComponentVisible.isActivePolygon())
-                return userComponentVisibilityMap.get(login).isActiveAreny();
+                return userComponentVisibilityMap.get(login).isActiveAren();
         } else {
             if(googleMapComponentVisible.isNotActivePolygon())
-                return userComponentVisibilityMap.get(login).isNotActiveAreny();
+                return userComponentVisibilityMap.get(login).isNotActiveAren();
         }
 
         return false;

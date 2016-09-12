@@ -21,11 +21,11 @@
 	 <h:form>
        <p:growl id="growl"/>
        
-	   <p:gmap id="gmap" center="#{polyglon.googleMapController.center}" zoom="#{polyglon.googleMapController.zoom}" 
-	           style="width:100%;height:500px" model="#{polyglon.googleMapController.googleMapModel}" 
-	           type="#{polyglon.googleMapController.googleMapType}">
-          <p:ajax event="pointSelect" listener="#{polyglon.onPointSelect}" update="gmap :#{p:component('paths')}" />
-          <p:ajax event="stateChange" listener="#{polyglon.googleMapController.onGoogleMapStateChange}" update="gmap" /> 
+	   <p:gmap id="gmap" center="#{area.googleMapController.center}" zoom="#{area.googleMapController.zoom}"
+               style="width:100%;height:500px" model="#{area.googleMapController.googleMapModel}"
+               type="#{area.googleMapController.googleMapType}">
+          <p:ajax event="pointSelect" listener="#{area.onPointSelect}" update="gmap :#{p:component('paths')}" />
+          <p:ajax event="stateChange" listener="#{area.googleMapController.onGoogleMapStateChange}" update="gmap" />
        </p:gmap>
      
      </h:form>

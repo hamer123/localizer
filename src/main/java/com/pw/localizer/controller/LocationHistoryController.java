@@ -24,7 +24,6 @@ import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.repository.LocationGPSRepository;
 import com.pw.localizer.repository.LocationNetworkRepository;
 import com.pw.localizer.repository.UserRepository;
-import com.pw.localizer.serivce.qualifier.UserGoogleMap;
 import com.pw.localizer.service.RouteService;
 
 @Named("locationHistory")
