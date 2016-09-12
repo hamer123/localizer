@@ -13,7 +13,6 @@ import javax.inject.Named;
  * Created by Patryk on 2016-09-11.
  */
 
-
 @Named
 @ApplicationScoped
 public class AvatarApplicationService {
@@ -25,6 +24,6 @@ public class AvatarApplicationService {
     }
 
     public byte[] content(String uuid){
-        return null;
+        return avatarService.content(uuid);
     }
 }

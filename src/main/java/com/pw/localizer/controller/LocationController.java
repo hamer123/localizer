@@ -14,11 +14,18 @@ import javax.inject.Named;
 
 import com.pw.localizer.google.map.UserComponentVisibility;
 import com.pw.localizer.google.map.UserGoogleMapController;
+import com.pw.localizer.identyfikator.OverlayUUIDConverter;
+import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.service.UserService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.model.map.Circle;
+import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
@@ -80,7 +87,14 @@ public class LocationController implements Serializable{
 	private boolean updateUserAreasOnPolling;
 
 	private UserComponentVisibility userComponentVisibility;
+	/** User to display his data in dialog */
 	private User userData;
+	/** User`avatar in action select overlay */
+	private Avatar userAvatar;
+	/** User`location in action select overlay */
+	private Location userLocation;
+	/** User`overlay in action select overlay*/
+	private Overlay userOverlay;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
@@ -235,6 +249,23 @@ public class LocationController implements Serializable{
 
 	public void selectUserComponentVisibility(User user){
 		userComponentVisibility = userGoogleMapController.getUserComponentVisibilityMap().get(user.getLogin());
+	}
+
+	public void onOverlaySelect(OverlaySelectEvent event){
+		userOverlay = event.getOverlay();
+		if(userOverlay instanceof Marker) {
+			OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(userOverlay.getId());
+			User user = users.get(uuidRaw.getLogin());
+			userAvatar = user.getAvatar();
+			if(uuidRaw.getProvider() == Providers.GPS){
+				userLocation = user.getLastLocationGPS();
+			}else{
+				if(uuidRaw.getLocalizationService() == LocalizationServices.NASZ)
+					userLocation = user.getLastLocationNetworkNaszaUsluga();
+				else
+					userLocation = user.getLastLocationNetworObcaUsluga();
+			}
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -474,5 +505,33 @@ public class LocationController implements Serializable{
 
 	public void setUserComponentVisibility(UserComponentVisibility userComponentVisibility) {
 		this.userComponentVisibility = userComponentVisibility;
+	}
+
+	public Overlay getUserOverlay() {
+		return userOverlay;
+	}
+
+	public void setUserOverlay(Overlay userOverlay) {
+		this.userOverlay = userOverlay;
+	}
+
+	public Avatar getUserAvatar() {
+		return userAvatar;
+	}
+
+	public void setUserAvatar(Avatar userAvatar) {
+		this.userAvatar = userAvatar;
+	}
+
+	public Location getUserLocation() {
+		return userLocation;
+	}
+
+	public void setUserLocation(Location userLocation) {
+		this.userLocation = userLocation;
+	}
+
+	public String getUserAvatarUUID(){
+		return userAvatar == null ? "" : userAvatar.getUuid();
 	}
 }

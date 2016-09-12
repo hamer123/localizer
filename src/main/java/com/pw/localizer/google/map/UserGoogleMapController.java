@@ -14,7 +14,6 @@ import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.model.google.map.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.map.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
-import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.map.*;
 
@@ -532,10 +531,6 @@ public class UserGoogleMapController implements Serializable{
     public void onGoogleMapStateChange(StateChangeEvent event){
         center = GoogleMapModel.center(event.getCenter());
         zoom = event.getZoomLevel();
-    }
-
-    public void onOverlaySelect(OverlaySelectEvent event){
-        //TODO
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

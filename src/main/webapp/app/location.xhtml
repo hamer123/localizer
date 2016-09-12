@@ -7,7 +7,7 @@
       xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
 
     <h:head>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCs17b5OinBtGu-5P4VLLLV-yYuaMn2T4c"/>
+      <script src="https://maps.googleapis.com/maps/api/js?key=#{msg['google.api.key']}"/>
       <h:outputStylesheet library="css" name="locationView.css"/>
       <h:outputStylesheet library="css" name="default.css"/>
       <title>Lokacje</title>
@@ -31,19 +31,21 @@
                 model="#{userGoogleMap.googleMapModelOutput}"
                 styleClass="#{location.googleMapStyle}">
           <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
-          <p:ajax event="overlaySelect" listener="#{userGoogleMap.onOverlaySelect}" update="growl"/>
-          <!--
-          <p:gmapInfoWindow rendered="#{location.googleMapController.lastSelectedOverlay.class.name eq 'org.primefaces.model.map.Marker'}">
+          <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}" update="growl"/>
+          <p:gmapInfoWindow rendered="#{location.userOverlay.class.name eq 'org.primefaces.model.map.Marker'}">
             <p:outputPanel style="text-align: center; display: block; margin: auto">
-              <h:panelGrid columns="1">
-				<o:graphicImage value="#{avatarApplicationService.content(location.locationFromLastSelectedOverlay().user.avatar.uuid)}" width="120" height="150"/>
-                <h:outputText value="#{location.locationFromLastSelectedOverlay().user.login}" />
-                <h:outputText value="#{location.locationFromLastSelectedOverlay().date}" />
-                <h:outputText value="#{location.locationFromLastSelectedOverlay().providerType}" />
+              <h:panelGrid columns="1" style="margin: 0 auto;">
+				<o:graphicImage value="#{avatarApplicationService.content(location.userAvatarUUID)}"
+                                width="120" height="150"/>
+                <h:outputText value="#{location.userLocation.user.login}" />
+                <h:outputText value="#{location.userLocation.date}" />
+                <h:outputText value="#{location.userLocation.latitude}" />
+                <h:outputText value="#{location.userLocation.longitude}" />
+                <h:outputText value="#{location.userLocation.address.city}" />
+                <h:outputText value="#{location.userLocation.address.street}" />
               </h:panelGrid>
             </p:outputPanel>
           </p:gmapInfoWindow>
-          -->
         </p:gmap>
       </p:outputPanel>
       <p:panel id="mainPanel" header="Panel sledzenia uzytkownikow i danych" toggleable="true" toggleSpeed="500" widgetVar="panel">
