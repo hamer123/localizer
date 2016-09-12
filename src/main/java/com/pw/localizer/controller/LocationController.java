@@ -74,13 +74,14 @@ public class LocationController implements Serializable{
 	private Location selectLocation;
 	private Location locationToDisplayDetails;
 	private User selectUserForLastLocations;
-	private User selectUserForUserData = null;
+
 	private Map<String,User>users = new HashMap<String,User>();
 	private boolean showAreaEventMessage;
 	private boolean updateUserAreasOnPolling;
 
 	private UserComponentVisibility userComponentVisibility;
-	
+	private User userData;
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,7 +230,7 @@ public class LocationController implements Serializable{
 	}
 
 	public void onClickUserToDisplayData(User user){
-		selectUserForUserData = user;
+		userData = user;
 	}
 
 	public void selectUserComponentVisibility(User user){
@@ -459,12 +460,12 @@ public class LocationController implements Serializable{
 		this.selectUserForLastLocations = selectUserForLastLocations;
 	}
 
-	public User getSelectUserForUserData() {
-		return selectUserForUserData;
+	public User getUserData() {
+		return userData;
 	}
 
-	public void setSelectUserForUserData(User selectUserForUserData) {
-		this.selectUserForUserData = selectUserForUserData;
+	public void setUserData(User userData) {
+		this.userData = userData;
 	}
 
 	public UserComponentVisibility getUserComponentVisibility() {

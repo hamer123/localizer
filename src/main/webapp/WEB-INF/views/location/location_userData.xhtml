@@ -1,8 +1,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
       
-      <p:dialog id="userData" widgetVar="userDataDialog" header="Dane uzytkownika" style="width:650px;height:400px" modal="true">
-          
+      <p:dialog id="userData" widgetVar="userDataDialog" header="Dane uzytkownika" style="width:650px;height:400px">
+          <h:panelGrid columns="2" style="margin: 0 auto;">
+
+                <p:outputLabel value="login"/>
+                <h:outputText value="#{location.userData.login}"/>
+
+                <p:outputLabel value="email"/>
+                <h:outputText value="#{location.userData.email}"/>
+
+                <p:outputLabel value="phone"/>
+                <h:outputText value="#{location.userData.phone}"/>
+
+          </h:panelGrid>
       </p:dialog> 
 
 </html>
