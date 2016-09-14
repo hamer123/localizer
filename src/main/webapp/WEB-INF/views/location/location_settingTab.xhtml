@@ -4,35 +4,59 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-      
+
+    <h:outputStylesheet library="css" name="noBorder.css"/>
       <p:panelGrid columns="2" layout="grid">
-        <p:panel header="Ustawienia mapy">
+        <p:panel header="#{msg['map.create.setting']}">
           <h:form>
-            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-              
-              <p:outputLabel for="console" value="Typ mapy" />
-              <p:selectOneMenu id="console" value="#{userGoogleMap.googleMapType}" style="width:125px">
-                <p:ajax update=":gmap" />
-                <f:selectItem itemLabel="Hybrid"   itemValue="HYBRID" />
-                <f:selectItem itemLabel="Terrain"  itemValue="TERRAIN" />
-                <f:selectItem itemLabel="Satelite" itemValue="SATELLITE" />
-                <f:selectItem itemLabel="Roadmap"  itemValue="ROADMAP" />
-              </p:selectOneMenu>
-              
-              <p:outputLabel for="check" value="Pokaz ulice" />
-              <p:selectBooleanCheckbox id="check" value="#{userGoogleMap.streetVisible}">
-                <p:ajax update=":gmap" />
-              </p:selectBooleanCheckbox>
-              
-              <p:outputLabel for="area_event" value="Powiadomienia o sledzeniu" />
-              <p:selectBooleanCheckbox id="area_event" value="#{location.showAreaEventMessage}"/>
-              
-              <p:outputLabel value="Włącz tworzenie trasy GPS"/>
-              <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createGPSPolyline}">
-                <!--<p:ajax event="change" listener="#{location.onChangeCreateRoutes()}" update=":#{p:component('gmap')}"/>-->
-              </p:selectBooleanCheckbox>
-             
-            </h:panelGrid>
+            <p:panelGrid columns="2" layout="grid">
+                <p:panel header="#{msg['map']}">
+                    <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="console" value="Typ mapy" />
+                    <p:selectOneMenu id="console" value="#{userGoogleMap.googleMapType}" style="width:125px">
+                        <p:ajax update=":gmap" />
+                        <f:selectItem itemLabel="Hybrid"   itemValue="HYBRID" />
+                        <f:selectItem itemLabel="Terrain"  itemValue="TERRAIN" />
+                        <f:selectItem itemLabel="Satelite" itemValue="SATELLITE" />
+                        <f:selectItem itemLabel="Roadmap"  itemValue="ROADMAP" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="check" value="Pokaz ulice" />
+                    <p:selectBooleanCheckbox id="check" value="#{userGoogleMap.streetVisible}">
+                        <p:ajax update=":gmap" />
+                    </p:selectBooleanCheckbox>
+
+                    <p:outputLabel for="area_event" value="Powiadomienia o sledzeniu" />
+                    <p:selectBooleanCheckbox id="area_event" value="#{location.showAreaEventMessage}"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:panel header="Tworzenie">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel  value="GPS polyline" />
+                        <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createGPSPolyline}">
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel  value="Network (Nasz) polyline" />
+                        <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createNetworkNaszPolyline}">
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel  value="Network (Obcy) polyline" />
+                        <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createNetworkObcyPolyline}">
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel  value="Aktywne obszary" />
+                        <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createActivePolygon}">
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel value="Nie aktywne obszary" />
+                        <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createNotActivePolygon}">
+                        </p:selectBooleanCheckbox>
+
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:panelGrid>
           </h:form>
         </p:panel>
 
@@ -41,7 +65,7 @@
          <p:panelGrid columns="4" layout="grid">
 
           <p:panel header="GPS">
-              <h:panelGrid columns="2">
+              <h:panelGrid columns="2" cellpadding="5">
               
                 <p:outputLabel value="Marker"/>
                 <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.markerGps}">
@@ -61,7 +85,7 @@
               </h:panelGrid>
           </p:panel>
           <p:panel header="Network (Nasz)">
-              <h:panelGrid columns="2">
+              <h:panelGrid columns="2" cellpadding="5">
               
                 <p:outputLabel value="Marker"/>
                 <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.markerNetworkNasz}">
@@ -82,7 +106,7 @@
 
           </p:panel>
           <p:panel header="Network (Obcy)">
-              <h:panelGrid columns="2">
+              <h:panelGrid columns="2" cellpadding="5">
               
                 <p:outputLabel value="Marker"/>
                 <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.markerNetworkObcy}">
@@ -103,7 +127,7 @@
           </p:panel>
           
           <p:panel header="Arena">
-           <h:panelGrid columns="2">
+           <h:panelGrid columns="2" cellpadding="5">
            
              <p:outputLabel value="Aktywne areny"/>
              <p:selectBooleanCheckbox value="#{userGoogleMap.googleMapComponentVisible.activePolygon}">
@@ -122,5 +146,4 @@
          </h:form>
         </p:panel>
       </p:panelGrid>
-
 </ui:composition>
