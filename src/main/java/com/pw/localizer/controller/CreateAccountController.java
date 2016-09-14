@@ -21,6 +21,8 @@ import com.pw.localizer.model.enums.ImageTypes;
 import com.pw.localizer.model.enums.Roles;
 import com.pw.localizer.model.upload.ImageFileUpload;
 import com.pw.localizer.service.ImageService;
+import com.pw.localizer.service.user.UserService;
+import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.event.map.PointSelectEvent;
@@ -33,7 +35,7 @@ import com.pw.localizer.repository.UserRepository;
 
 @Named("createAccount")
 @ConversationScoped
-public class CreateAccountConversationController implements Serializable{
+public class CreateAccountController implements Serializable{
 	private static final long serialVersionUID = -430267591398275516L;
 	@Inject
 	private AvatarUploadController avatarUploadController;
@@ -44,7 +46,7 @@ public class CreateAccountConversationController implements Serializable{
 	@Inject
 	private UserRepository userRepository;
 	@Inject
-	private ImageService avatarService;
+	private UserService userService;
 	@Inject
 	private Logger logger;
 
@@ -105,7 +107,6 @@ public class CreateAccountConversationController implements Serializable{
 		googleMapController.setZoom(event.getValue());
 	}
 
-	@Transactional
 	public String onCreateAccount(){
 		try{
 			UserSetting setting = new UserSetting();
@@ -113,18 +114,15 @@ public class CreateAccountConversationController implements Serializable{
 			setting.setDefaultLongtitude(longtitude);
 		    setting.setgMapZoom(googleMapController.getZoom());
 		    user.setUserSetting(setting);
-			user.setRoles(createUserRoles());
-
 			ImageFileUpload imageFileUpload = this.getAvatarUploadController().getImageFileUpload();
 			//tworzenie avatara jesli wybrano upload
 			if(imageFileUpload != null){
 				Avatar avatar = createAvatar();
-				this.avatarService.create(avatar, new ByteArrayInputStream(imageFileUpload.getContent()));
 				user.setAvatar(avatar);
+				this.userService.create(user, new ByteArrayInputStream(imageFileUpload.getContent()));
+			} else {
+				this.userService.create(user);
 			}
-			userRepository.create(user);
-
-			logger.info("Utworzono nowe konto " + user.toString());
 			return REDIRECT_TO_SUCCESS;
 		} catch(Exception e){
 			logger.error(e);
@@ -132,12 +130,6 @@ public class CreateAccountConversationController implements Serializable{
 		} finally{
 			endConversation();
 		}
-	}
-
-	private List<Roles> createUserRoles(){
-		List<Roles>roles = new ArrayList<>();
-		roles.add(Roles.USER);
-		return roles;
 	}
 
 	private Avatar createAvatar(){
