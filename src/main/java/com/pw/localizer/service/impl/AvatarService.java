@@ -2,6 +2,7 @@ package com.pw.localizer.service.impl;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.UUID;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -35,6 +36,7 @@ public class AvatarService implements ImageService, Serializable{
 
 	@Override
 	public void create(Avatar avatar, InputStream inputStream) throws IOException {
+		avatar.setUuid(UUID.randomUUID().toString());
 		this.avatarRepository.create(avatar);
 		OutputStream outputStream = new FileOutputStream(new File(path(avatar.getUuid())));
 		IOUtils.copy(inputStream,outputStream);

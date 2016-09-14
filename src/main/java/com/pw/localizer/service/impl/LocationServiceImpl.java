@@ -8,21 +8,27 @@ import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.LocalizationServices;
+import com.pw.localizer.repository.LocationGPSRepository;
+import com.pw.localizer.repository.LocationNetworkRepository;
 import com.pw.localizer.repository.UserRepository;
 import com.pw.localizer.service.LocationService;
 
+
+/** NA przyszlosc mozna zmienic argument na Usera i zrobic update dla usera lokacji przez zwykle query*/
 @Stateless
 public class LocationServiceImpl implements LocationService{
 	@Inject
 	private UserRepository userRepository;
-	@PersistenceContext
-	private EntityManager em;
-	
+	@Inject
+	private LocationGPSRepository locationGPSRepository;
+	@Inject
+	private LocationNetworkRepository locationNetworkRepository;
+
 	@Override
 	public void createLocationNetworkUpdateUserCurrentLocationNetwork(LocationNetwork locationNetwork, long userId) {
 		User user = userRepository.findById(userId);
 		locationNetwork.setUser(user);
-		em.persist(locationNetwork);
+		locationNetworkRepository.create(locationNetwork);
 		updateUserCurrentLocationNetwork(locationNetwork, user);
 	}
 
@@ -30,7 +36,7 @@ public class LocationServiceImpl implements LocationService{
 	public void createLocationGPSUpdateUserCurrentLocationGPS(LocationGPS locationGPS, long userId) {
 		User user = userRepository.findById(userId);
 		locationGPS.setUser(user);
-		em.persist(locationGPS);
+		locationGPSRepository.create(locationGPS);
 		user.setLastLocationGPS(locationGPS);
 	}
 	

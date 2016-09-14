@@ -19,6 +19,7 @@ import com.pw.localizer.google.map.GoogleMapController;
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.model.enums.ImageTypes;
 import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.model.upload.ImageFileUpload;
 import com.pw.localizer.service.ImageService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.SlideEndEvent;
@@ -114,11 +115,11 @@ public class CreateAccountConversationController implements Serializable{
 		    user.setUserSetting(setting);
 			user.setRoles(createUserRoles());
 
-			//tworzenie avatara jesli wybrano image
-			if(this.getAvatarUploadController().getAvatarContent() != null &&
-			   this.getAvatarUploadController().getUploadedFile() != null){
+			ImageFileUpload imageFileUpload = this.getAvatarUploadController().getImageFileUpload();
+			//tworzenie avatara jesli wybrano upload
+			if(imageFileUpload != null){
 				Avatar avatar = createAvatar();
-				this.avatarService.create(avatar, new ByteArrayInputStream(this.getAvatarUploadController().getAvatarContent()));
+				this.avatarService.create(avatar, new ByteArrayInputStream(imageFileUpload.getContent()));
 				user.setAvatar(avatar);
 			}
 			userRepository.create(user);
@@ -141,10 +142,10 @@ public class CreateAccountConversationController implements Serializable{
 
 	private Avatar createAvatar(){
 		Avatar avatar = new Avatar();
-		avatar.setFormat(ImageTypes.convert(this.getAvatarUploadController().getContentType()));
-		avatar.setName(this.getAvatarUploadController().getName());
-		avatar.setSize(this.getAvatarUploadController().getSize());
-		avatar.setUuid(UUID.randomUUID().toString());
+		ImageFileUpload imageFileUpload = this.getAvatarUploadController().getImageFileUpload();
+		avatar.setSize(imageFileUpload.getSize());
+		avatar.setName(imageFileUpload.getFileName());
+		avatar.setFormat(ImageTypes.convert(imageFileUpload.getContentType()));
 		return avatar;
 	}
 

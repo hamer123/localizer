@@ -250,7 +250,7 @@ public class UserGoogleMapController implements Serializable{
                     polyline.setData(location.getDate());
                 }
             } else {
-                addPolylineNetwork(location);
+                //TODO
             }
         }
     }

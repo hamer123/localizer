@@ -1,6 +1,7 @@
 package com.pw.localizer.controller;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.model.upload.ImageFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -20,38 +21,17 @@ import java.io.Serializable;
 @Named
 @SessionScoped
 public class AvatarUploadController implements Serializable{
-    private UploadedFile uploadedFile;
-    private byte[] avatarContent;
-
-    public byte[] getAvatarContent() {
-        return avatarContent;
-    }
-
-    public String getContentType() {
-        return this.uploadedFile.getContentType();
-    }
-
-    public String getName() {
-        return this.uploadedFile.getFileName();
-    }
-
-    public Long getSize() {
-        return this.uploadedFile.getSize();
-    }
-
-    public UploadedFile getUploadedFile() {
-        return uploadedFile;
-    }
-
-    public void setUploadedFile(UploadedFile uploadedFile) {
-        this.uploadedFile = uploadedFile;
-    }
+    private ImageFileUpload imageFileUpload;
 
     public void handleFileUpload(FileUploadEvent event){
         try{
-            this.uploadedFile = event.getFile();
-            InputStream inputStream = this.uploadedFile.getInputstream();
-            this.avatarContent = IOUtils.toByteArray(inputStream);
+            UploadedFile uploadedFile = event.getFile();
+            InputStream inputStream = uploadedFile.getInputstream();
+            this.imageFileUpload = new ImageFileUpload();
+            this.imageFileUpload.setContent(IOUtils.toByteArray(inputStream));
+            this.imageFileUpload.setContentType(uploadedFile.getContentType());
+            this.imageFileUpload.setSize(uploadedFile.getSize());
+            this.imageFileUpload.setFileName(uploadedFile.getFileName());
             inputStream.close();
             JsfMessageBuilder.infoMessage("Avatar zostal wybrany...");
         } catch (IOException e) {
@@ -61,8 +41,17 @@ public class AvatarUploadController implements Serializable{
     }
 
     public StreamedContent getAvatarStreamedContent(){
-        if(this.avatarContent == null)
+        if(this.imageFileUpload == null)
             return null;
-        return new DefaultStreamedContent(new ByteArrayInputStream(this.avatarContent), this.uploadedFile.getContentType());
+        return new DefaultStreamedContent(new ByteArrayInputStream(this.imageFileUpload.getContent()), this.imageFileUpload.getContentType());
+    }
+
+    public ImageFileUpload getImageFileUpload() {
+        return imageFileUpload;
+    }
+
+    public void setImageFileUpload(ImageFileUpload imageFileUpload) {
+        this.imageFileUpload = imageFileUpload;
     }
 }
+

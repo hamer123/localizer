@@ -111,15 +111,15 @@ public class LocationController implements Serializable{
 	public void onAddUserToFollow(){
 		try{
 			if(isUserArleadyOnList(login)){
-				JsfMessageBuilder.errorMessageBundle("Użytkownik jest już na liście");
+				JsfMessageBuilder.errorMessage("Użytkownik jest już na liście");
 			} else {
 				User user = this.userService.getUserFetchAreas(login);
 				this.users.put(user.getLogin(),user);
 				this.userGoogleMapController.add(user);
-				JsfMessageBuilder.infoMessageBundle("Udało się dodać uzytkownika do śledzenia");
+				JsfMessageBuilder.infoMessage("Udało się dodać uzytkownika do śledzenia");
 			}
 		} catch(Exception e){
-			JsfMessageBuilder.errorMessageBundle("Błąd przy próbie dodania użytkownika");
+			JsfMessageBuilder.errorMessage("Błąd przy próbie dodania użytkownika");
 			e.printStackTrace();
 		}
 	}

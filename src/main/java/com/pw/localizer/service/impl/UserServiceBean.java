@@ -37,4 +37,9 @@ public class UserServiceBean implements UserService{
             area.getPoints().size();
         return areas;
     }
+
+    @Override
+    public User update(User user) {
+        return userRepository.save(user);
+    }
 }

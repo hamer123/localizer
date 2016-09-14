@@ -4,7 +4,7 @@ public enum ImageTypes {
 	JPEG,PNG,JPG,GIF;
 
 	public static ImageTypes convert(String meditaType){
-		System.out.println(meditaType);
+		//TODO
 		return JPEG;
 	}
 }

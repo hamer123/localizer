@@ -59,7 +59,7 @@ public class ResourceDirectionStartup {
 		//roots of resource
 		ResourceDirectionURI.IMAGE = ResourceDirectionURI.RESOURCE_MAIN + readPropertie(properties,"resource.path.image");
 		ResourceDirectionURI.VIDEO = ResourceDirectionURI.RESOURCE_MAIN + readPropertie(properties,"resource.path.video");
-		//image
+		//upload
 		ResourceDirectionURI.AVATAR = ResourceDirectionURI.IMAGE + readPropertie(properties,"resource.path.avatar");
 	}
 

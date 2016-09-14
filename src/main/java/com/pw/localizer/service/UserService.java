@@ -14,4 +14,5 @@ public interface UserService {
 
     User getUserFetchAreas(String login);
     List<Area> getUserAreasFetchAreaPoints(long userId);
+    User update(User user);
 }

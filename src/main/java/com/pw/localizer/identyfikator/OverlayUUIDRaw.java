@@ -15,8 +15,8 @@ public class OverlayUUIDRaw {
     private LocalizationServices localizationService;
 
     public boolean matches(String uuid){
-        OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(uuid);
-        return this.equals(uuidRaw);
+        String uuidThis = OverlayUUIDConverter.uuid(this);
+        return OverlayUUIDUtilitis.matches(uuid,uuidThis);
     }
 
     public Long getId() {
