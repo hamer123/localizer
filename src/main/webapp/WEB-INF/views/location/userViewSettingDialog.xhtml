@@ -1,7 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:p="http://primefaces.org/ui">
 
 <p:dialog id="userViewSetting" widgetVar="userViewSettingDialog" header="Ustawienia widocznosci">
     <h:form>
@@ -85,32 +84,3 @@
 </p:dialog>
 
 </html>
-
-
-
-
-
-        <!--
-                      <h:panelGrid columns="3" cellpadding="4" cellspacing="4">
-                          <c:if test="#{!location.userViewSettingDialog.disableGps}">
-                              <p:outputLabel value="Trasa sledzenia GPS"/>
-                              <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.gpsPolyline.visible}"/>
-                              <p:colorPicker value="#{location.userViewSettingDialog.gpsRouteColor}" />
-                          </c:if>
-
-                          <c:if test="#{!location.userViewSettingDialog.disableNetworkObcy}">
-                              <p:outputLabel value="Trasa sledzenia Network Obcy"/>
-                              <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkNaszPolyline.visible}"/>
-                              <p:colorPicker value="#{location.userViewSettingDialog.networkNaszColor}"/>
-                          </c:if>
-
-                          <c:if test="#{!location.userViewSettingDialog.disableNetworkNasz}">
-                              <p:outputLabel value="Trasa sledzenia Network Nasz"/>
-                              <p:selectBooleanCheckbox value="#{location.userViewSettingDialog.networkObcyPolyline.visible}"/>
-                              <p:colorPicker value="#{location.userViewSettingDialog.networkObcyColor}"/>
-                          </c:if>
-
-                        <p:commandButton value="Zapisz" update=":#{p:component('gmap')}" onclick="PF('userViewSettingDialog').hide()"
-                                         actionListener="#{location.userViewSettingDialog.onSaveChangeSetting()}"/>
-                      </h:panelGrid>
-        -->

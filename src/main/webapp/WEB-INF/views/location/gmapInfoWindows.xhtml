@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:o="http://omnifaces.org/ui">
+
+    <p:gmapInfoWindow rendered="#{location.userOverlay.class.name eq 'org.primefaces.model.map.Marker'}">
+        <p:outputPanel style="text-align: center; display: block; margin: auto">
+            <h:panelGrid columns="1" style="margin: 0 auto;">
+                <o:graphicImage value="#{avatarApplicationService.content(location.userAvatarUUID)}"
+                                width="#{msg['google.map.window.info.avatar.width']}"
+                                height="#{msg['google.map.window.info.avatar.height']}"/>
+                <h:outputText value="#{location.userLocation.user.login}" />
+                <h:outputText value="#{location.userLocation.date}" />
+                <h:outputText value="#{location.userLocation.latitude}" />
+                <h:outputText value="#{location.userLocation.longitude}" />
+                <h:outputText value="#{location.userLocation.address.city}" />
+                <h:outputText value="#{location.userLocation.address.street}" />
+            </h:panelGrid>
+        </p:outputPanel>
+    </p:gmapInfoWindow>
+
+</ui:composition>
+

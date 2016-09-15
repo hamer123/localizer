@@ -13,7 +13,7 @@ import com.pw.localizer.security.restful.Secured;
 import org.jboss.logging.Logger;
 import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.entity.LocationGPS;
-import com.pw.localizer.service.LocationService;
+import com.pw.localizer.service.location.LocationService;
 
 @Secured
 @Path("/location/gps")

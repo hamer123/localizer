@@ -1,9 +1,8 @@
-package com.pw.localizer.service.impl;
+package com.pw.localizer.service.location;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.User;
@@ -11,12 +10,12 @@ import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.repository.LocationGPSRepository;
 import com.pw.localizer.repository.LocationNetworkRepository;
 import com.pw.localizer.repository.UserRepository;
-import com.pw.localizer.service.LocationService;
+import com.pw.localizer.service.location.LocationService;
 
 
 /** NA przyszlosc mozna zmienic argument na Usera i zrobic update dla usera lokacji przez zwykle query*/
 @Stateless
-public class LocationServiceImpl implements LocationService{
+public class LocationServiceImp implements LocationService{
 	@Inject
 	private UserRepository userRepository;
 	@Inject

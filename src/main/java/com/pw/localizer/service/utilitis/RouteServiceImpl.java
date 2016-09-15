@@ -1,4 +1,4 @@
-package com.pw.localizer.service.impl;
+package com.pw.localizer.service.utilitis;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import javax.ejb.Stateless;
 import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.google.component.Route;
-import com.pw.localizer.service.RouteService;
 
 @Stateless
 public class RouteServiceImpl implements RouteService{

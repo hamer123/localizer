@@ -1,4 +1,4 @@
-package com.pw.localizer.service.inceptor;
+package com.pw.localizer.inceptor;
 
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;

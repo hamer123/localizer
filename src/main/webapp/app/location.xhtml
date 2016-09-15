@@ -3,7 +3,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:o="http://omnifaces.org/ui"
       xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
 
     <h:head>
@@ -32,44 +31,32 @@
                 styleClass="#{location.googleMapStyle}">
           <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
           <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}" update="growl"/>
-          <p:gmapInfoWindow rendered="#{location.userOverlay.class.name eq 'org.primefaces.model.map.Marker'}">
-            <p:outputPanel style="text-align: center; display: block; margin: auto">
-              <h:panelGrid columns="1" style="margin: 0 auto;">
-				<o:graphicImage value="#{avatarApplicationService.content(location.userAvatarUUID)}"
-                                width="120" height="150"/>
-                <h:outputText value="#{location.userLocation.user.login}" />
-                <h:outputText value="#{location.userLocation.date}" />
-                <h:outputText value="#{location.userLocation.latitude}" />
-                <h:outputText value="#{location.userLocation.longitude}" />
-                <h:outputText value="#{location.userLocation.address.city}" />
-                <h:outputText value="#{location.userLocation.address.street}" />
-              </h:panelGrid>
-            </p:outputPanel>
-          </p:gmapInfoWindow>
+          <ui:insert>
+            <ui:include src="/WEB-INF/views/location/gmapInfoWindows.xhtml"/>
+          </ui:insert>
         </p:gmap>
       </p:outputPanel>
-      <p:panel id="mainPanel" header="Panel sledzenia uzytkownikow i danych" toggleable="true" toggleSpeed="500" widgetVar="panel">
+      <p:panel id="mainPanel" header="#{msg['panel.followed.users.and.data']}" toggleable="true" toggleSpeed="500" widgetVar="panel">
       <p:ajax event="toggle" listener="#{location.onToggleMainPanel}" update=":#{p:component('gmap')}"/>
       <p:tabView>
-        <p:tab title="Sledzeni uzytkownicy">
+        <p:tab title="#{msg['followed.users']}">
           <ui:insert name="lokacje">
-	         <ui:include src="/WEB-INF/views/location/location_aktualneLokacje.xhtml" />
+	         <ui:include src="/WEB-INF/views/location/followUsers.xhtml" />
 	      </ui:insert> 
         </p:tab>
-        <p:tab title="Ustawienia">
+        <p:tab title="#{msg['settings']}">
           <ui:insert name="ustawienia" >
-	         <ui:include src="/WEB-INF/views/location/location_settingTab.xhtml" />
+	         <ui:include src="/WEB-INF/views/location/settings.xhtml" />
 	      </ui:insert> 
         </p:tab>
       </p:tabView>
       </p:panel>
-      
-      <lokalizator:detailsDialog location="#{location.locationToDisplayDetails}"/>
-      
+
       <ui:insert>
-        <ui:include src="/WEB-INF/views/location/location_userData.xhtml" />
-        <ui:include src="/WEB-INF/views/location/location_userViewSettingDialog.xhtml"/>
+        <ui:include src="/WEB-INF/views/location/userDataDialog.xhtml" />
+        <ui:include src="/WEB-INF/views/location/userViewSettingDialog.xhtml"/>
       </ui:insert>
+      <lokalizator:detailsDialog location="#{location.locationToDisplayDetails}"/>
       
     </h:body>  
 </html>

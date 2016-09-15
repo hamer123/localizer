@@ -1,11 +1,9 @@
 package com.pw.localizer.singleton;
 
 import com.pw.localizer.model.entity.Avatar;
-import com.pw.localizer.service.ImageService;
-import com.pw.localizer.service.impl.AvatarService;
+import com.pw.localizer.service.resource.image.ImageService;
 import org.primefaces.model.StreamedContent;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 

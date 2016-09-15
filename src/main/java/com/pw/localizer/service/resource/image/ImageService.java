@@ -1,6 +1,7 @@
-package com.pw.localizer.service;
+package com.pw.localizer.service.resource.image;
 
 import com.pw.localizer.model.entity.Avatar;
+import com.pw.localizer.service.utilitis.ResourceService;
 
 import java.io.InputStream;
 

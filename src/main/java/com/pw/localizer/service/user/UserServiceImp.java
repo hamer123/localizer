@@ -5,14 +5,12 @@ import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.Roles;
 import com.pw.localizer.repository.AreaRepository;
 import com.pw.localizer.repository.UserRepository;
-import com.pw.localizer.service.ImageService;
-import com.pw.localizer.service.user.UserService;
+import com.pw.localizer.service.resource.image.ImageService;
+import org.jboss.logging.Logger;
 
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +28,8 @@ public class UserServiceImp implements UserService, Serializable{
     private AreaRepository areaRepository;
     @Inject
     private ImageService avatarService;
+    @Inject
+    private Logger logger;
 
     @Override
     public User getUserFetchAreas(String login) {
@@ -65,13 +65,16 @@ public class UserServiceImp implements UserService, Serializable{
             user.setRoles(createUserRoles());
             avatarService.create(user.getAvatar(),avatarStream);
             userRepository.create(user);
-            //TODO sprawdzic jak wyciagnac wyjatek w ramach jpa i usunac plik avatara
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch(EJBTransactionRolledbackException e){
-            if(e.getCause() instanceof PersistenceException){
+        } catch(Exception e){
+            try{
                 avatarService.remove(user.getAvatar());
+            } catch(Exception e2){
+                logger.error("Nie udalo sie usunac avatara " +
+                             user.getAvatar().getUuid() +
+                             " po nie udanej probie stworzenia uzytkownika");
             }
+            logger.error("Blad przy probie utworzenia uzytkownika " + e);
+            throw new EJBTransactionRolledbackException("Nie mozna utworzyc uzytkownika " + e);
         }
         return user;
     }

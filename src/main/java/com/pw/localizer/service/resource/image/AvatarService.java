@@ -1,4 +1,4 @@
-package com.pw.localizer.service.impl;
+package com.pw.localizer.service.resource.image;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.repository.AvatarRepository;
-import com.pw.localizer.service.ImageService;
+import com.pw.localizer.service.resource.image.ImageService;
 import com.pw.localizer.singleton.ResourceDirectionStartup;
 import org.apache.commons.io.IOUtils;
 

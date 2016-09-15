@@ -1,4 +1,4 @@
-package com.pw.localizer.service.inceptor;
+package com.pw.localizer.inceptor;
 
 import static java.lang.annotation.ElementType.*;
 import java.lang.annotation.Retention;

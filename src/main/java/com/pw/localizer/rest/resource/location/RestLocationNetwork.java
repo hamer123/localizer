@@ -19,8 +19,8 @@ import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.repository.LocationNetworkRepository;
-import com.pw.localizer.service.LocationService;
-import com.pw.localizer.service.inceptor.LoggingInterceptor;
+import com.pw.localizer.service.location.LocationService;
+import com.pw.localizer.inceptor.LoggingInterceptor;
 
 @Secured
 @Path(RestLocationNetwork.MAIN_PATH)

@@ -3,9 +3,6 @@ package com.pw.localizer.controller;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
@@ -13,16 +10,12 @@ import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import com.pw.localizer.google.map.GoogleMapController;
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.model.enums.ImageTypes;
-import com.pw.localizer.model.enums.Roles;
 import com.pw.localizer.model.upload.ImageFileUpload;
-import com.pw.localizer.service.ImageService;
 import com.pw.localizer.service.user.UserService;
-import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.event.map.PointSelectEvent;

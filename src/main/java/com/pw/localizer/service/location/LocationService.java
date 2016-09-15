@@ -1,4 +1,4 @@
-package com.pw.localizer.service;
+package com.pw.localizer.service.location;
 
 import javax.ejb.Local;
 

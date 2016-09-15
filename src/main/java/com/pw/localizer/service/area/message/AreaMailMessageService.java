@@ -1,4 +1,4 @@
-package com.pw.localizer.service.impl;
+package com.pw.localizer.service.area.message;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -15,7 +15,7 @@ import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.enums.AreaFollows;
 import com.pw.localizer.serivce.qualifier.AreaMailMessage;
-import com.pw.localizer.service.AreaMessageService;
+import com.pw.localizer.service.area.message.AreaMessageService;
 
 @AreaMailMessage 
 @Stateless
