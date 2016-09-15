@@ -1,11 +1,10 @@
-package com.pw.localizer.overlay;
+package com.pw.localizer.factory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.pw.localizer.identyfikator.OverlayUUIDFactory;
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Marker;
@@ -21,7 +20,7 @@ import javax.ejb.Startup;
 
 @Singleton
 @Startup
-public class MarkerBuilder implements Serializable {
+public class MarkerFactory implements Serializable {
 	public String GPS_MARKER_ICON_URL;
 	public String NETWORK_MARKER_OBCA_USLUGA_ICON_URL;
 	public String NETWORK_MARKER_NASZA_USLUGA_ICON_URL;

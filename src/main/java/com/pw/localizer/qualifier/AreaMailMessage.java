@@ -1,4 +1,4 @@
-package com.pw.localizer.serivce.qualifier;
+package com.pw.localizer.qualifier;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

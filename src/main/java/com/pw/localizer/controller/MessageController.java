@@ -16,9 +16,9 @@ import com.pw.localizer.google.map.GoogleMapController;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.map.Polygon;
 
-import com.pw.localizer.overlay.CircleBuilder;
-import com.pw.localizer.overlay.MarkerBuilder;
-import com.pw.localizer.overlay.PolygonBuilder;
+import com.pw.localizer.factory.CircleFactory;
+import com.pw.localizer.factory.MarkerFactory;
+import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.model.google.map.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
@@ -53,9 +53,9 @@ public class MessageController implements Serializable{
 	private AreaMessageMailRepository areaMessageMailRepository;
 
 	@Inject
-	private MarkerBuilder markerBuilder;
+	private MarkerFactory markerFactory;
 	@Inject
-	private CircleBuilder circleBuilder;
+	private CircleFactory circleFactory;
 
 	
 	private Area selectedArea;
@@ -81,8 +81,8 @@ public class MessageController implements Serializable{
 	public void onDisplayLocationInDialog(AreaEvent areaEvent){
 		dialogMap.clear();
 		Location location = areaEvent.getLocation();
-		dialogMap.addOverlay(circleBuilder.createCircle(location));
-		dialogMap.addOverlay(markerBuilder.createMarker(location));
+		dialogMap.addOverlay(circleFactory.createCircle(location));
+		dialogMap.addOverlay(markerFactory.createMarker(location));
 		dialogMap.setCenter(GoogleMapModel.center((location)));
 	}
 	
@@ -90,7 +90,7 @@ public class MessageController implements Serializable{
 		List<AreaPoint>areaPoints = areaPointRepository.findByAreaId(area.getId());
 		dialogMap.clear();
 		area.setPoints(mapAreaPoint(areaPoints));
-		Polygon polygon = PolygonBuilder.getInstance().create(area);
+		Polygon polygon = PolygonFactory.getInstance().create(area);
 		dialogMap.addOverlay(polygon);
 		AreaPoint areaPoint = areaPoints.get(0);
 		dialogMap.setCenter(GoogleMapModel.center(areaPoint.getLat(), areaPoint.getLng()));

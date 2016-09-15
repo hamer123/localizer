@@ -1,18 +1,15 @@
-package com.pw.localizer.overlay;
+package com.pw.localizer.factory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pw.localizer.identyfikator.OverlayUUIDFactory;
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
-import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.Providers;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polyline;
 
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator.OverlayIdentyfikatorBuilder;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
@@ -25,7 +22,7 @@ import javax.ejb.Stateless;
 
 @Stateless
 @Startup
-public class PolylineBuilder implements Serializable {
+public class PolylineFactory implements Serializable {
 	private String GPS_POLYLINE_COLOR;
 	private String NETWORK_NASZ_POLYLINE_COLOR;
 	private String NETWORK_OBCY_POLYLINE_COLOR;

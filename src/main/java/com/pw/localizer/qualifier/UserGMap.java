@@ -1,4 +1,4 @@
-package com.pw.localizer.serivce.qualifier;
+package com.pw.localizer.qualifier;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

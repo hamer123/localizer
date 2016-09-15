@@ -19,7 +19,7 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.overlay.PolygonBuilder;
+import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.model.google.map.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
@@ -60,7 +60,7 @@ public class AreaController implements Serializable{
 	private void postConstruct(){
 		clearArea();
 		areaList = areaRepository.findByProviderId( localizerSession.getUser().getId() );
-		this.polygon = PolygonBuilder.getInstance().empty();
+		this.polygon = PolygonFactory.getInstance().empty();
 		googleMapController.addOverlay(polygon);
 	}
 	
@@ -241,7 +241,7 @@ public class AreaController implements Serializable{
 	}
 	
 	void clearPolygon(){
-		polygon = PolygonBuilder.getInstance().empty();
+		polygon = PolygonFactory.getInstance().empty();
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-package com.pw.localizer.service.area.message;
+package com.pw.localizer.service.message.area;
 
 import javax.ejb.Local;
 

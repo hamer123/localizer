@@ -1,4 +1,4 @@
-package com.pw.localizer.service.utilitis;
+package com.pw.localizer.service.resource;
 
 import javax.ejb.Local;
 import java.io.FileNotFoundException;

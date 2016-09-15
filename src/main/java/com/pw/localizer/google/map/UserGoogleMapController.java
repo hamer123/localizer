@@ -3,10 +3,10 @@ package com.pw.localizer.google.map;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import com.pw.localizer.model.entity.*;
-import com.pw.localizer.overlay.CircleBuilder;
-import com.pw.localizer.overlay.MarkerBuilder;
-import com.pw.localizer.overlay.PolygonBuilder;
-import com.pw.localizer.overlay.PolylineBuilder;
+import com.pw.localizer.factory.CircleFactory;
+import com.pw.localizer.factory.MarkerFactory;
+import com.pw.localizer.factory.PolygonFactory;
+import com.pw.localizer.factory.PolylineFactory;
 import com.pw.localizer.model.enums.GoogleMaps;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;
@@ -35,13 +35,13 @@ import java.util.Map;
 @ViewScoped
 public class UserGoogleMapController implements Serializable{
     @Inject
-    private PolylineBuilder polylineBuilder;
+    private PolylineFactory polylineFactory;
     @Inject
-    private PolygonBuilder polygonBuilder;
+    private PolygonFactory polygonFactory;
     @Inject
-    private MarkerBuilder markerBuilder;
+    private MarkerFactory markerFactory;
     @Inject
-    private CircleBuilder circleBuilder;
+    private CircleFactory circleFactory;
     @Inject
     private LocalizerSession localizerSession;
 
@@ -107,7 +107,7 @@ public class UserGoogleMapController implements Serializable{
             removePolygon(user.getLogin());
             addPolygon(user);
         } else {
-            throw new RuntimeException("Nie wspierany typ overlay dla update " + overlays);
+            throw new RuntimeException("Nie wspierany typ factory dla update " + overlays);
         }
     }
 
@@ -128,7 +128,7 @@ public class UserGoogleMapController implements Serializable{
         } else if(overlay == Overlays.POLYLINE){
             renderPolylines();
         } else {
-            throw new RuntimeException("Nie wspierany overlay dla renderingu " + overlay);
+            throw new RuntimeException("Nie wspierany factory dla renderingu " + overlay);
         }
     }
 
@@ -146,7 +146,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addGpsMarker(Location location){
         List<Marker>markers = googleMapModel.getMarkers();
-        Marker marker = markerBuilder.createMarker(location);
+        Marker marker = markerFactory.createMarker(location);
         markers.add(marker);
         if(filterGpsMarker(marker, OverlayUUIDConverter.uuidRaw(marker.getId())))
             googleMapModelOutput.getMarkers().add(marker);
@@ -154,7 +154,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addNetworkMarker(Location location){
         List<Marker>markers = googleMapModel.getMarkers();
-        Marker marker = markerBuilder.createMarker(location);
+        Marker marker = markerFactory.createMarker(location);
         markers.add(marker);
         if(filterNetworkMarker(marker,OverlayUUIDConverter.uuidRaw(marker.getId())))
             googleMapModelOutput.getMarkers().add(marker);
@@ -176,7 +176,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addCircleGps(Location location){
         List<Circle>circles = googleMapModel.getCircles();
-        Circle circle = circleBuilder.createCircle(location);
+        Circle circle = circleFactory.createCircle(location);
         circles.add(circle);
         if(filterCircleGps(circle,OverlayUUIDConverter.uuidRaw(circle.getId())))
             googleMapModelOutput.getCircles().add(circle);
@@ -184,7 +184,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addCircleNetwork(Location location){
         List<Circle>circles = googleMapModel.getCircles();
-        Circle circle = circleBuilder.createCircle(location);
+        Circle circle = circleFactory.createCircle(location);
         circles.add(circle);
         if(filterCircleNetwork(circle,OverlayUUIDConverter.uuidRaw(circle.getId())))
             googleMapModelOutput.getCircles().add(circle);
@@ -196,12 +196,12 @@ public class UserGoogleMapController implements Serializable{
         List<Area>areas = user.getAreas();
         for(Area area : areas){
             if(overlayCreateFilter.isCreateActivePolygon() && area.isActive()){
-                Polygon polygon = polygonBuilder.create(area, true);
+                Polygon polygon = polygonFactory.create(area, true);
                 polygons.add(polygon);
                 if(filterPolygon(polygon,OverlayUUIDConverter.uuidRaw(polygon.getId())))
                     googleMapModelOutput.getPolygons().add(polygon);
             } else if(overlayCreateFilter.isCreateNotActivePolygon() && !area.isActive()){
-                Polygon polygon = polygonBuilder.create(area, false);
+                Polygon polygon = polygonFactory.create(area, false);
                 polygons.add(polygon);
                 if(filterPolygon(polygon,OverlayUUIDConverter.uuidRaw(polygon.getId())))
                     googleMapModelOutput.getPolygons().add(polygon);
@@ -280,7 +280,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void addPolylineGps(Location location){
         if(overlayCreateFilter.isCreateGPSPolyline()){
-            Polyline polyline = polylineBuilder.create(location, location.getDate());
+            Polyline polyline = polylineFactory.create(location, location.getDate());
             googleMapModel.getPolylines().add(polyline);
             if(filterPolylineGps(OverlayUUIDConverter.uuidRaw(polyline.getId()))){
                 googleMapModelOutput.getPolylines().add(polyline);
@@ -293,7 +293,7 @@ public class UserGoogleMapController implements Serializable{
         LocationNetwork locationNetwork = (LocationNetwork)location;
         if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ){
             if(overlayCreateFilter.isCreateNetworkNaszPolyline()){
-                Polyline polyline = polylineBuilder.create(location,location.getDate());
+                Polyline polyline = polylineFactory.create(location,location.getDate());
                 polylines.add(polyline);
                 if(filterPolylineNetwork(OverlayUUIDConverter.uuidRaw(polyline.getId()))){
                     googleMapModelOutput.getPolylines().add(polyline);
@@ -301,7 +301,7 @@ public class UserGoogleMapController implements Serializable{
             }
         } else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY){
             if(overlayCreateFilter.isCreateNetworkObcyPolyline()){
-                Polyline polyline = polylineBuilder.create(location,location.getDate());
+                Polyline polyline = polylineFactory.create(location,location.getDate());
                 polylines.add(polyline);
                 if(filterPolylineNetwork(OverlayUUIDConverter.uuidRaw(polyline.getId()))){
                     googleMapModelOutput.getPolylines().add(polyline);
@@ -543,36 +543,36 @@ public class UserGoogleMapController implements Serializable{
         return this.googleMapComponentVisible;
     }
 
-    public PolylineBuilder getPolylineBuilder() {
-        return polylineBuilder;
+    public PolylineFactory getPolylineFactory() {
+        return polylineFactory;
     }
 
-    public void setPolylineBuilder(PolylineBuilder polylineBuilder) {
-        this.polylineBuilder = polylineBuilder;
+    public void setPolylineFactory(PolylineFactory polylineFactory) {
+        this.polylineFactory = polylineFactory;
     }
 
-    public PolygonBuilder getPolygonBuilder() {
-        return polygonBuilder;
+    public PolygonFactory getPolygonFactory() {
+        return polygonFactory;
     }
 
-    public void setPolygonBuilder(PolygonBuilder polygonBuilder) {
-        this.polygonBuilder = polygonBuilder;
+    public void setPolygonFactory(PolygonFactory polygonFactory) {
+        this.polygonFactory = polygonFactory;
     }
 
-    public MarkerBuilder getMarkerBuilder() {
-        return markerBuilder;
+    public MarkerFactory getMarkerFactory() {
+        return markerFactory;
     }
 
-    public void setMarkerBuilder(MarkerBuilder markerBuilder) {
-        this.markerBuilder = markerBuilder;
+    public void setMarkerFactory(MarkerFactory markerFactory) {
+        this.markerFactory = markerFactory;
     }
 
-    public CircleBuilder getCircleBuilder() {
-        return circleBuilder;
+    public CircleFactory getCircleFactory() {
+        return circleFactory;
     }
 
-    public void setCircleBuilder(CircleBuilder circleBuilder) {
-        this.circleBuilder = circleBuilder;
+    public void setCircleFactory(CircleFactory circleFactory) {
+        this.circleFactory = circleFactory;
     }
 
     public LocalizerSession getLocalizerSession() {

@@ -1,4 +1,4 @@
-package com.pw.localizer.service.area.message;
+package com.pw.localizer.service.message.area;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -14,12 +14,11 @@ import com.pw.localizer.exception.AreaMialMessageException;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.enums.AreaFollows;
-import com.pw.localizer.serivce.qualifier.AreaMailMessage;
-import com.pw.localizer.service.area.message.AreaMessageService;
+import com.pw.localizer.qualifier.AreaMailMessage;
 
 @AreaMailMessage 
 @Stateless
-public class AreaMailMessageService implements AreaMessageService{
+public class AreaMailMessageService implements AreaMessageService {
 	@Resource(name = "java:jboss/mail/localizer")
 	private Session session;
 	

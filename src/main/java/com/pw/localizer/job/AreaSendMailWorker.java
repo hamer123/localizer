@@ -12,8 +12,8 @@ import com.pw.localizer.exception.AreaMialMessageException;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.repository.AreaEventGPSRepository;
 import com.pw.localizer.repository.AreaEventNetworkRepository;
-import com.pw.localizer.serivce.qualifier.AreaMailMessage;
-import com.pw.localizer.service.area.message.AreaMessageService;
+import com.pw.localizer.qualifier.AreaMailMessage;
+import com.pw.localizer.service.message.area.AreaMessageService;
 
 @Stateless
 public class AreaSendMailWorker {

@@ -12,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.google.map.DialogUserLocationGoogleMapController;
 import com.pw.localizer.google.map.UserComponentVisibility;
 import com.pw.localizer.google.map.UserGoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
@@ -39,7 +40,7 @@ import com.pw.localizer.repository.AreaRepository;
 import com.pw.localizer.repository.CellInfoMobileRepository;
 import com.pw.localizer.repository.UserRepository;
 import com.pw.localizer.repository.WifiInfoRepository;
-import com.pw.localizer.serivce.qualifier.DialogGMap;
+import com.pw.localizer.qualifier.DialogGMap;
 import com.pw.localizer.singleton.RestSessionManager;
 
 @ViewScoped
@@ -88,11 +89,11 @@ public class LocationController implements Serializable{
 	private UserComponentVisibility userComponentVisibility;
 	/** User to display his data in dialog */
 	private User userData;
-	/** User`avatar in action select overlay */
+	/** User`avatar in action select factory */
 	private Avatar userAvatar;
-	/** User`location in action select overlay */
+	/** User`location in action select factory */
 	private Location userLocation;
-	/** User`overlay in action select overlay*/
+	/** User`factory in action select factory*/
 	private Overlay userOverlay;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

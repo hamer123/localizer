@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.pw.localizer.overlay.PolylineBuilder;
+import com.pw.localizer.factory.PolylineFactory;
 import org.primefaces.model.map.Polyline;
 
 import com.pw.localizer.model.google.component.Route;
@@ -21,7 +21,7 @@ public class RouteManager {
 	 * */
 	public void add(String login, Location location){
 		if(location != null) {
-			Polyline polyline = new PolylineBuilder().create(location);
+			Polyline polyline = new PolylineFactory().create(location);
 			Route route = Route.onlyPolyline(polyline);
 			routes.put(login, route);
 		} else {

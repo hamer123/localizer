@@ -1,4 +1,4 @@
-package com.pw.localizer.overlay;
+package com.pw.localizer.factory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ import javax.ejb.Startup;
 
 @Singleton
 @Startup
-public class CircleBuilder implements Serializable{
-	private static CircleBuilder circleBuilder;
+public class CircleFactory implements Serializable{
+	private static CircleFactory circleFactory;
 	private String GPS_CIRCLE_COLOR;
 	private String NETWORK_NASZ_CIRCLE_COLOR;
 	private String NETWORK_OBCY_CIRCLE_COLOR;
@@ -38,7 +38,7 @@ public class CircleBuilder implements Serializable{
 		findProperties(propertiesReader);
 	}
 
-	private CircleBuilder(){}
+	private CircleFactory(){}
 
 	public List<Circle> createCircle(List<Location>locationList){
 		List<Circle>circleList = new ArrayList<Circle>();
@@ -79,7 +79,7 @@ public class CircleBuilder implements Serializable{
 		else if(type == Providers.NETWORK)
 			return chooseColorNetwork(location);
 		else
-			throw new IllegalStateException("[CircleBuilder] Nie znaleziono koloru dla providera " + type);
+			throw new IllegalStateException("[CircleFactory] Nie znaleziono koloru dla providera " + type);
 	}
 	
 	private String chooseColorNetwork(Location location){
@@ -90,7 +90,7 @@ public class CircleBuilder implements Serializable{
 		else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
 			return NETWORK_OBCY_CIRCLE_COLOR;
 		else
-			throw new IllegalStateException("[CircleBuilder] Nie znaleziono koloru dla Network Localization Services " + locationNetwork.getLocalizationServices());
+			throw new IllegalStateException("[CircleFactory] Nie znaleziono koloru dla Network Localization Services " + locationNetwork.getLocalizationServices());
 	}
 	
 	private String chooseStrokeColor(Location location){
@@ -101,7 +101,7 @@ public class CircleBuilder implements Serializable{
 		} else if(type == Providers.NETWORK){
 			return chooseStrokeColorNetwork(location);
 		} else {
-			throw new IllegalStateException("[CircleBuilder] Nie znaleziono stroke koloru dla providera " + type);
+			throw new IllegalStateException("[CircleFactory] Nie znaleziono stroke koloru dla providera " + type);
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class CircleBuilder implements Serializable{
 		else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
 			return NETWORK_OBCY_CIRCLE_STROKE_COLOR;
 		else
-			throw new IllegalStateException("[CircleBuilder] Nie znaleziono stroke koloru dla Network Localization Services " + locationNetwork.getLocalizationServices());
+			throw new IllegalStateException("[CircleFactory] Nie znaleziono stroke koloru dla Network Localization Services " + locationNetwork.getLocalizationServices());
 	}
 	
 	private void findCircleColor(PropertiesReader propertiesReader){

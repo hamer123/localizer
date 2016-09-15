@@ -1,4 +1,4 @@
-package com.pw.localizer.overlay;
+package com.pw.localizer.factory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,25 +17,25 @@ import javax.ejb.Startup;
 
 @Startup
 @Singleton
-public class PolygonBuilder implements Serializable {
-	private static PolygonBuilder polygonBuilder;
+public class PolygonFactory implements Serializable {
+	private static PolygonFactory polygonFactory;
 	private String POLYGON_STROKE_COLOR;
 	private String POLYGON_FILL_COLOR;
 	private double POLYGON_FILL_OPACITY;
 	private double POLYGON_STROKE_OPACITY;
 
-	public static PolygonBuilder getInstance(){
-		if(polygonBuilder == null){
-			synchronized (PolygonBuilder.class){
-				if(polygonBuilder == null)
-					polygonBuilder = new PolygonBuilder();
+	public static PolygonFactory getInstance(){
+		if(polygonFactory == null){
+			synchronized (PolygonFactory.class){
+				if(polygonFactory == null)
+					polygonFactory = new PolygonFactory();
 			}
 		}
 
-		return polygonBuilder;
+		return polygonFactory;
 	}
 
-	public PolygonBuilder(){
+	public PolygonFactory(){
 		PropertiesReader propertiesReader = new PropertiesReader("localizer");
 		findProperties(propertiesReader);
 	}

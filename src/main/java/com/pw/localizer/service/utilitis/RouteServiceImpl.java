@@ -8,7 +8,6 @@ import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.google.component.Route;
 
-@Stateless
 public class RouteServiceImpl implements RouteService{
 
 	private static final double EARTH_DARIUS_KM = 6378.137;

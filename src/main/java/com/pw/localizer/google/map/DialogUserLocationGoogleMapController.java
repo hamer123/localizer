@@ -1,9 +1,8 @@
-package com.pw.localizer.controller;
+package com.pw.localizer.google.map;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 
-import com.pw.localizer.google.map.GoogleMapController;
 import org.primefaces.model.map.Overlay;
 
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
@@ -13,7 +12,7 @@ import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.model.enums.Providers;
-import com.pw.localizer.serivce.qualifier.DialogGMap;
+import com.pw.localizer.qualifier.DialogGMap;
 
 @Named
 @Dependent
