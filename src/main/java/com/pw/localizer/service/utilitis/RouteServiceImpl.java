@@ -1,5 +1,6 @@
 package com.pw.localizer.service.utilitis;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,7 +9,7 @@ import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.google.component.Route;
 
-public class RouteServiceImpl implements RouteService{
+public class RouteServiceImpl implements RouteService, Serializable{
 
 	private static final double EARTH_DARIUS_KM = 6378.137;
 
