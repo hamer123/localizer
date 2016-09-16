@@ -17,6 +17,7 @@ import com.pw.localizer.google.map.UserComponentVisibility;
 import com.pw.localizer.google.map.UserGoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
+import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.model.enums.Providers;
@@ -101,13 +102,14 @@ public class LocationController implements Serializable{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@PostConstruct
-	public void init(){
+	public void postConstruct(){
 //		this.userGoogleMapController.
 //		activeAreaIds.addAll( areaRepository.findIdByProviderIdAndActive(localizerSession.getUser().getId(), true) );
 		showAreaEventMessage = true;
 	}
 
 	/** Add user to follow list */
+	@DurationLogging
 	public void onAddUserToFollow(){
 		try{
 			if(isUserArleadyOnList(login)){
@@ -125,6 +127,7 @@ public class LocationController implements Serializable{
 	}
 
 	/** Pobierz nowe lokacje sledzonych uzytknikow i zaaktualizuj google map */
+	@DurationLogging
 	public void onPoll(){
 		updateUserComponents();
 		displayAreaEventsMessages();

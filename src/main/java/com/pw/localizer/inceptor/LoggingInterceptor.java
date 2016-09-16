@@ -7,9 +7,11 @@ import javax.interceptor.InvocationContext;
 
 import org.jboss.logging.Logger;
 
+import java.io.Serializable;
+
 @Interceptor
 @Loggable
-public class LoggingInterceptor {
+public class LoggingInterceptor implements Serializable{
 	@Inject
 	private Logger logger;
 	

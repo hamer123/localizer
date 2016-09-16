@@ -2,6 +2,7 @@ package com.pw.localizer.singleton;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +13,7 @@ import javax.ejb.Startup;
 
 @Singleton
 @Startup
-public class ResourceDirectionStartup {
+public class ResourceDirectionStartup implements Serializable{
 	@PostConstruct
 	public void initializeResourcesDirections() throws IOException {
 		/** Zaladuj plik propertisow */

@@ -10,6 +10,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.model.entity.UserSetting;
+import com.pw.localizer.model.enums.LocalizationServices;
+import com.pw.localizer.model.session.LocalizerSession;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.map.Circle;
@@ -40,15 +43,24 @@ public class  GoogleMapController implements Serializable{
 	
 	@Inject 
 	private LocalizerProperties localizerProperties;
+	@Inject
+	private LocalizerSession localizerSession;
 	
 	@PostConstruct
 	public void postConstruct(){
 		GoogleMapModel googleMapModel = new GoogleMapModel();
 		this.googleMapModel = googleMapModel;
-		center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
-	    zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
 		googleMapType = GoogleMaps.HYBRID;
 		streetVisible = true;
+
+		if(localizerSession == null){
+			center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
+			zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
+		} else {
+			UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
+			this.zoom = userSetting.getgMapZoom();
+			this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongtitude());
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
