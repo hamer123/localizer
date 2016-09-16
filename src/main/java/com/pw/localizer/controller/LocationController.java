@@ -30,7 +30,6 @@ import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Overlay;
-import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.model.google.GoogleMapComponentVisible;
@@ -50,6 +49,9 @@ import com.pw.localizer.singleton.RestSessionManager;
 @Named(value="location")
 public class LocationController implements Serializable{
 	private static final long serialVersionUID = -5534429129019431383L;
+	static final String GOOGLE_MAP_STYLE_MIN_WIDTH = "googleMapMin";
+	static final String GOOGLE_MAP_STYLE_MAX_WIDTH = "googleMapMax";
+
 	@Inject @DialogGMap
 	private DialogUserLocationGoogleMapController googleMapSingleUserDialogController;
 	@Inject
@@ -78,17 +80,29 @@ public class LocationController implements Serializable{
 	private CircleFactory circleFactory;
 	@Inject
 	private Logger logger;
-	
-	static final String GOOGLE_MAP_STYLE_MIN_WIDTH = "googleMapMin";
-	static final String GOOGLE_MAP_STYLE_MAX_WIDTH = "googleMapMax";
-	
+
+	/** Style CSS for google map */
 	private String googleMapStyle = GOOGLE_MAP_STYLE_MIN_WIDTH;
+
+	/** Provided login */
 	private String login;
-	private Location selectLocation;
+
+	/** Selected Location for one of users from follow list */
+	private Location selectedFollowedUserLocation;
+
+	/** Choosen Location to display its details */
 	private Location locationToDisplayDetails;
+
+	/** Selected User to dipslay his components in panel */
 	private User selectUserForLastLocations;
+
+	/** Map of Login(key) and User(value)*/
 	private Map<String,User>users = new HashMap<>();
+
+	/** Should show Area event messages */
 	private boolean showAreaEventMessage;
+
+	/** Should update areas on polling */
 	private boolean updateUserAreasOnPolling;
 
 	/** User components visibility */
@@ -106,14 +120,21 @@ public class LocationController implements Serializable{
 	/** User`factory in action select factory*/
 	private Overlay userOverlay;
 
+	/** Session onwer active areas Id */
+	private List<Long> activeAreasId;
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	/**
+	 * Inicjalizacja poczatkowa
+     */
 	@PostConstruct
+	@DurationLogging
 	public void postConstruct(){
-//		this.userGoogleMapController
-//		activeAreaIds.addAll( areaRepository.findIdByProviderIdAndActive(localizerSession.getUser().getId(), true) );
+		//TODO PLIK COOKIES CO BEDZIE POSIADAL DOMYSLNE USTAWIENIA
+		activeAreasId = areaRepository.findIdByProviderIdAndActive(localizerSession.getUser().getId(), true);
 		showAreaEventMessage = true;
 	}
 
@@ -208,7 +229,7 @@ public class LocationController implements Serializable{
 	}
 	
 	public void onShowLocation(){
-		String center = GoogleMapModel.center(selectLocation);
+		String center = GoogleMapModel.center(selectedFollowedUserLocation);
 		userGoogleMapController.setCenter(center);
 	}
 	
@@ -333,10 +354,6 @@ public class LocationController implements Serializable{
 //		return areaEvents;
 //	}
 
-
-	
-
-
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////  GETTERS SETTERS  ///////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -392,12 +409,12 @@ public class LocationController implements Serializable{
 		this.selectUserForLastLocations = selectUser;
 	}
 
-	public Location getSelectLocation() {
-		return selectLocation;
+	public Location getSelectedFollowedUserLocation() {
+		return selectedFollowedUserLocation;
 	}
 
-	public void setSelectLocation(Location selectLocation) {
-		this.selectLocation = selectLocation;
+	public void setSelectedFollowedUserLocation(Location selectedFollowedUserLocation) {
+		this.selectedFollowedUserLocation = selectedFollowedUserLocation;
 	}
 
 	public String getGoogleMapStyle() {
