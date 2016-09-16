@@ -1,4 +1,4 @@
-package com.pw.localizer.rest.resource.location;
+package com.pw.localizer.restful.resource.location;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;

@@ -12,9 +12,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.pw.localizer.google.map.DialogUserLocationGoogleMapController;
-import com.pw.localizer.google.map.UserComponentVisibility;
-import com.pw.localizer.google.map.UserGoogleMapController;
+import com.pw.localizer.google.controller.DialogUserLocationGoogleMapController;
+import com.pw.localizer.model.google.UserComponentVisibility;
+import com.pw.localizer.google.controller.UserGoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import com.pw.localizer.inceptor.DurationLogging;
@@ -30,10 +30,9 @@ import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.model.google.map.GoogleMapComponentVisible;
-import com.pw.localizer.model.google.map.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMapComponentVisible;
+import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
-import com.pw.localizer.model.google.component.GoogleLocation;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.repository.AreaEventGPSRepository;
 import com.pw.localizer.repository.AreaEventNetworkRepository;
@@ -83,7 +82,7 @@ public class LocationController implements Serializable{
 	private Location locationToDisplayDetails;
 	private User selectUserForLastLocations;
 
-	private Map<String,User>users = new HashMap<String,User>();
+	private Map<String,User>users = new HashMap<>();
 	private boolean showAreaEventMessage;
 	private boolean updateUserAreasOnPolling;
 
@@ -103,14 +102,17 @@ public class LocationController implements Serializable{
 	
 	@PostConstruct
 	public void postConstruct(){
-//		this.userGoogleMapController.
+//		this.userGoogleMapController
 //		activeAreaIds.addAll( areaRepository.findIdByProviderIdAndActive(localizerSession.getUser().getId(), true) );
 		showAreaEventMessage = true;
 	}
 
-	/** Add user to follow list */
+	/**
+	 * Dodaj uzytkownika do listy sledzenia, stworz komponenty i zaaktualizuj google map
+	 * @param login
+     */
 	@DurationLogging
-	public void onAddUserToFollow(){
+	public void addUserToFollow(String login){
 		try{
 			if(isUserArleadyOnList(login)){
 				JsfMessageBuilder.errorMessage("Użytkownik jest już na liście");
@@ -126,14 +128,34 @@ public class LocationController implements Serializable{
 		}
 	}
 
-	/** Pobierz nowe lokacje sledzonych uzytknikow i zaaktualizuj google map */
+	/**
+	 * Pobierz nowe dane uzytkoniwkow i zaaktualizuj google map,
+	 * wyswietl zdarzenia w ramach obszarow sledzenia
+     */
 	@DurationLogging
-	public void onPoll(){
+	public void poll(){
 		updateUserComponents();
 		displayAreaEventsMessages();
 	}
 
-	/** Wyswietl informacje w ramach zdarzen dla aktywnych aren sledzenia uzytkownikwo */
+	/**
+	 * Usun uzytkownika z listy sledzenia i google map
+	 * @param user
+     */
+	public void removeUserFromFollow(User user){
+		try{
+			users.remove(user.getLogin());
+			userGoogleMapController.remove(user.getLogin());
+			JsfMessageBuilder.infoMessage("Udało się usunąć uzytkownika z listy śledzenia");
+		} catch(Exception e){
+			JsfMessageBuilder.errorMessage("Nie udało się usunąć uzytkownika z listy śledzenia");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Wyswietl informacje w ramach zdarzen dla aktywnych aren sledzenia uzytkownikow
+     */
 	private void displayAreaEventsMessages(){
 //		if(isShowAreaEventMessage()) {
 //			List<AreaEvent> areaEvents = checkAreaEvent();
@@ -142,7 +164,7 @@ public class LocationController implements Serializable{
 //		}
 	}
 
-	/** Aktualizuje dane uzytkoniwka i google map */
+	/** Aktualizuje dane uzytkoniwka i google controller */
 	private void updateUserComponents(){
 		try{
 			for(String login : users.keySet()) {
@@ -156,7 +178,7 @@ public class LocationController implements Serializable{
 				}
 			}
 		} catch(Exception e){
-			JsfMessageBuilder.errorMessage("Nie udało się odnowić lokalizacji i zaktualizowac google map");
+			JsfMessageBuilder.errorMessage("Nie udało się odnowić lokalizacji i zaktualizowac google controller");
 			e.printStackTrace();
 		}
 	}
@@ -173,21 +195,6 @@ public class LocationController implements Serializable{
 		User user = this.users.get(login);
 		this.userService.getUserAreasFetchAreaPoints(user.getId());
 		return user;
-	}
-
-	public void onRemoveUserFromFollow(User user){
-		try{
-			users.remove(user.getLogin());
-			userGoogleMapController.remove(user.getLogin());
-			JsfMessageBuilder.infoMessage("Udało się usunąć uzytkownika z listy śledzenia");
-		} catch(Exception e){
-			JsfMessageBuilder.errorMessage("Nie udało się usunąć uzytkownika z listy śledzenia");
-			e.printStackTrace();
-		}
-	}
-	
-	public void onChangeSetting(){
-		if(!users.isEmpty()); //tODO
 	}
 	
 	public void onShowLocation(){
@@ -239,16 +246,6 @@ public class LocationController implements Serializable{
 	
 	public void onShowOnlineUserLastLocations(String login){
 		User user = userRepository.findByLogin(login);
-		//TODO
-		List<GoogleLocation> googleLocations = null;//googleMapUserComponentService.lastLocations(user, GoogleMapComponentVisible.NO_POLYGON);
-		
-		googleMapSingleUserDialogController.clear();
-		
-		for(GoogleLocation googleLocation : googleLocations)
-			googleMapSingleUserDialogController.addOverlay(googleLocation.overlays());
-		
-		if(!googleLocations.isEmpty())
-			googleMapSingleUserDialogController.setCenterIfLocationExist(googleLocations.get(0).getMarker());
 	}
 
 	public void onClickUserToDisplayData(User user){
@@ -299,18 +296,6 @@ public class LocationController implements Serializable{
 				     .filter(s -> !(filter.contains(s)))
 				     .collect(Collectors.toList());
 	}
-
-	List<Polygon> createPolygon(User user){
-		List<Polygon>polygons = new ArrayList<>();
-		
-		for(Area area : user.getAreas()){
-			//TODO
-			Polygon polygon = null; // googleMapUserComponentService.polygon(area, googleMapVisible);
-			if(polygon != null)
-				polygons.add(polygon);
-			}
-		return polygons;
-	}
 	
 //	List<AreaEvent> checkAreaEvent(){
 //		List<AreaEvent>areaEvents = new ArrayList<>();
@@ -322,29 +307,33 @@ public class LocationController implements Serializable{
 //		return areaEvents;
 //	}
 
-	public List<String> usersOnline(){
-		return restSessionManager.getUserOnlineLogins();
-	}
+
 	
-	public List<String>logins(){
-		return users.values()
-				    .stream()
-		            .map(u -> u.getLogin())
-		            .collect(Collectors.toList());
-	}
-	
-	public List<Location> selectedUserLocations(){
-		List<Location>locations = new ArrayList<Location>();
-		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationGPS());
-		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworkNaszaUsluga());
-		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworObcaUsluga());	
-		return locations;
-	}
+
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////  GETTERS SETTERS  ///////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	public List<String> usersOnline(){
+		return restSessionManager.getUserOnlineLogins();
+	}
+
+	public List<String>logins(){
+		return users.values()
+				.stream()
+				.map(u -> u.getLogin())
+				.collect(Collectors.toList());
+	}
+
+	public List<Location> selectedUserLastLocations(){
+		List<Location>locations = new ArrayList<Location>();
+		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationGPS());
+		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworkNaszaUsluga());
+		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworObcaUsluga());
+		return locations;
+	}
+
 	public LocalizationServices getLocalizationServices(Location location){
 		if(location instanceof LocationNetwork)
 			return ( (LocationNetwork)location ).getLocalizationServices();
@@ -541,5 +530,13 @@ public class LocationController implements Serializable{
 
 	public String getUserAvatarUUID(){
 		return userAvatar == null ? "" : userAvatar.getUuid();
+	}
+
+	public boolean isUpdateUserAreasOnPolling() {
+		return updateUserAreasOnPolling;
+	}
+
+	public void setUpdateUserAreasOnPolling(boolean updateUserAreasOnPolling) {
+		this.updateUserAreasOnPolling = updateUserAreasOnPolling;
 	}
 }

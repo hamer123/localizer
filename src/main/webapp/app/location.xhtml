@@ -20,7 +20,7 @@
 	  <p:growl id="growl"/>
 	  
 	  <h:form id="poll">
-        <p:poll interval="60" listener="#{location.onPoll}" 
+        <p:poll interval="60" listener="#{location.poll}"
                 update=":#{p:component('gmap')} :#{p:component('usersOnline')} :#{p:component('daneUser')} :#{p:component('growl')}" />
       </h:form>
    
@@ -30,7 +30,8 @@
                 model="#{userGoogleMap.googleMapModelOutput}"
                 styleClass="#{location.googleMapStyle}">
           <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
-          <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}" update="growl"/>
+          <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}"
+                  update=":#{p:component('growl')} :#{p:component('gmap')}"/>
           <ui:insert>
             <ui:include src="/WEB-INF/views/location/gmapInfoWindows.xhtml"/>
           </ui:insert>
@@ -55,6 +56,7 @@
       <ui:insert>
         <ui:include src="/WEB-INF/views/location/userDataDialog.xhtml" />
         <ui:include src="/WEB-INF/views/location/userViewSettingDialog.xhtml"/>
+        <ui:include src="/WEB-INF/views/location/userLastLocationDialog.xhtml"/>
       </ui:insert>
       <lokalizator:detailsDialog location="#{location.locationToDisplayDetails}"/>
       

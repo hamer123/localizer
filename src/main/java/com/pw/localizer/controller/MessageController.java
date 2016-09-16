@@ -12,14 +12,14 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.pw.localizer.google.map.GoogleMapController;
+import com.pw.localizer.google.controller.GoogleMapController;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolygonFactory;
-import com.pw.localizer.model.google.map.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;

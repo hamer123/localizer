@@ -12,22 +12,25 @@
             <p:panelGrid columns="2" layout="grid">
                 <p:panel header="#{msg['map']}">
                     <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel for="console" value="Typ mapy" />
-                    <p:selectOneMenu id="console" value="#{userGoogleMap.googleMapType}" style="width:125px">
-                        <p:ajax update=":gmap" />
-                        <f:selectItem itemLabel="Hybrid"   itemValue="HYBRID" />
-                        <f:selectItem itemLabel="Terrain"  itemValue="TERRAIN" />
-                        <f:selectItem itemLabel="Satelite" itemValue="SATELLITE" />
-                        <f:selectItem itemLabel="Roadmap"  itemValue="ROADMAP" />
-                    </p:selectOneMenu>
+                        <p:outputLabel for="console" value="Typ mapy" />
+                        <p:selectOneMenu id="console" value="#{userGoogleMap.googleMapType}" style="width:125px">
+                            <p:ajax update=":gmap" />
+                            <f:selectItem itemLabel="Hybrid"   itemValue="HYBRID" />
+                            <f:selectItem itemLabel="Terrain"  itemValue="TERRAIN" />
+                            <f:selectItem itemLabel="Satelite" itemValue="SATELLITE" />
+                            <f:selectItem itemLabel="Roadmap"  itemValue="ROADMAP" />
+                        </p:selectOneMenu>
 
-                    <p:outputLabel for="check" value="Pokaz ulice" />
-                    <p:selectBooleanCheckbox id="check" value="#{userGoogleMap.streetVisible}">
-                        <p:ajax update=":gmap" />
-                    </p:selectBooleanCheckbox>
+                        <p:outputLabel for="check" value="Pokaz ulice" />
+                        <p:selectBooleanCheckbox id="check" value="#{userGoogleMap.streetVisible}">
+                            <p:ajax update=":gmap" />
+                        </p:selectBooleanCheckbox>
 
-                    <p:outputLabel for="area_event" value="Powiadomienia o sledzeniu" />
-                    <p:selectBooleanCheckbox id="area_event" value="#{location.showAreaEventMessage}"/>
+                        <p:outputLabel for="area_event" value="Powiadomienia o sledzeniu" />
+                        <p:selectBooleanCheckbox id="area_event" value="#{location.showAreaEventMessage}"/>
+
+                        <p:outputLabel value="#{msg['update.areas.on.refresh']}"/>
+                        <p:selectBooleanCheckbox value="#{location.updateUserAreasOnPolling}"/>
                     </h:panelGrid>
                 </p:panel>
 

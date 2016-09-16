@@ -1,4 +1,4 @@
-package com.pw.localizer.model.google.map;
+package com.pw.localizer.model.google;
 
 public class GoogleMapComponentVisible {
 	

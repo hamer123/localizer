@@ -1,4 +1,4 @@
-package com.pw.localizer.google.map;
+package com.pw.localizer.google.controller;
 
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
@@ -11,8 +11,10 @@ import com.pw.localizer.model.enums.GoogleMaps;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.model.enums.Providers;
-import com.pw.localizer.model.google.map.GoogleMapComponentVisible;
-import com.pw.localizer.model.google.map.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMapComponentVisible;
+import com.pw.localizer.model.google.GoogleMapModel;
+import com.pw.localizer.model.google.OverlayCreateFilter;
+import com.pw.localizer.model.google.UserComponentVisibility;
 import com.pw.localizer.model.session.LocalizerSession;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.map.*;

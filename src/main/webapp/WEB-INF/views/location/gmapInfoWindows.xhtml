@@ -5,7 +5,7 @@
                  xmlns:p="http://primefaces.org/ui"
                  xmlns:o="http://omnifaces.org/ui">
 
-    <p:gmapInfoWindow rendered="#{location.userOverlay.class.name eq 'org.primefaces.model.map.Marker'}">
+    <p:gmapInfoWindow >
         <p:outputPanel style="text-align: center; display: block; margin: auto">
             <h:panelGrid columns="1" style="margin: 0 auto;">
                 <o:graphicImage value="#{avatarApplicationService.content(location.userAvatarUUID)}"

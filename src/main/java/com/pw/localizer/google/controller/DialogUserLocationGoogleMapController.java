@@ -1,4 +1,4 @@
-package com.pw.localizer.google.map;
+package com.pw.localizer.google.controller;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
@@ -7,7 +7,7 @@ import org.primefaces.model.map.Overlay;
 
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator.OverlayIdentyfikatorBuilder;
-import com.pw.localizer.model.google.map.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Overlays;

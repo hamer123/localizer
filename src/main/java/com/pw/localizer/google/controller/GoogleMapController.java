@@ -1,4 +1,4 @@
-package com.pw.localizer.google.map;
+package com.pw.localizer.google.controller;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,12 +6,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Default;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.model.entity.UserSetting;
-import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.session.LocalizerSession;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
@@ -22,7 +20,7 @@ import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
-import com.pw.localizer.model.google.map.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.GoogleMaps;

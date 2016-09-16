@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.pw.localizer.google.map.GoogleMapController;
+import com.pw.localizer.google.controller.GoogleMapController;
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.model.enums.ImageTypes;
 import com.pw.localizer.model.upload.ImageFileUpload;

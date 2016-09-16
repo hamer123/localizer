@@ -1,4 +1,4 @@
-package com.pw.localizer.google.map;
+package com.pw.localizer.model.google;
 
 /**
  * Created by wereckip on 08.09.2016.

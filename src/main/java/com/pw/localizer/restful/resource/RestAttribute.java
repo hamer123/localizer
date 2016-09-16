@@ -1,4 +1,4 @@
-package com.pw.localizer.rest.resource;
+package com.pw.localizer.restful.resource;
 
 /**
  * Created by Patryk on 2016-08-27.

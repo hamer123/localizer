@@ -1,7 +1,7 @@
 package com.pw.localizer.security.restful;
 import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.enums.Roles;
-import com.pw.localizer.rest.resource.RestAttribute;
+import com.pw.localizer.restful.resource.RestAttribute;
 import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;

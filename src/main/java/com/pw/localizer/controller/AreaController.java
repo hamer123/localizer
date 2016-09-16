@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import com.pw.localizer.google.map.GoogleMapController;
+import com.pw.localizer.google.controller.GoogleMapController;
 import org.jboss.logging.Logger;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.model.map.LatLng;
@@ -20,7 +20,7 @@ import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.factory.PolygonFactory;
-import com.pw.localizer.model.google.map.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaMessageMail;

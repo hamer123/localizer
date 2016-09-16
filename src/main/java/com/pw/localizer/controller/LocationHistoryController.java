@@ -10,12 +10,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.pw.localizer.google.map.GoogleMapController;
+import com.pw.localizer.google.controller.GoogleMapController;
 import org.jboss.logging.Logger;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.model.google.map.GoogleMapModel;
-import com.pw.localizer.model.google.component.Route;
+import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
@@ -48,8 +47,7 @@ public class LocationHistoryController implements Serializable{
 	private String login;
 	private Providers provider;
 	private LocalizationServices localizationServices;
-	
-	private Route route;
+
 	private Location location;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,8 +63,6 @@ public class LocationHistoryController implements Serializable{
 			}
 
 			//TODO
-			route = null;
-			googleMapController.replace(route.overlays());
 		} catch(Exception e){
 			JsfMessageBuilder.errorMessage("Nie mozna utworzyc sciezki");
 			logger.error(e);
@@ -82,9 +78,10 @@ public class LocationHistoryController implements Serializable{
 	}
 	
 	public void onCalculateRouteLenght(){
-		double lenghtDouble = routeService.calculateLenghtMeters(route);
-		String lenght = new DecimalFormat("#.##").format(lenghtDouble);
-		JsfMessageBuilder.infoMessage(lenght + " meters");
+//		double lenghtDouble = routeService.calculateLenghtMeters(route);
+//		String lenght = new DecimalFormat("#.##").format(lenghtDouble);
+//		JsfMessageBuilder.infoMessage(lenght + " meters");
+		//TODO
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,24 +118,11 @@ public class LocationHistoryController implements Serializable{
 	private void notEnoughLocation(){
 		JsfMessageBuilder.errorMessage("Nie mozna utworzyc sciezki, za malo lokacji");
 		googleMapController.clear();
-		route = null;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   GETTERS SETTERS    /////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	@SuppressWarnings("unchecked")
-	public List<Location> getLocations() {
-		if(route != null)
-			return (List<Location>) route.getPolyline().getData();
-		
-		return new ArrayList<>();
-	}
-	
-	public Route getRoute() {
-		return route;
-	}
 
 	public Providers[] providers(){
 		return Providers.values();
@@ -247,9 +231,5 @@ public class LocationHistoryController implements Serializable{
 
 	public void setGoogleMapController(GoogleMapController googleMapController) {
 		this.googleMapController = googleMapController;
-	}
-
-	public void setRoute(Route route) {
-		this.route = route;
 	}
 }

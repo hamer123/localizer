@@ -1,4 +1,4 @@
-package com.pw.localizer.rest.resource.security;
+package com.pw.localizer.restful.resource.security;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;

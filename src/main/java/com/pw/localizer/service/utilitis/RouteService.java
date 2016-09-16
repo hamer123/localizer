@@ -1,10 +1,8 @@
 package com.pw.localizer.service.utilitis;
 
-import javax.ejb.Local;
-
-import com.pw.localizer.model.google.component.Route;
+import org.primefaces.model.map.Polyline;
 
 public interface RouteService {
 
-	double calculateLenghtMeters(Route route);
+	double calculateLenghtMeters(Polyline polyline);
 }
