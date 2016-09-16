@@ -5,7 +5,7 @@
                  xmlns:p="http://primefaces.org/ui"
                  xmlns:o="http://omnifaces.org/ui">
 
-    <p:gmapInfoWindow id="gmapInfoWindow" rendered="true">
+    <p:gmapInfoWindow rendered="#{location.userOverlay.class.name == 'org.primefaces.model.map.Marker'}">
         <p:outputPanel style="text-align: center; display: block; margin: auto">
             <h:panelGrid columns="1" style="margin: 0 auto;">
                 <o:graphicImage value="#{avatarApplicationService.content(location.userAvatarUUID)}"
@@ -17,6 +17,14 @@
                 <h:outputText value="#{location.userLocation.longitude}" />
                 <h:outputText value="#{location.userLocation.address.city}" />
                 <h:outputText value="#{location.userLocation.address.street}" />
+            </h:panelGrid>
+        </p:outputPanel>
+    </p:gmapInfoWindow>
+
+    <p:gmapInfoWindow rendered="#{location.userOverlay.class.name == 'org.primefaces.model.map.Circle'}">
+        <p:outputPanel style="text-align: center; display: block; margin: auto">
+            <h:panelGrid columns="1" style="margin: 0 auto;">
+                <h:outputText value="#{location.userLocation.accuracy}" />
             </h:panelGrid>
         </p:outputPanel>
     </p:gmapInfoWindow>
