@@ -10,7 +10,7 @@
               <p:panel header="#{msg['add.user.to.follow']}" id="addUserToFollowPanel">
                  <h:form>
                     <p:row>
-                       <p:outputLabel for="findUserToFollow" value="#{msg['find.user']}" styleClass="components"/>
+                       <p:outputLabel for="findUserByLogin" value="#{msg['find.user']}" styleClass="components"/>
                         <c:choose>
                             <c:when test="#{localizerSession.isInRole('ADMIN')}">
                                 <p:autoComplete id="findUserByLogin" value="#{location.login}" completeMethod="#{location.onAutocompleteLoginByAdmin}"
