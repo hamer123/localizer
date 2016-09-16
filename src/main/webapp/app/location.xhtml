@@ -23,20 +23,23 @@
         <p:poll interval="60" listener="#{location.poll}"
                 update=":#{p:component('gmap')} :#{p:component('usersOnline')} :#{p:component('daneUser')} :#{p:component('growl')}" />
       </h:form>
-   
-      <p:outputPanel id="gmap_follow" >
-        <p:gmap id="gmap" center="#{userGoogleMap.center}" zoom="#{userGoogleMap.zoom}"
-                type="#{userGoogleMap.googleMapType}" streetView="#{userGoogleMap.streetVisible}"
-                model="#{userGoogleMap.googleMapModelOutput}"
-                styleClass="#{location.googleMapStyle}">
-          <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
-          <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}"
-                  update=":#{p:component('growl')} :#{p:component('gmap')}"/>
-          <ui:insert>
-            <ui:include src="/WEB-INF/views/location/gmapInfoWindows.xhtml"/>
-          </ui:insert>
-        </p:gmap>
-      </p:outputPanel>
+
+
+      <h:form id="gmap-form">
+        <p:outputPanel id="gmap_follow" >
+          <p:gmap id="gmap" center="#{userGoogleMap.center}" zoom="#{userGoogleMap.zoom}"
+                  type="#{userGoogleMap.googleMapType}" streetView="#{userGoogleMap.streetVisible}"
+                  model="#{userGoogleMap.googleMapModelOutput}"
+                  styleClass="#{location.googleMapStyle}">
+            <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
+            <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}"/>
+            <ui:insert>
+              <ui:include src="/WEB-INF/views/location/gmapInfoWindows.xhtml"/>
+            </ui:insert>
+          </p:gmap>
+        </p:outputPanel>
+      </h:form>
+
       <p:panel id="mainPanel" header="#{msg['panel.followed.users.and.data']}" toggleable="true" toggleSpeed="500" widgetVar="panel">
       <p:ajax event="toggle" listener="#{location.onToggleMainPanel}" update=":#{p:component('gmap')}"/>
       <p:tabView>

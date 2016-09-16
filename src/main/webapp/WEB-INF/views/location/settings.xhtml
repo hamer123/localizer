@@ -14,7 +14,7 @@
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel for="console" value="Typ mapy" />
                         <p:selectOneMenu id="console" value="#{userGoogleMap.googleMapType}" style="width:125px">
-                            <p:ajax update=":gmap" />
+                            <p:ajax update=":#{p:component('gmap')}" />
                             <f:selectItem itemLabel="Hybrid"   itemValue="HYBRID" />
                             <f:selectItem itemLabel="Terrain"  itemValue="TERRAIN" />
                             <f:selectItem itemLabel="Satelite" itemValue="SATELLITE" />
@@ -23,7 +23,7 @@
 
                         <p:outputLabel for="check" value="Pokaz ulice" />
                         <p:selectBooleanCheckbox id="check" value="#{userGoogleMap.streetVisible}">
-                            <p:ajax update=":gmap" />
+                            <p:ajax update=":#{p:component('gmap')}" />
                         </p:selectBooleanCheckbox>
 
                         <p:outputLabel for="area_event" value="Powiadomienia o sledzeniu" />

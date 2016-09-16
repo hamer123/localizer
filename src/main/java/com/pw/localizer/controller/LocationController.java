@@ -12,6 +12,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.factory.CircleFactory;
+import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.google.controller.DialogUserLocationGoogleMapController;
 import com.pw.localizer.model.google.UserComponentVisibility;
 import com.pw.localizer.google.controller.UserGoogleMapController;
@@ -25,6 +27,7 @@ import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
@@ -70,29 +73,36 @@ public class LocationController implements Serializable{
 	@Inject
 	private UserService userService;
 	@Inject
+	private MarkerFactory markerFactory;
+	@Inject
+	private CircleFactory circleFactory;
+	@Inject
 	private Logger logger;
 	
 	static final String GOOGLE_MAP_STYLE_MIN_WIDTH = "googleMapMin";
 	static final String GOOGLE_MAP_STYLE_MAX_WIDTH = "googleMapMax";
-	static final long ONE_MINUTE = 1000 * 60;
 	
 	private String googleMapStyle = GOOGLE_MAP_STYLE_MIN_WIDTH;
-	private String login = "";
+	private String login;
 	private Location selectLocation;
 	private Location locationToDisplayDetails;
 	private User selectUserForLastLocations;
-
 	private Map<String,User>users = new HashMap<>();
 	private boolean showAreaEventMessage;
 	private boolean updateUserAreasOnPolling;
 
+	/** User components visibility */
 	private UserComponentVisibility userComponentVisibility;
+
 	/** User to display his data in dialog */
 	private User userData;
+
 	/** User`avatar in action select factory */
 	private Avatar userAvatar;
+
 	/** User`location in action select factory */
 	private Location userLocation;
+
 	/** User`factory in action select factory*/
 	private Overlay userOverlay;
 
@@ -246,6 +256,22 @@ public class LocationController implements Serializable{
 	
 	public void onShowOnlineUserLastLocations(String login){
 		User user = userRepository.findByLogin(login);
+
+		Location location = user.getLastLocationGPS();
+		addLocationToSingleUserGMap(location);
+		location = user.getLastLocationNetworkNaszaUsluga();
+		addLocationToSingleUserGMap(location);
+		location = user.getLastLocationNetworObcaUsluga();
+		addLocationToSingleUserGMap(location);
+	}
+
+	private void addLocationToSingleUserGMap(Location location){
+		if(location != null){
+			Marker marker = markerFactory.createMarker(location);
+			Circle circle = circleFactory.createCircle(location);
+			this.googleMapSingleUserDialogController.addOverlay(marker);
+			this.googleMapSingleUserDialogController.addOverlay(circle);
+		}
 	}
 
 	public void onClickUserToDisplayData(User user){
@@ -326,11 +352,13 @@ public class LocationController implements Serializable{
 				.collect(Collectors.toList());
 	}
 
-	public List<Location> selectedUserLastLocations(){
+	public List<Location> getSelectedUserLastLocations(){
 		List<Location>locations = new ArrayList<Location>();
-		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationGPS());
-		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworkNaszaUsluga());
-		addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworObcaUsluga());
+		if(this.selectUserForLastLocations != null){
+			addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationGPS());
+			addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworkNaszaUsluga());
+			addToListIfNotNull(locations, selectUserForLastLocations.getLastLocationNetworObcaUsluga());
+		}
 		return locations;
 	}
 

@@ -65,7 +65,7 @@
               <h:panelGrid columns="1" layout="grid">
                <p:panel header="#{msg['last.location']}">
                 <h:form>
-                 <p:dataTable id="ostatnieLokacje" var="cur_location" value="#{location.selectedUserLastLocations()}"
+                 <p:dataTable id="ostatnieLokacje" var="cur_location" value="#{location.selectedUserLastLocations}"
                               selectionMode="single" selection="#{location.selectLocation}" 
                               rowKey="#{cur_location.providerType} #{cur_location.id}">
                    <p:ajax event="rowSelect" listener="#{location.onShowLocation}" update=":#{p:component('gmap')}" />
