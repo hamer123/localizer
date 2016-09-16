@@ -192,7 +192,12 @@ public class LocationController implements Serializable{
 		userGoogleMapController.setCenter(center);
 	}
 	
-	public List<String> onAutocompleteLogin(String login){
+	public List<String> onAutocompleteLoginByAdmin(String login){
+		List<String>logins = userRepository.findLoginByLoginLike(login);
+		return filterLogins(logins);
+	}
+
+	public List<String> onAutoCompleteLoginByUser(String login){
 		List<String>logins = userRepository.findLoginByLoginLike(login);
 		return filterLogins(logins);
 	}

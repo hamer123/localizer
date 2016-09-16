@@ -7,49 +7,52 @@
       
 
            <p:panelGrid columns="2" layout="grid">
-              <p:panel header="Dodaj do sledzenia" id="addUserToFollowPanel">
+              <p:panel header="#{msg['add.user.to.follow']}" id="addUserToFollowPanel">
                  <h:form>
                     <p:row>
-                       <p:outputLabel for="findUserToFollow" value="Znajdz uzytkownika" styleClass="components"/>
+                       <p:outputLabel for="findUserToFollow" value="#{msg['find.user']}" styleClass="components"/>
                         <c:choose>
                             <c:when test="#{localizerSession.isInRole('ADMIN')}">
-                                <p:autoComplete id="findUserToFollow" value="#{location.login}" completeMethod="#{location.onAutocompleteLogin}"
+                                <p:autoComplete id="findUserByLogin" value="#{location.login}" completeMethod="#{location.onAutocompleteLoginByAdmin}"
                                                 forceSelection="true" styleClass="components" required="true"/>
                             </c:when>
                             <c:otherwise>
-                                <p:outputLabel value="Nie jestes adminem?"/>
-                                <p:autoComplete id="findUserToFollow" value="#{location.login}" completeMethod="#{location.onAutocompleteLogin}"
+                                <p:outputLabel value="Nie jestes adminem"/>
+                                <p:autoComplete id="findUserByLogin" value="#{location.login}" completeMethod="#{location.onAutoCompleteLoginByUser}"
                                                 forceSelection="true" styleClass="components" required="true"/>
                             </c:otherwise>
                         </c:choose>
-                       <p:commandButton value="Dodaj do sledzenia" styleClass="components" actionListener="#{location.onAddUserToFollow}" 
+                       <p:commandButton value="#{msg['add.to.follow']}" styleClass="components" actionListener="#{location.onAddUserToFollow}"
                                         update=":#{p:component('followUsersTable')} :#{p:component('growl')} :#{p:component('gmap')}"/>
                     </p:row>
                     <p:dataTable id="followUsersTable" var="user" value="#{location.users.values()}" rows="5" paginator="true" style="margin-top: 15px; align-content: center;">
-                       <p:column headerText="Login" style="text-align:center !important;">
-                           <p:commandButton value="#{user.login}" actionListener="#{location.onClickUserToDisplayData(user)}" oncomplete="PF('userDataDialog').show()"
-                                            update=":#{p:component('userData')}" title="Pokaz dane uzytkownika"/>
+                       <p:column headerText="#{msg['login']}" style="text-align:center !important;">
+                           <p:commandButton value="#{user.login}" actionListener="#{location.onClickUserToDisplayData(user)}"
+                                            oncomplete="PF('userDataDialog').show()"
+                                            update=":#{p:component('userData')}" title="#{msg['show.user.data']}"/>
                        </p:column>
-                       <p:column headerText="Pokaz lokacje" style="text-align:center !important;">
-                           <p:commandButton icon="ui-icon-search" title="Pokaz" actionListener="#{location.onShowUserLastLocations(user)}" 
-                                            update=":#{p:component('daneUser')}" value="Pokaz"/>
+                       <p:column headerText="#{msg['locations']}" style="text-align:center !important;">
+                           <p:commandButton icon="ui-icon-search" title="#{msg['show.last.user.locations']}" actionListener="#{location.onShowUserLastLocations(user)}"
+                                            update=":#{p:component('daneUser')}" value="#{msg['show']}"/>
                        </p:column>
-                       <p:column headerText="Widoczność" style="text-align:center !important;">
-                         <p:commandButton value="Edytuj" icon="fa fa-edit" title="Edytuj ustawienia widoku dla uzytkownika" oncomplete="PF('userViewSettingDialog').show()"
+                       <p:column headerText="#{msg['visibility']}" style="text-align:center !important;">
+                         <p:commandButton value="Edytuj" icon="fa fa-edit" title="#{msg['edit.user.components.visibility']}"
+                                          oncomplete="PF('userViewSettingDialog').show()"
                                           actionListener="#{location.selectUserComponentVisibility(user)}" update=":#{p:component('userViewSetting')}"/>
                        </p:column>
-                       <p:column headerText="Usuń" style="text-align:center !important;">
-                          <p:commandButton  icon="fa fa-fw fa-remove" actionListener="#{location.onRemoveUserFromFollow(user)}" title="usun uzytkownika z listy sledzenia" value="Usuń"
+                       <p:column headerText="#{msg['remove']}" style="text-align:center !important;">
+                          <p:commandButton  icon="fa fa-fw fa-remove" actionListener="#{location.onRemoveUserFromFollow(user)}"
+                                            title="#{msg['remove.user.from.follow.list']}" value="#{msg['remove']}"
                                             update=":#{p:component('gmap')} :#{p:component('daneUser')} :#{p:component('followUsersTable')} :#{p:component('growl')}"/>
                        </p:column>
                     </p:dataTable>
                  </h:form>
               </p:panel>
-              <p:panel header="Uzytkownicy online">
+              <p:panel header="#{msg['users.online']}">
                  <p:dataList id="usersOnline" var="login" value="#{location.usersOnline()}" rows="10" paginator="true" type="unordered" itemType="none">
                    <h:panelGrid columns="2">
-                     <p:commandButton actionListener="#{location.onShowOnlineUserLastLocations(login)}" oncomplete="PF('gmapDialogSingleUser').show();" title="Zobacz ostatnie lokacje"
-                                      update=":#{p:component('googleMapDialog')}" icon="ui-icon-search"/>
+                     <p:commandButton actionListener="#{location.onShowOnlineUserLastLocations(login)}" oncomplete="PF('gmapDialogSingleUser').show();"
+                                      title="#{msg['show.on.map.last.user.locations']}" update=":#{p:component('googleMapDialog')}" icon="ui-icon-search"/>
                      <h:outputText value="#{login}"/>
                    </h:panelGrid>
                  </p:dataList>
@@ -58,9 +61,9 @@
    
 
            <p:outputPanel id="daneUser">
-             <p:panel header="Dane" rendered="#{location.selectUser != null}" closable="true" >
+             <p:panel header="#{msg['data']}" rendered="#{location.selectUser != null}" closable="true" >
               <h:panelGrid columns="1" layout="grid">
-               <p:panel header="Ostatnie lokacje">
+               <p:panel header="#{msg['last.location']}">
                 <h:form>
                  <p:dataTable id="ostatnieLokacje" var="cur_location" value="#{location.selectedUserLocations()}" 
                               selectionMode="single" selection="#{location.selectLocation}" 
@@ -71,51 +74,51 @@
                      <h:outputText value="#{cur_location.providerType}"/>
                    </p:column>
                    
-                   <p:column headerText="Usluga lokalizacji">
+                   <p:column headerText="#{msg['localizer.service']}">
                      <h:outputText value="#{location.getLocalizationServices(cur_location)}" rendered="#{cur_location.providerType == 'NETWORK'}"/>
                    </p:column>
                    
-                   <p:column headerText="Data">
+                   <p:column headerText="#{msg['date']}">
                      <h:outputText value="#{cur_location.date}" />
                    </p:column>
                    
-                   <p:column headerText="latitude">
+                   <p:column headerText="Latitude">
                      <h:outputText value="#{cur_location.latitude}" />
                    </p:column>
                    
-                   <p:column headerText="longitude">
+                   <p:column headerText="Longitude">
                      <h:outputText value="#{cur_location.longitude}" />
                    </p:column>
                    
-                   <p:column headerText="Miasto">
+                   <p:column headerText="#{msg['city']}">
                      <h:outputText value="#{cur_location.address.city}" />
                    </p:column>
                    
-                   <p:column headerText="Ulica">
+                   <p:column headerText="#{msg['street']}">
                      <h:outputText value="#{cur_location.address.street}" />
                    </p:column>
                    
-                   <p:column headerText="Szczegoly">
-                     <p:commandButton value="POKAZ" actionListener="#{location.onSetLocationToDipslayDetails(cur_location)}" 
+                   <p:column headerText="#{msg['details']}">
+                     <p:commandButton value="#{msg['show']}" actionListener="#{location.onSetLocationToDipslayDetails(cur_location)}"
                                       oncomplete="PF('LocationDetails').show();" update=":#{p:component('details')}"
                                       disabled="#{cur_location.providerType != 'NETWORK'}"/>
                    </p:column>
                  </p:dataTable>
                 </h:form>
                </p:panel>
-               <p:panel header="Obszary sledzenia">
+               <p:panel header="#{msg['follow.areas']}">
                  <p:dataTable var="user_polygon" value="#{location.selectUser.areas}" rows="10" paginator="true">
-                   <p:column headerText="Nazwa">
+                   <p:column headerText="#{msg['name']}">
                      <h:outputText value="#{user_polygon.name}" />
                    </p:column>
-                   <p:column headerText="Typ sledzenia">
+                   <p:column headerText="#{msg['follow.mode']}">
                      <h:outputText value="#{user_polygon.areaFollowType}" />
                    </p:column>
-                   <p:column headerText="Sledzony uzytkownik">
+                   <p:column headerText="#{msg['followed.user']}">
                      <h:outputText value="#{user_polygon.target.login}" />
                    </p:column>
-                   <p:column headerText="Pokaz">
-                     <p:commandButton value="POKAZ" actionListener="#{location.onShowPolygonLocation(user_polygon)}" 
+                   <p:column headerText="#{msg['show']}">
+                     <p:commandButton value="#{msg['show']}" actionListener="#{location.onShowPolygonLocation(user_polygon)}"
                                       update=":#{p:component('gmap')} :#{p:component('growl')}"/>
                    </p:column>
                  </p:dataTable>

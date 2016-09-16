@@ -31,26 +31,31 @@
                     </h:panelGrid>
                 </p:panel>
 
-                <p:panel header="Tworzenie">
+                <p:panel header="#{msg['creating']}">
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel  value="GPS polyline" />
                         <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createGPSPolyline}">
+                            <p:ajax event="change" listener="#{userGoogleMap.render('POLYLINE')}" update=":#{p:component('gmap')}"/>
                         </p:selectBooleanCheckbox>
 
                         <p:outputLabel  value="Network (Nasz) polyline" />
                         <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createNetworkNaszPolyline}">
+                            <p:ajax event="change" listener="#{userGoogleMap.render('POLYLINE')}" update=":#{p:component('gmap')}"/>
                         </p:selectBooleanCheckbox>
 
                         <p:outputLabel  value="Network (Obcy) polyline" />
                         <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createNetworkObcyPolyline}">
+                            <p:ajax event="change" listener="#{userGoogleMap.render('POLYLINE')}" update=":#{p:component('gmap')}"/>
                         </p:selectBooleanCheckbox>
 
                         <p:outputLabel  value="Aktywne obszary" />
                         <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createActivePolygon}">
+                            <p:ajax event="change" listener="#{userGoogleMap.render('POLYGON')}" update=":#{p:component('gmap')}"/>
                         </p:selectBooleanCheckbox>
 
                         <p:outputLabel value="Nie aktywne obszary" />
                         <p:selectBooleanCheckbox value="#{userGoogleMap.overlayCreateFilter.createNotActivePolygon}">
+                            <p:ajax event="change" listener="#{userGoogleMap.render('POLYGON')}" update=":#{p:component('gmap')}"/>
                         </p:selectBooleanCheckbox>
 
                     </h:panelGrid>
@@ -60,7 +65,7 @@
           </h:form>
         </p:panel>
 
-        <p:panel header="Ustawienia widocznosci">
+        <p:panel header="#{msg['visibility.settings']}">
          <h:form>
          <p:panelGrid columns="4" layout="grid">
 
