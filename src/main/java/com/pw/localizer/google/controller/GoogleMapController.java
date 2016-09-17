@@ -28,7 +28,6 @@ import com.pw.localizer.singleton.LocalizerProperties;
 
 @Dependent
 @Default
-@Named
 public class  GoogleMapController implements Serializable{
 	private static final long serialVersionUID = -2245271606214880961L;
 	protected GoogleMapModel googleMapModel;

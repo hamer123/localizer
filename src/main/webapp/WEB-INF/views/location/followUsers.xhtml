@@ -40,6 +40,7 @@
                                           oncomplete="PF('userViewSettingDialog').show()"
                                           actionListener="#{location.selectUserComponentVisibility(user)}" update=":#{p:component('userViewSetting')}"/>
                        </p:column>
+
                        <p:column headerText="#{msg['remove']}" style="text-align:center !important;">
                           <p:commandButton  icon="fa fa-fw fa-remove" actionListener="#{location.removeUserFromFollow(user)}"
                                             title="#{msg['remove.user.from.follow.list']}" value="#{msg['remove']}"
@@ -49,9 +50,9 @@
                  </h:form>
               </p:panel>
               <p:panel header="#{msg['users.online']}">
-                 <p:dataList id="usersOnline" var="login" value="#{location.usersOnline()}" rows="10" paginator="true" type="unordered" itemType="none">
+                 <p:dataList id="usersOnline" var="login" value="#{location.usersOnline}" rows="10" paginator="true" type="unordered" itemType="none">
                    <h:panelGrid columns="2">
-                     <p:commandButton actionListener="#{location.onShowOnlineUserLastLocations(login)}" oncomplete="PF('gmapDialogSingleUser').show();"
+                     <p:commandButton actionListener="#{location.onShowOnlineUserLastLocations(login)}" oncomplete="PF('gmap-online-user-locations').show()"
                                       title="#{msg['show.on.map.last.user.locations']}" update=":#{p:component('googleMapDialog')}" icon="ui-icon-search"/>
                      <h:outputText value="#{login}"/>
                    </h:panelGrid>
@@ -61,7 +62,7 @@
    
 
            <p:outputPanel id="daneUser">
-             <p:panel header="#{msg['data']}" rendered="#{location.selectUser != null}" closable="true" >
+             <p:panel header="#{msg['data']}" rendered="#{location.selectUser != null}" closable="true" widgetVar="follow-user-data">
               <h:panelGrid columns="1" layout="grid">
                <p:panel header="#{msg['last.location']}">
                 <h:form>

@@ -6,26 +6,35 @@ import java.util.UUID;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.repository.AvatarRepository;
 import com.pw.localizer.service.resource.image.ImageService;
 import com.pw.localizer.singleton.ResourceDirectionStartup;
 import org.apache.commons.io.IOUtils;
+import org.jboss.logging.Logger;
 
 @Stateless
 public class AvatarService implements ImageService, Serializable{
 	@Inject
-	AvatarRepository avatarRepository;
+	private AvatarRepository avatarRepository;
+	@Inject
+	private Logger logger;
 
 	@Override
+	@DurationLogging
 	public byte[] content(String uuid) {
-		String path = path(uuid);
+		if(uuid == null || uuid == "") return null;
+//			throw new IllegalArgumentException("Nie poprawny format uuid " + uuid);
+
+		byte[] content = null;
 		try {
-			return Files.readAllBytes(Paths.get(path));
+			String path = path(uuid);
+			content = Files.readAllBytes(Paths.get(path));
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
-		return null;
+		return content;
 	}
 
 	private String path(String uuid){
@@ -60,6 +69,7 @@ public class AvatarService implements ImageService, Serializable{
 	}
 
 	@Override
+	@DurationLogging
 	public InputStream find(Avatar avatar) throws FileNotFoundException {
 		return new FileInputStream(new File(path(avatar.getUuid())));
 	}

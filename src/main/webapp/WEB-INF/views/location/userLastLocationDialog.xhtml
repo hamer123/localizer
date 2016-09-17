@@ -1,28 +1,58 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
-      
-      <p:dialog id="googleMapDialog" widgetVar="gmapDialogSingleUser" header="Ostatnie lokacje uzytkownika" style="width:650px;height:400px" modal="true">
-          
-         <p:growl id="growlDialog"/>
-         
-         <lokalizator:googleMap googleMapController="#{location.googleMapSingleUserDialogController}"
-                                onChangeState="#{location.googleMapSingleUserDialogController.onGoogleMapStateChange}"
-                                onOverlaySelect="#{location.googleMapSingleUserDialogController.onOverlaySelect}"
-                                overlaySelectUpdate=":#{p:component('growlDialog')}"
-                                style="width:620px;height:400px"/>
-                                
-          <h:form>
-          
-            <p:commandButton value="GPS"  update=":#{p:component('_gmap')}" disabled="#{!location.googleMapSingleUserDialogController.isGPSLastLocationExist()}"
-                             actionListener="#{location.googleMapSingleUserDialogController.onShowGPSLastLocation()}"/>
-            <p:commandButton value="NETWORK (OBCY)" update=":#{p:component('_gmap')}" disabled="#{!location.googleMapSingleUserDialogController.isNetworkObcyLastLocationExist()}"
-                             actionListener="#{location.googleMapSingleUserDialogController.onShowNetworkObcyLastLocation()}"/>
-            <p:commandButton value="NETWORK (NASZ)" update=":#{p:component('_gmap')}" disabled="#{!location.googleMapSingleUserDialogController.isNetworkNaszLastLocationExist()}"
-                             actionListener="#{location.googleMapSingleUserDialogController.onShowNetworkNaszLastLocation()}"/>
-          </h:form>
-         
-      </p:dialog> 
+      xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="googleMapDialog" widgetVar="gmap-online-user-locations" header="#{msg['user.last.locations']} #{location.googleMapSingleUserDialogController.userLogin}"
+          modal="true" width="1000" height="600"
+          maximizable="false" resizable="false">
+
+
+    <h:form>
+        <p:gmap id="gmap-user-online-dialog" type="HYBRID" onChangeState="#{location.googleMapSingleUserDialogController.onGoogleMapStateChange}"
+                center="#{location.googleMapSingleUserDialogController.center}" zoom="#{location.googleMapSingleUserDialogController.zoom}"
+                model="#{location.googleMapSingleUserDialogController.googleMapModel}" style="width:980px;height:400px"/>
+        
+        <p:dataTable id="last-location-user-online" var="cur_location" value="#{location.googleMapSingleUserDialogController.locations}"
+                     selectionMode="single" selection="#{location.googleMapSingleUserDialogController.selectedLocation}"
+                     rowKey="#{cur_location.id}">
+            <p:ajax event="rowSelect" listener="#{location.googleMapSingleUserDialogController.onShowLcation()}" update=":#{p:component('gmap-user-online-dialog')}" />
+
+            <p:column headerText="Provider">
+                <h:outputText value="#{cur_location.providerType}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['localizer.service']}">
+                <h:outputText value="#{location.googleMapSingleUserDialogController.getLocalizationServices(cur_location)}" rendered="#{cur_location.providerType == 'NETWORK'}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['date']}">
+                <h:outputText value="#{cur_location.date}" />
+            </p:column>
+
+            <p:column headerText="Latitude">
+                <h:outputText value="#{cur_location.latitude}" />
+            </p:column>
+
+            <p:column headerText="Longitude">
+                <h:outputText value="#{cur_location.longitude}" />
+            </p:column>
+
+            <p:column headerText="#{msg['city']}">
+                <h:outputText value="#{cur_location.address.city}" />
+            </p:column>
+
+            <p:column headerText="#{msg['street']}">
+                <h:outputText value="#{cur_location.address.street}" />
+            </p:column>
+
+            <p:column headerText="#{msg['details']}">
+                <p:commandButton value="#{msg['show']}" actionListener="#{location.onSetLocationToDipslayDetails(cur_location)}"
+                                 oncomplete="PF('LocationDetails').show();" update=":#{p:component('details')}"
+                                 disabled="#{cur_location.providerType != 'NETWORK'}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+</p:dialog>
 
 </html>

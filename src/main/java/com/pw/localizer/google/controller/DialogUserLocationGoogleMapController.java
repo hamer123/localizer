@@ -1,78 +1,59 @@
 package com.pw.localizer.google.controller;
 
 import javax.enterprise.context.Dependent;
-import javax.inject.Named;
 
-import org.primefaces.model.map.Overlay;
+import com.pw.localizer.model.entity.LocationNetwork;
 
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator.OverlayIdentyfikatorBuilder;
 import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.qualifier.DialogGMap;
 
-@Named
+import java.util.ArrayList;
+import java.util.List;
+
 @Dependent
 @DialogGMap
 public class DialogUserLocationGoogleMapController extends GoogleMapController {
 
-	public void onShowGPSLastLocation(){
-		Overlay overlay = findGPSLastLocaitionMarker();
-         setCenterIfLocationExist(overlay);
+	private List<Location>locations = new ArrayList<>();
+
+	private Location selectedLocation;
+
+	private String userLogin;
+
+	public List<Location> getLocations() {
+		return locations;
 	}
-	
-	public void onShowNetworkNaszLastLocation(){
-         Overlay overlay = findNetworkNaszLastLocationMarker();
-         setCenterIfLocationExist(overlay);
+
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
-	
-	public void onShowNetworkObcyLastLocation(){
-         Overlay overlay = findNetworkObcyLastLocationMarker();
-         setCenterIfLocationExist(overlay);
+
+	public void onShowLcation(){
+		String center = GoogleMapModel.center(selectedLocation);
+		setCenter(center);
 	}
-	
-	public boolean isNetworkObcyLastLocationExist(){
-		return findNetworkObcyLastLocationMarker() != null;
+
+	public Location getSelectedLocation() {
+		return selectedLocation;
 	}
-	
-	private Overlay findNetworkObcyLastLocationMarker(){
-		 OverlayIdentyfikator identyfikator = new OverlayIdentyfikatorBuilder().overlayType(Overlays.MARKER)
-                 .providerType(Providers.NETWORK)
-                 .localzationServiceType(LocalizationServices.OBCY)
-                 .build();
-         return findSingleOverlay(identyfikator);
+
+	public void setSelectedLocation(Location selectedLocation) {
+		this.selectedLocation = selectedLocation;
 	}
-	
-	public boolean isNetworkNaszLastLocationExist(){
-		return findNetworkNaszLastLocationMarker() != null;
+
+	public LocalizationServices getLocalizationServices(Location location){
+		if(location instanceof LocationNetwork)
+			return ( (LocationNetwork)location ).getLocalizationServices();
+		return null;
 	}
-	
-	private Overlay findNetworkNaszLastLocationMarker(){
-		 OverlayIdentyfikator identyfikator = new OverlayIdentyfikatorBuilder().overlayType(Overlays.MARKER)
-                 .providerType(Providers.NETWORK)
-                 .localzationServiceType(LocalizationServices.NASZ)
-                 .build();
-         return findSingleOverlay(identyfikator);
+
+	public String getUserLogin() {
+		return userLogin;
 	}
-	
-	public boolean isGPSLastLocationExist(){
-		return findGPSLastLocaitionMarker() != null;
-	}
-	
-	private Overlay findGPSLastLocaitionMarker(){
-		 OverlayIdentyfikator identyfikator = new OverlayIdentyfikatorBuilder().overlayType(Overlays.MARKER)
-                 .providerType(Providers.GPS)
-                 .build();
-         return findSingleOverlay(identyfikator);
-	}
-	
-	public void setCenterIfLocationExist(Overlay overlay){
-        if(overlay != null){
-            Location location = (Location)overlay.getData();
-            setCenter(GoogleMapModel.center(location));
-        }	
+
+	public void setUserLogin(String userLogin) {
+		this.userLogin = userLogin;
 	}
 }

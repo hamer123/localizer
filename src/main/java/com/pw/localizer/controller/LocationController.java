@@ -1,10 +1,7 @@
 package com.pw.localizer.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -117,11 +114,14 @@ public class LocationController implements Serializable{
 	/** User`location in action select factory */
 	private Location userLocation;
 
-	/** User`factory in action select factory*/
+	/** User`factory in action select factory */
 	private Overlay userOverlay;
 
 	/** Session onwer active areas Id */
 	private List<Long> activeAreasId;
+
+	/** From this date we get owner all active areas events */
+	private Date areaEventFromDate;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
@@ -131,9 +131,8 @@ public class LocationController implements Serializable{
 	 * Inicjalizacja poczatkowa
      */
 	@PostConstruct
-	@DurationLogging
 	public void postConstruct(){
-		//TODO PLIK COOKIES CO BEDZIE POSIADAL DOMYSLNE USTAWIENIA
+		areaEventFromDate = new Date();
 		activeAreasId = areaRepository.findIdByProviderIdAndActive(localizerSession.getUser().getId(), true);
 		showAreaEventMessage = true;
 	}
@@ -173,10 +172,14 @@ public class LocationController implements Serializable{
 	 * Usun uzytkownika z listy sledzenia i google map
 	 * @param user
      */
+	@DurationLogging
 	public void removeUserFromFollow(User user){
 		try{
 			users.remove(user.getLogin());
 			userGoogleMapController.remove(user.getLogin());
+			//clear reference if we remove the same user as selected
+			if(user.getLogin().equals(selectUserForLastLocations.getLogin()))
+				selectUserForLastLocations = null;
 			JsfMessageBuilder.infoMessage("Udało się usunąć uzytkownika z listy śledzenia");
 		} catch(Exception e){
 			JsfMessageBuilder.errorMessage("Nie udało się usunąć uzytkownika z listy śledzenia");
@@ -187,16 +190,16 @@ public class LocationController implements Serializable{
 	/**
 	 * Wyswietl informacje w ramach zdarzen dla aktywnych aren sledzenia uzytkownikow
      */
-	private void displayAreaEventsMessages(){
-//		if(isShowAreaEventMessage()) {
-//			List<AreaEvent> areaEvents = checkAreaEvent();
-//			for (AreaEvent areaEvent : areaEvents)
-//				JsfMessageBuilder.infoMessage(areaEvent.getMessage());
-//		}
+	 void displayAreaEventsMessages(){
+		if(isShowAreaEventMessage()) {
+			List<AreaEvent> areaEvents = getAreaEvents();
+			for (AreaEvent areaEvent : areaEvents)
+				JsfMessageBuilder.infoMessage(areaEvent.getMessage());
+		}
 	}
 
 	/** Aktualizuje dane uzytkoniwka i google controller */
-	private void updateUserComponents(){
+	void updateUserComponents(){
 		try{
 			for(String login : users.keySet()) {
 				User user = updateUserLastLocations(login);
@@ -214,7 +217,7 @@ public class LocationController implements Serializable{
 		}
 	}
 
-	private User updateUserLastLocations(String login){
+	User updateUserLastLocations(String login){
 		User user = this.users.get(login);
 		user.setLastLocationGPS((LocationGPS) this.userRepository.findLastGpsLocationByUserId(user.getId()));
 		user.setLastLocationNetworkNaszaUsluga((LocationNetwork) this.userRepository.findLastNetworkNaszLocationByUserId(user.getId()));
@@ -222,7 +225,7 @@ public class LocationController implements Serializable{
 		return user;
 	}
 
-	private User updateUserAreas(String login){
+	User updateUserAreas(String login){
 		User user = this.users.get(login);
 		this.userService.getUserAreasFetchAreaPoints(user.getId());
 		return user;
@@ -278,16 +281,23 @@ public class LocationController implements Serializable{
 	public void onShowOnlineUserLastLocations(String login){
 		User user = userRepository.findByLogin(login);
 
+		//clear
+		googleMapSingleUserDialogController.clear();
+		googleMapSingleUserDialogController.getLocations().clear();
+
+		//add
 		Location location = user.getLastLocationGPS();
 		addLocationToSingleUserGMap(location);
 		location = user.getLastLocationNetworkNaszaUsluga();
 		addLocationToSingleUserGMap(location);
 		location = user.getLastLocationNetworObcaUsluga();
 		addLocationToSingleUserGMap(location);
+		googleMapSingleUserDialogController.setUserLogin(login);
 	}
 
 	private void addLocationToSingleUserGMap(Location location){
 		if(location != null){
+			googleMapSingleUserDialogController.getLocations().add(location);
 			Marker marker = markerFactory.createMarker(location);
 			Circle circle = circleFactory.createCircle(location);
 			this.googleMapSingleUserDialogController.addOverlay(marker);
@@ -320,49 +330,50 @@ public class LocationController implements Serializable{
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////  UTILITIS  /////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	boolean isUserArleadyOnList(String login){
 		for(String key : users.keySet())
 			if(key.equals(login))
 				return true;
-		
+
 		return false;
 	}
-	
+
+	List<String> filterLogins(List<String>logins){
+		List<String> filter = getLogins();
+		return logins.stream()
+				.filter(s -> !(filter.contains(s)))
+				.collect(Collectors.toList());
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////  UTILITIS  /////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	<T> void addToListIfNotNull(List<T>list, T obj){
 		if(obj != null)
 			list.add(obj);
 	}
-	
-	List<String> filterLogins(List<String>logins){
-		List<String> filter = logins();
-		return logins.stream()
-				     .filter(s -> !(filter.contains(s)))
-				     .collect(Collectors.toList());
-	}
-	
-//	List<AreaEvent> checkAreaEvent(){
-//		List<AreaEvent>areaEvents = new ArrayList<>();
-//		Date from = new Date(new Date().getTime() - ONE_MINUTE);
-//		for(long id : activeAreaIds){
-//			areaEvents.addAll( areaEventGPSRepository.findByAreaIdAndDate(id, from) );
-//			areaEvents.addAll( areaEventNetworkRepository.findByAreaIdAndDate(id, from) );
-//		}
-//		return areaEvents;
-//	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////  GETTERS SETTERS  ///////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public List<String> usersOnline(){
+	/** ( There is the chance to omit records ) */
+	List<AreaEvent> getAreaEvents(){
+		List<AreaEvent>areaEvents = new ArrayList<>();
+		for(long id : activeAreasId){
+			areaEvents.addAll(areaEventGPSRepository.findByAreaIdAndDate(id, areaEventFromDate));
+			areaEvents.addAll(areaEventNetworkRepository.findByAreaIdAndDate(id, areaEventFromDate));
+		}
+		areaEventFromDate = new Date();
+		return areaEvents;
+	}
+
+	public List<String> getUsersOnline(){
 		return restSessionManager.getUserOnlineLogins();
 	}
 
-	public List<String>logins(){
+	public List<String> getLogins(){
 		return users.values()
 				.stream()
 				.map(u -> u.getLogin())
