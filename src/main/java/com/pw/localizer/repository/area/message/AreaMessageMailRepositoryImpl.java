@@ -1,15 +1,18 @@
-package com.pw.localizer.repository.impl;
+package com.pw.localizer.repository.area.message;
 
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.AreaMessageMail;
-import com.pw.localizer.repository.AreaMessageMailRepository;
+import com.pw.localizer.repository.area.message.AreaMessageMailRepository;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class AreaMessageMailRepositoryImpl implements AreaMessageMailRepository{
 	@PersistenceContext
 	private EntityManager em;

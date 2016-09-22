@@ -1,4 +1,4 @@
-package com.pw.localizer.repository;
+package com.pw.localizer.repository.area.event;
 
 import java.util.Date;
 import java.util.List;
@@ -6,9 +6,10 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.pw.localizer.model.entity.AreaEventGPS;
+import com.pw.localizer.repository.JpaRepository;
 
 @Local
-public interface AreaEventGPSRepository extends JpaRepository<AreaEventGPS, Long>{
+public interface AreaEventGPSRepository extends JpaRepository<AreaEventGPS, Long> {
 	public List<AreaEventGPS> findByAreaId(long id);
 	public List<AreaEventGPS> findByAreaIdAndDate(long id, Date from);
 	public List<AreaEventGPS> findAllWhereMailSendIsTrue();

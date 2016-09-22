@@ -26,9 +26,9 @@
             </p:calendar>
             <p:message for="younger"/>
              
-            <p:outputLabel id="output"  value="Max ilosc rekordow #{locationHistory.maxRekords}"/>
-            <p:slider for="maxRekords" display="output" displayTemplate="Max ilosc rekordow {value}" maxValue="1000" minValue="2"/>
-            <h:inputHidden id="maxRekords" value="#{locationHistory.maxRekords}"/>
+            <p:outputLabel id="output"  value="Max ilosc rekordow #{locationHistory.maxRecords}"/>
+            <p:slider for="maxRecords" display="output" displayTemplate="Max ilosc rekordow {value}" maxValue="1000" minValue="2"/>
+            <h:inputHidden id="maxRecords" value="#{locationHistory.maxRecords}"/>
              
             <p:outputLabel value="Provider"/>
             <p:selectOneMenu id="provider" value="#{locationHistory.provider}">
@@ -46,8 +46,8 @@
             <o:validateOrder components="older younger" message="Daty sa nie poprawnie wybrane"/>
          </h:panelGrid>
                  
-         <p:commandButton value="POKAZ" actionListener="#{locationHistory.onShowRoute}" 
-                          update=":#{p:component('gmap')} :#{p:component('growl')} :#{p:component('routeLocations')} 
+         <p:commandButton value="POKAZ" actionListener="#{locationHistory.onCreateRoute}"
+                          update=":#{p:component('gmap')} :#{p:component('growl')} :#{p:component('polyline-locations')}
                                   :#{p:component('option_form')}"/>
       </h:form>
 </ui:composition>

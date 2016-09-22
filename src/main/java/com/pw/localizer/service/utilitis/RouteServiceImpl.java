@@ -11,17 +11,15 @@ public class RouteServiceImpl implements RouteService, Serializable{
 	private static final double EARTH_DARIUS_KM = 6378.137;
 
 	@Override
-	public double calculateLenghtMeters(Polyline polyline) {
+	public double calculateLengthMeters(Polyline polyline) {
 	    List<LatLng>points = polyline.getPaths();
-	    double lenght = 0;
-	    
+	    double length = 0;
 	    for(int i = 0; i + 1 <points.size(); i++)
-	    	lenght += calculateLenghtMeters(points.get(i), points.get(i + 1));
-	    
-		return lenght;
+	    	length += calculateLengthMeters(points.get(i), points.get(i + 1));
+		return length;
 	}
 	
-	private double calculateLenghtMeters(LatLng point, LatLng point2){
+	private double calculateLengthMeters(LatLng point, LatLng point2){
 	    double dLat = (point2.getLat() - point.getLat()) * Math.PI / 180;
 	    double dLon = (point2.getLng() - point.getLng()) * Math.PI / 180;
 	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +

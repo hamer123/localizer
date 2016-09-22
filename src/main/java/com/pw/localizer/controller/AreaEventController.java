@@ -16,9 +16,9 @@ import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.Providers;
-import com.pw.localizer.repository.AreaEventGPSRepository;
-import com.pw.localizer.repository.AreaEventNetworkRepository;
-import com.pw.localizer.repository.AreaPointRepository;
+import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
+import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
+import com.pw.localizer.repository.area.AreaPointRepository;
 
 @Named
 @ViewScoped

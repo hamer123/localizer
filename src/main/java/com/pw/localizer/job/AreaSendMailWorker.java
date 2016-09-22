@@ -10,8 +10,8 @@ import javax.interceptor.InvocationContext;
 import org.jboss.logging.Logger;
 import com.pw.localizer.exception.AreaMialMessageException;
 import com.pw.localizer.model.entity.AreaEvent;
-import com.pw.localizer.repository.AreaEventGPSRepository;
-import com.pw.localizer.repository.AreaEventNetworkRepository;
+import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
+import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.qualifier.AreaMailMessage;
 import com.pw.localizer.service.message.area.AreaMessageService;
 

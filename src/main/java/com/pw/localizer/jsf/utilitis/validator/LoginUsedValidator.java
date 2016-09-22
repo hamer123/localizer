@@ -8,8 +8,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 
-import com.pw.localizer.model.entity.User;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 @FacesValidator(value = "loginUsedValidator")
 public class LoginUsedValidator implements Validator{

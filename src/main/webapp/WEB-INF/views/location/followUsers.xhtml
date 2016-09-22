@@ -5,10 +5,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-      <ui:insert>
-          <ui:include src="/WEB-INF/views/location/userAdvanceSearch.xhtml"/>
-      </ui:insert>
-
            <p:panelGrid columns="2" layout="grid">
               <p:panel header="#{msg['add.user.to.follow']}" id="addUserToFollowPanel">
                  <h:form>
@@ -26,11 +22,12 @@
                             </c:otherwise>
                         </c:choose>
                        <p:commandButton value="#{msg['add.to.follow']}" styleClass="components" actionListener="#{location.addUserToFollow(location.login)}"
-                                        update=":#{p:component('followUsersTable')} :#{p:component('growl')} :#{p:component('gmap')}"/>
+                                        update=":#{p:component('follow-users-table')} :#{p:component('growl')} :#{p:component('gmap')}"/>
 
                         <p:commandButton value="#{msg['advance.search']}" styleClass="components" onclick="PF('user-advance-search').show()"/>
+
                     </p:row>
-                    <p:dataTable id="followUsersTable" var="user" value="#{location.users.values()}" rows="5" paginator="true" style="margin-top: 15px; align-content: center;">
+                    <p:dataTable id="follow-users-table" var="user" value="#{location.users.values()}" rows="5" paginator="true" style="margin-top: 15px; align-content: center;">
                        <p:column headerText="#{msg['login']}" style="text-align:center !important;">
                            <p:commandButton value="#{user.login}" actionListener="#{location.onClickUserToDisplayData(user)}"
                                             oncomplete="PF('userDataDialog').show()"
@@ -49,8 +46,9 @@
                        <p:column headerText="#{msg['remove']}" style="text-align:center !important;">
                           <p:commandButton  icon="fa fa-fw fa-remove" actionListener="#{location.removeUserFromFollow(user)}"
                                             title="#{msg['remove.user.from.follow.list']}" value="#{msg['remove']}"
-                                            update=":#{p:component('gmap')} :#{p:component('daneUser')} :#{p:component('followUsersTable')} :#{p:component('growl')}"/>
+                                            update=":#{p:component('gmap')} :#{p:component('daneUser')} :#{p:component('follow-users-table')} :#{p:component('growl')}"/>
                        </p:column>
+
                     </p:dataTable>
                  </h:form>
               </p:panel>

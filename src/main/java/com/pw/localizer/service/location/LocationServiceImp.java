@@ -7,10 +7,9 @@ import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.repository.LocationGPSRepository;
-import com.pw.localizer.repository.LocationNetworkRepository;
-import com.pw.localizer.repository.UserRepository;
-import com.pw.localizer.service.location.LocationService;
+import com.pw.localizer.repository.location.LocationGPSRepository;
+import com.pw.localizer.repository.location.LocationNetworkRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 
 /** NA przyszlosc mozna zmienic argument na Usera i zrobic update dla usera lokacji przez zwykle query*/

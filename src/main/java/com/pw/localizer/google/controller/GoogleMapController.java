@@ -28,7 +28,7 @@ import com.pw.localizer.singleton.LocalizerProperties;
 
 @Dependent
 @Default
-public class  GoogleMapController implements Serializable{
+public class GoogleMapController implements Serializable{
 	private static final long serialVersionUID = -2245271606214880961L;
 	protected GoogleMapModel googleMapModel;
 	protected int zoom;
@@ -37,8 +37,8 @@ public class  GoogleMapController implements Serializable{
 	protected GoogleMaps googleMapType;
 	protected Overlay lastSelectedOverlay;
 	protected boolean displayMessageOnSelectOverlay;
-	
-	@Inject 
+
+	@Inject
 	private LocalizerProperties localizerProperties;
 	@Inject
 	private LocalizerSession localizerSession;
@@ -50,7 +50,7 @@ public class  GoogleMapController implements Serializable{
 		googleMapType = GoogleMaps.HYBRID;
 		streetVisible = true;
 
-		if(localizerSession == null){
+		if(localizerSession == null || localizerSession.getUser() == null){
 			center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
 			zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
 		} else {
@@ -59,7 +59,7 @@ public class  GoogleMapController implements Serializable{
 			this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongtitude());
 		}
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   ACTIONS   //////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

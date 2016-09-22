@@ -1,5 +1,7 @@
 package com.pw.localizer.google.controller;
 
+import com.pw.localizer.exception.LocalizerServiceNotSupportedException;
+import com.pw.localizer.exception.ProviderNotSupportedException;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import com.pw.localizer.model.entity.*;
@@ -16,6 +18,7 @@ import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.google.OverlayCreateFilter;
 import com.pw.localizer.model.google.UserComponentVisibility;
 import com.pw.localizer.model.session.LocalizerSession;
+import com.pw.localizer.singleton.LocalizerProperties;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.map.*;
 
@@ -33,8 +36,8 @@ import java.util.Map;
  * Created by wereckip on 08.09.2016.
  */
 
-@Named(value = "userGoogleMap")
 @ViewScoped
+@Named(value = "userGoogleMap")
 public class UserGoogleMapController implements Serializable{
     @Inject
     private PolylineFactory polylineFactory;
@@ -46,35 +49,52 @@ public class UserGoogleMapController implements Serializable{
     private CircleFactory circleFactory;
     @Inject
     private LocalizerSession localizerSession;
+    @Inject
+    private LocalizerProperties localizerProperties;
 
-    //Gotowy model po renderingu
+    /** Gotowy model po renderingu */
     private GoogleMapModel googleMapModelOutput = new GoogleMapModel();
-    //Zawartosc po utworzeniu
+
+    /** Zawartosc po utworzeniu */
     private GoogleMapModel googleMapModel = new GoogleMapModel();
-    //Widocznosc komponentow indywidulanie dla uzytkoniwka
+
+    /** Widocznosc komponentow indywidulanie dla uzytkoniwka */
     private Map<String,UserComponentVisibility> userComponentVisibilityMap = new HashMap<>();
-    //Ogolna widocznosc komponentow
+
+    /** Ogolna widocznosc komponentow */
     private GoogleMapComponentVisible googleMapComponentVisible = new GoogleMapComponentVisible();
-    //Ograniczenie tworzenia komponentow
+
+    /** Ograniczenie tworzenia komponentow */
     private OverlayCreateFilter overlayCreateFilter = new OverlayCreateFilter();
 
+    /** Zoom */
     private int zoom;
+
+    /** Map center */
     private String center;
+
+    /** street visible ? */
     private boolean streetVisible = true;
+
+    /** Google map type */
     private GoogleMaps googleMapType = GoogleMaps.TERRAIN;
+
+    /** Display message on overlay select ? */
     private boolean displayMessageOnSelectOverlay = true;
+
+    /** last selected overlay */
     private Overlay lastSelectedOverlay;
 
     @PostConstruct
     private void postConstruct(){
         this.googleMapType = GoogleMaps.HYBRID;
         if(this.localizerSession.getUser() == null){
-
+            center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
+            zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
         } else {
             UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
             this.zoom = userSetting.getgMapZoom();
             this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongtitude());
-
             this.overlayCreateFilter.setCreateActivePolygon(true);
             this.overlayCreateFilter.setCreateNotActivePolygon(true);
         }
@@ -96,20 +116,20 @@ public class UserGoogleMapController implements Serializable{
         userComponentVisibilityMap.remove(login);
     }
 
-    public void update(User user, Overlays overlays){
-        if(overlays == Overlays.MARKER){
+    public void update(User user, Overlays overlay){
+        if(overlay == Overlays.MARKER){
             removeMarker(user.getLogin());
             addMarker(user);
-        } else if(overlays == Overlays.CIRCLE){
+        } else if(overlay == Overlays.CIRCLE){
             removeCircle(user.getLogin());
             addCircle(user);
-        } else if(overlays == Overlays.POLYLINE){
+        } else if(overlay == Overlays.POLYLINE){
             updatePolylines(user);
-        } else if(overlays == Overlays.POLYGON){
+        } else if(overlay == Overlays.POLYGON){
             removePolygon(user.getLogin());
             addPolygon(user);
         } else {
-            throw new RuntimeException("Nie wspierany typ factory dla update " + overlays);
+            throw new RuntimeException("Not supported overlay " + overlay);
         }
     }
 
@@ -130,7 +150,7 @@ public class UserGoogleMapController implements Serializable{
         } else if(overlay == Overlays.POLYLINE){
             renderPolylines();
         } else {
-            throw new RuntimeException("Nie wspierany factory dla renderingu " + overlay);
+            throw new RuntimeException("Not supported overlay " + overlay);
         }
     }
 
@@ -252,7 +272,13 @@ public class UserGoogleMapController implements Serializable{
                     polyline.setData(location.getDate());
                 }
             } else {
-                //TODO
+                if(location.getProviderType() == Providers.GPS){
+                    addPolylineGps(location);
+                } else if(location.getProviderType() == Providers.NETWORK){
+                    addPolylineNetwork(location);
+                } else {
+                    throw new ProviderNotSupportedException("Not supported provider " + location.getProviderType());
+                }
             }
         }
     }
@@ -310,7 +336,7 @@ public class UserGoogleMapController implements Serializable{
                 }
             }
         } else {
-            throw new RuntimeException("Nie wspierana usluga " + ((LocationNetwork) location).getLocalizationServices());
+            throw new LocalizerServiceNotSupportedException("Not supported localizer service " + ((LocationNetwork) location).getLocalizationServices());
         }
     }
 
@@ -375,7 +401,7 @@ public class UserGoogleMapController implements Serializable{
                 if(filterNetworkMarker(marker,uuidRaw))
                     markers.add(marker);
             } else {
-                throw new RuntimeException("Nie wspierany provider przy renderowaniu markerow " + uuidRaw.getProvider());
+                throw new ProviderNotSupportedException("Not supported provider " + uuidRaw.getProvider());
             }
         }
     }
@@ -399,7 +425,7 @@ public class UserGoogleMapController implements Serializable{
             if(googleMapComponentVisible.isMarkerNetworkObcy())
                 return userComponentVisibility.isNetworkObcyMarker();
         } else {
-            throw new RuntimeException("Nie wspierany service przez renderowanie marketow " + uuidRaw.getLocalizationService());
+            throw new LocalizerServiceNotSupportedException("Not supported localizer service " + uuidRaw.getLocalizationService());
         }
 
         return false;
@@ -418,7 +444,7 @@ public class UserGoogleMapController implements Serializable{
                 if(filterCircleNetwork(circle,uuidRaw))
                     circles.add(circle);
             } else {
-                throw new RuntimeException("Nie wspierany provider przez renderowanie circle " + uuidRaw.getProvider());
+                throw new ProviderNotSupportedException("Not supported provider " + uuidRaw.getProvider());
             }
         }
     }
@@ -443,7 +469,7 @@ public class UserGoogleMapController implements Serializable{
             if(googleMapComponentVisible.isCircleNetworkObcy())
                 return userComponentVisibility.isNetworkObcyCircle();
         } else {
-            throw new RuntimeException("Nie wspierany serwis przez filterCircleNetwork circle " + uuidRaw.getLocalizationService());
+            throw new LocalizerServiceNotSupportedException("Not supported localizer service " + uuidRaw.getLocalizationService());
         }
 
         return false;
@@ -491,10 +517,10 @@ public class UserGoogleMapController implements Serializable{
                     if(filterPolylineNetwork(uuidRaw))
                         googleMapModelOutput.getPolylines().add(polyline);
                 } else {
-                    throw new RuntimeException("Nie wspierana usluga dla renderowania polyline " + uuidRaw.getProvider());
+                    throw new ProviderNotSupportedException("Not supported provider " + uuidRaw.getProvider());
                 }
             } else {
-                throw new RuntimeException("Nie wspierany provider dla renderowania polyline " + uuidRaw.getProvider());
+                throw new ProviderNotSupportedException("Not supported provider " + uuidRaw.getProvider());
             }
         }
     }
@@ -520,7 +546,7 @@ public class UserGoogleMapController implements Serializable{
                 return userComponentVisibility.isNetworkObcyPolyline();
             }
         } else {
-            throw new RuntimeException("Nie wspierany serwis przez filterPolylineNetwork " + uuidRaw.getLocalizationService());
+            throw new LocalizerServiceNotSupportedException("Not supported localizer service " + uuidRaw.getLocalizationService());
         }
 
         return false;

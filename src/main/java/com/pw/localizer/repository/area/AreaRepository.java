@@ -1,4 +1,4 @@
-package com.pw.localizer.repository;
+package com.pw.localizer.repository.area;
 
 import java.util.List;
 import java.util.Set;
@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ejb.Local;
 
 import com.pw.localizer.model.entity.Area;
+import com.pw.localizer.repository.JpaRepository;
 
 @Local
 public interface AreaRepository extends JpaRepository<Area, Long> {

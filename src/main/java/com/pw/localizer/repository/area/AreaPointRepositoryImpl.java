@@ -1,4 +1,4 @@
-package com.pw.localizer.repository.impl;
+package com.pw.localizer.repository.area;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.AreaPoint;
-import com.pw.localizer.repository.AreaPointRepository;
+import com.pw.localizer.repository.area.AreaPointRepository;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class AreaPointRepositoryImpl implements AreaPointRepository{
 	@PersistenceContext
 	private EntityManager em;

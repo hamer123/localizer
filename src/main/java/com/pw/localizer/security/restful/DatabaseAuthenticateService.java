@@ -1,7 +1,7 @@
 package com.pw.localizer.security.restful;
 
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;

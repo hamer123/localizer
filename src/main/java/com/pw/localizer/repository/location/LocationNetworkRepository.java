@@ -1,4 +1,4 @@
-package com.pw.localizer.repository;
+package com.pw.localizer.repository.location;
 
 import java.util.Date;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.pw.localizer.model.entity.LocationNetwork;
+import com.pw.localizer.repository.JpaRepository;
 
 @Local
 public interface LocationNetworkRepository extends JpaRepository<LocationNetwork, Long> {

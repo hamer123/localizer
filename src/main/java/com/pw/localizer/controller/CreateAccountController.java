@@ -24,7 +24,7 @@ import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.entity.UserSetting;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 @Named("createAccount")
 @ConversationScoped

@@ -28,9 +28,9 @@ import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.AreaFollows;
 import com.pw.localizer.model.enums.AreaMailMessageModes;
-import com.pw.localizer.repository.AreaRepository;
-import com.pw.localizer.repository.AreaPointRepository;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.area.AreaRepository;
+import com.pw.localizer.repository.area.AreaPointRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 @Named(value= "area")
 @ViewScoped

@@ -10,6 +10,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.pw.localizer.factory.MarkerFactory;
+import com.pw.localizer.factory.PolygonFactory;
+import com.pw.localizer.factory.PolylineFactory;
 import com.pw.localizer.google.controller.GoogleMapController;
 import org.jboss.logging.Logger;
 
@@ -20,10 +23,12 @@ import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.model.enums.Providers;
-import com.pw.localizer.repository.LocationGPSRepository;
-import com.pw.localizer.repository.LocationNetworkRepository;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.location.LocationGPSRepository;
+import com.pw.localizer.repository.location.LocationNetworkRepository;
+import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.service.utilitis.RouteService;
+import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.Polyline;
 
 @Named("locationHistory")
 @ViewScoped
@@ -39,30 +44,63 @@ public class LocationHistoryController implements Serializable{
 	@Inject
 	private RouteService routeService;
 	@Inject
+	private PolylineFactory polylineFactory;
+	@Inject
+	private MarkerFactory markerFactory;
+	@Inject
 	private Logger logger;
-	
-	private int maxRekords = 1000;
+
+	/** Max records in result for locations */
+	private int maxRecords = 1000;
+
+	/** Date used in query to get locations */
 	private Date older;
+
+	/** Date used in query to get locations */
 	private Date younger;
+
+	/** login */
 	private String login;
+
+	/** Choose provider */
 	private Providers provider;
+
+	/** Choose service */
 	private LocalizationServices localizationServices;
 
+	/** Selected location */
 	private Location location;
+
+	/** Polyline */
+	private Polyline polyline;
+
+	/** Locations */
+	private List<Location>locationList;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   ACTIONS    /////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void onShowRoute(){
+	public void onCreateRoute(){
 		try{
+			//Clear
+			polyline = null;
+			googleMapController.clear();
+
 			List<Location>locations = findLocations();
 			if(locations.size() < 2){
-				notEnoughLocation();
-				return;
+				JsfMessageBuilder.errorMessage("Nie mozna utworzyc sciezki, za malo lokacji");
+			} else {
+				locationList = locations;
+				polyline = polylineFactory.create(locations);
+				googleMapController.addOverlay(polyline);
+				//add start marker
+				Marker startMarker = createStart(locations.get(0));
+				googleMapController.addOverlay(startMarker);
+				//add end marker
+				Marker endMarker = createEnd(locations.get(locations.size() - 1));
+				googleMapController.addOverlay(endMarker);
 			}
-
-			//TODO
 		} catch(Exception e){
 			JsfMessageBuilder.errorMessage("Nie mozna utworzyc sciezki");
 			logger.error(e);
@@ -77,11 +115,22 @@ public class LocationHistoryController implements Serializable{
 		return userRepository.findLoginByLoginLike(login);
 	}
 	
-	public void onCalculateRouteLenght(){
-//		double lenghtDouble = routeService.calculateLenghtMeters(route);
-//		String lenght = new DecimalFormat("#.##").format(lenghtDouble);
-//		JsfMessageBuilder.infoMessage(lenght + " meters");
-		//TODO
+	public void onCalculateRouteLength(){
+		double lengthDouble = routeService.calculateLengthMeters(polyline);
+		String length = new DecimalFormat("#.##").format(lengthDouble);
+		JsfMessageBuilder.infoMessage(length + " meters");
+	}
+
+	Marker createStart(Location location){
+		Marker startMarker = markerFactory.createMarker(location);
+		startMarker.setIcon(markerFactory.START_ROUTE_ICON_URL);
+		return startMarker;
+	}
+
+	Marker createEnd(Location location){
+		Marker endMarker = markerFactory.createMarker(location);
+		endMarker.setIcon(markerFactory.END_ROUTE_ICON_URL);
+		return endMarker;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,23 +152,18 @@ public class LocationHistoryController implements Serializable{
 	private List<LocationNetwork> findLocationNetwork(){
 		if(localizationServices == LocalizationServices.NASZ){
 			return locationNetworkRepository.
-					findByLoginAndDateForServiceNaszOrderByDate(login, younger, older, maxRekords);
+					findByLoginAndDateForServiceNaszOrderByDate(login, younger, older, maxRecords);
 		} else {
 			return locationNetworkRepository.
-					findByLoginAndDateForServiceObcyOrderByDate(login, younger, older, maxRekords);
+					findByLoginAndDateForServiceObcyOrderByDate(login, younger, older, maxRecords);
 		}
 	}
 	
 	private List<LocationGPS> findLocationGPS(){
 		return locationGPSRepository.
-				findByLoginAndDateOrderByDate(login, younger, older, maxRekords);
+				findByLoginAndDateOrderByDate(login, younger, older, maxRecords);
 	}
-	
-	private void notEnoughLocation(){
-		JsfMessageBuilder.errorMessage("Nie mozna utworzyc sciezki, za malo lokacji");
-		googleMapController.clear();
-	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   GETTERS SETTERS    /////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,12 +176,12 @@ public class LocationHistoryController implements Serializable{
 		return LocalizationServices.values();
 	}
 	
-	public int getMaxRekords() {
-		return maxRekords;
+	public int getMaxRecords() {
+		return maxRecords;
 	}
 
-	public void setMaxRekords(int maxRekords) {
-		this.maxRekords = maxRekords;
+	public void setMaxRecords(int maxRecords) {
+		this.maxRecords = maxRecords;
 	}
 
 	public void setLocation(Location location) {
@@ -231,5 +275,29 @@ public class LocationHistoryController implements Serializable{
 
 	public void setGoogleMapController(GoogleMapController googleMapController) {
 		this.googleMapController = googleMapController;
+	}
+
+	public PolylineFactory getPolylineFactory() {
+		return polylineFactory;
+	}
+
+	public void setPolylineFactory(PolylineFactory polylineFactory) {
+		this.polylineFactory = polylineFactory;
+	}
+
+	public Polyline getPolyline() {
+		return polyline;
+	}
+
+	public void setPolyline(Polyline polyline) {
+		this.polyline = polyline;
+	}
+
+	public List<Location> getLocationList() {
+		return locationList;
+	}
+
+	public void setLocationList(List<Location> locationList) {
+		this.locationList = locationList;
 	}
 }

@@ -1,17 +1,20 @@
-package com.pw.localizer.repository.impl;
+package com.pw.localizer.repository.location;
 
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
 
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.repository.LocationNetworkRepository;
+import com.pw.localizer.repository.location.LocationNetworkRepository;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class LocationNetworkRepositoryImpl implements LocationNetworkRepository{
 	@PersistenceContext
 	private EntityManager em;

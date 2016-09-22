@@ -8,7 +8,7 @@
       
       <h:form>
        
-        <p:dataTable  id="routeLocations" var="loc" value="#{locationHistory.locations}" paginator="true" rows="15"
+        <p:dataTable  id="polyline-locations" var="loc" value="#{locationHistory.locationList}" paginator="true" rows="15"
                       selectionMode="single" selection="#{locationHistory.location}" rowKey="#{loc.id}" style="margin-bottom:20px"
                       paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}">      
            <p:ajax event="rowSelect" listener="#{locationHistory.onLocationSelect}" update=":#{p:component('gmap')}"/>

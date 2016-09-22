@@ -1,17 +1,20 @@
-package com.pw.localizer.repository.impl;
+package com.pw.localizer.repository.area.event;
 
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
 
 import com.pw.localizer.model.entity.AreaEventGPS;
-import com.pw.localizer.repository.AreaEventGPSRepository;
+import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class AreaEventGPSRepositoryImpl implements AreaEventGPSRepository{
 	@PersistenceContext
 	private EntityManager em;

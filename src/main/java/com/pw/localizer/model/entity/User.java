@@ -16,6 +16,9 @@ import com.pw.localizer.model.enums.Roles;
 		value = {
 				@NamedQuery(name ="USER.findAll",
 						query="SELECT u FROM User u"),
+				@NamedQuery(name ="USER.findByLoginLikeAndEmailLikeAndPhoneLike",
+				            query = "SELECT new com.pw.localizer.model.entity.User(u.login, u.email, u.phone) " +
+									"FROM User u WHERE u.login LIKE :login AND u.email LIKE :email AND u.phone LIKE :phone"),
 				@NamedQuery(name ="USER.findByLogins",
 						query="SELECT u FROM User u WHERE u.login IN (:logins)"),
 				@NamedQuery(name="USER.findLastGpsLocationByUserId",
@@ -99,7 +102,13 @@ public class User implements Serializable {
 	private List<Area>areas;
 
 	public User(){}
-	
+
+	public User(String login, String email, String phone) {
+		this.login = login;
+		this.email = email;
+		this.phone = phone;
+	}
+
 	public long getId() {
 		return id;
 	}

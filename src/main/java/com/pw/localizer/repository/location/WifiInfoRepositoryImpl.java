@@ -1,18 +1,20 @@
-package com.pw.localizer.repository.impl;
+package com.pw.localizer.repository.location;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 
 
 import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.WifiInfo;
-import com.pw.localizer.repository.WifiInfoRepository;
+import com.pw.localizer.repository.location.WifiInfoRepository;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class WifiInfoRepositoryImpl implements WifiInfoRepository {
 	@PersistenceContext
 	private EntityManager em;

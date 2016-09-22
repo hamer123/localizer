@@ -4,11 +4,45 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 
-<p:dialog widgetVar="user-advance-search" width="500" height="300" resizable="false"
+<p:dialog widgetVar="user-advance-search" width="600" height="500" resizable="false" modal="true" dynamic="true"
           hideEffect="drop" showEffect="slide" header="#{msg['user.advance.search']}">
+    <p:ajax event="close" update=":#{p:component('founded-users')}" listener="#{location.advanceSearchFoundedUsers.clear}"/>
     <h:form>
-        <h:panelGrid>
+        <h:panelGrid columns="2" style="margin: 0 auto;" cellspacing="5">
 
+            <p:outputLabel value="#{msg['login']}"/>
+            <p:inputText value="#{location.userAdvanceSearch.login}"/>
+
+            <p:outputLabel value="#{msg['email']}"/>
+            <p:inputText value="#{location.userAdvanceSearch.email}"/>
+
+            <p:outputLabel value="#{msg['phone']}"/>
+            <p:inputText value="#{location.userAdvanceSearch.phone}"/>
+
+            <p:commandButton value="#{msg['search']}" actionListener="#{location.onUserAdvanceSearch()}" update=":#{p:component('founded-users')}"/>
+
+        </h:panelGrid>
+        <h:panelGrid style="margin: 0 auto;">
+            <p:dataTable id="founded-users" var="user" value="#{location.advanceSearchFoundedUsers}" rows="10" paginator="true">
+                
+                <p:column headerText="#{msg['login']}">
+                    <h:outputText value="#{user.login}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['email']}">
+                    <h:outputText value="#{user.email}"/>
+                </p:column>
+                
+                <p:column headerText="#{msg['phone']}">
+                    <h:outputText value="#{user.phone}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['add.to.follow']}">
+                    <p:commandButton value="#{msg['add']}" actionListener="#{location.addUserToFollow(user.login)}"
+                                     update=":#{p:component('follow-users-table')} :#{p:component('growl')} :#{p:component('gmap')}"/>
+                </p:column>
+                
+            </p:dataTable>
         </h:panelGrid>
     </h:form>
 </p:dialog>

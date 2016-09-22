@@ -22,7 +22,7 @@ import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.AreaFollows;
 import com.pw.localizer.model.enums.AreaMailMessageModes;
-import com.pw.localizer.repository.AreaRepository;
+import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.singleton.RestSessionManager;
 
 @Stateless

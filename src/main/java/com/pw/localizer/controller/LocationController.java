@@ -20,8 +20,10 @@ import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.Overlays;
 import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.utilitis.UserAdvanceSearch;
 import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
+import org.omnifaces.util.Ajax;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.Circle;
@@ -33,12 +35,12 @@ import com.pw.localizer.model.google.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.repository.AreaEventGPSRepository;
-import com.pw.localizer.repository.AreaEventNetworkRepository;
-import com.pw.localizer.repository.AreaRepository;
-import com.pw.localizer.repository.CellInfoMobileRepository;
-import com.pw.localizer.repository.UserRepository;
-import com.pw.localizer.repository.WifiInfoRepository;
+import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
+import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
+import com.pw.localizer.repository.area.AreaRepository;
+import com.pw.localizer.repository.location.CellInfoMobileRepository;
+import com.pw.localizer.repository.user.UserRepository;
+import com.pw.localizer.repository.location.WifiInfoRepository;
 import com.pw.localizer.qualifier.DialogGMap;
 import com.pw.localizer.singleton.RestSessionManager;
 
@@ -122,6 +124,12 @@ public class LocationController implements Serializable{
 
 	/** From this date we get owner all active areas events */
 	private Date areaEventFromDate;
+
+	/** User advance search */
+	private UserAdvanceSearch userAdvanceSearch = new UserAdvanceSearch();
+
+	/** Founded users by advance search */
+	private List<User> advanceSearchFoundedUsers;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
@@ -215,6 +223,10 @@ public class LocationController implements Serializable{
 			JsfMessageBuilder.errorMessage("Nie udało się odnowić lokalizacji i zaktualizowac google controller");
 			e.printStackTrace();
 		}
+	}
+
+	public void onUserAdvanceSearch(){
+		advanceSearchFoundedUsers = userRepository.findByLoginLikeAndEmailLikeAndPhoneLike(userAdvanceSearch);
 	}
 
 	User updateUserLastLocations(String login){
@@ -345,6 +357,7 @@ public class LocationController implements Serializable{
 				.collect(Collectors.toList());
 	}
 
+	public void onRefresh(){}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////  UTILITIS  /////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -594,5 +607,21 @@ public class LocationController implements Serializable{
 
 	public void setUpdateUserAreasOnPolling(boolean updateUserAreasOnPolling) {
 		this.updateUserAreasOnPolling = updateUserAreasOnPolling;
+	}
+
+	public UserAdvanceSearch getUserAdvanceSearch() {
+		return userAdvanceSearch;
+	}
+
+	public void setUserAdvanceSearch(UserAdvanceSearch userAdvanceSearch) {
+		this.userAdvanceSearch = userAdvanceSearch;
+	}
+
+	public List<User> getAdvanceSearchFoundedUsers() {
+		return advanceSearchFoundedUsers;
+	}
+
+	public void setAdvanceSearchFoundedUsers(List<User> advanceSearchFoundedUsers) {
+		this.advanceSearchFoundedUsers = advanceSearchFoundedUsers;
 	}
 }

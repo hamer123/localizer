@@ -4,5 +4,5 @@ import org.primefaces.model.map.Polyline;
 
 public interface RouteService {
 
-	double calculateLenghtMeters(Polyline polyline);
+	double calculateLengthMeters(Polyline polyline);
 }

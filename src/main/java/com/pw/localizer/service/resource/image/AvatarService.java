@@ -8,8 +8,7 @@ import javax.inject.Inject;
 
 import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.Avatar;
-import com.pw.localizer.repository.AvatarRepository;
-import com.pw.localizer.service.resource.image.ImageService;
+import com.pw.localizer.repository.avatar.AvatarRepository;
 import com.pw.localizer.singleton.ResourceDirectionStartup;
 import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;

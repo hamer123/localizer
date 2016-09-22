@@ -9,7 +9,7 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 @FacesValidator("emailUsedValidator")
 public class EmailUsedValidator implements Validator{

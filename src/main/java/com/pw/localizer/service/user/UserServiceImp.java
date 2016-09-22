@@ -3,8 +3,8 @@ package com.pw.localizer.service.user;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.Roles;
-import com.pw.localizer.repository.AreaRepository;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.area.AreaRepository;
+import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.service.resource.image.ImageService;
 import org.jboss.logging.Logger;
 

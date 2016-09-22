@@ -8,7 +8,7 @@ import org.jboss.logging.Logger;
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 @ViewScoped
 @Named(value="localizerSecurityController")

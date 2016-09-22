@@ -1,16 +1,19 @@
-package com.pw.localizer.repository.impl;
+package com.pw.localizer.repository.user;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.pw.localizer.model.entity.*;
-import com.pw.localizer.repository.UserRepository;
+import com.pw.localizer.model.utilitis.UserAdvanceSearch;
+import com.pw.localizer.repository.user.UserRepository;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -66,19 +69,6 @@ public class UserRepositoryImpl implements UserRepository{
 				 .setParameter("login", loginLike + "%")
 				 .getResultList();
 	}
-//
-//	@Override
-//	public User findByLoginFetchArea(String login) {
-//		User user =  em.createNamedQuery("USER.findByLogin", User.class)
-//			       .setParameter("login", login)
-//			       .getSingleResult();
-//
-//		List<Area>areas = user.getAreas();
-//		for(Area area : areas)
-//			area.getPoints().size();
-//
-//		return user;
-//	}
 
 	@Override
 	public User findByEmail(String email) {
@@ -117,5 +107,14 @@ public class UserRepositoryImpl implements UserRepository{
 				.setParameter("id",id)
 				.getResultList();
 		return result.isEmpty() ? null : result.get(0);
+	}
+
+	@Override
+	public List<User> findByLoginLikeAndEmailLikeAndPhoneLike(UserAdvanceSearch userAdvanceSearch) {
+		return em.createNamedQuery("USER.findByLoginLikeAndEmailLikeAndPhoneLike",User.class)
+				.setParameter("login", userAdvanceSearch.getLogin() == null ? "%" : "%" + userAdvanceSearch.getLogin() + "%")
+				.setParameter("email", userAdvanceSearch.getEmail() == null ? "%" : "%" + userAdvanceSearch.getEmail() + "%")
+				.setParameter("phone", userAdvanceSearch.getPhone() == null ? "%" : "%" + userAdvanceSearch.getPhone() + "%")
+				.getResultList();
 	}
 }
