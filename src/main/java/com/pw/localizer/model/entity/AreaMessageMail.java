@@ -1,7 +1,5 @@
 package com.pw.localizer.model.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,34 +9,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
 
-import com.pw.localizer.model.enums.AreaMailMessageModes;
+import com.pw.localizer.model.enums.AreaMailMessageMode;
 
 @Entity
-@Table(name = "area_message_mail")
 public class AreaMessageMail {
-    @TableGenerator
-    (
-     name="areaMessageMailGenerator", 
-     table="ID_GEN", 
-     pkColumnName="GEN_KEY", 
-     valueColumnName="GEN_VALUE", 
-     pkColumnValue="area_message_mail_ID"
-    )
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE, generator="areaMessageMailGenerator")
+    @GeneratedValue(strategy=GenerationType.TABLE)
     @Column(name = "id")
 	private long id;
-    
-    @Column(name = "active")
+
     private boolean active;
-    
-    @Column(name = "accept")
+
     private boolean accept = true;
-    
-    @Column(name = "mode")
+
+	@NotNull
     @Enumerated(EnumType.STRING)
-    private AreaMailMessageModes areaMailMessageMode;
+    private AreaMailMessageMode areaMailMessageMode;
 
 	public long getId() {
 		return id;
@@ -64,11 +52,11 @@ public class AreaMessageMail {
 		this.accept = accept;
 	}
 
-	public AreaMailMessageModes getAreaMailMessageMode() {
+	public AreaMailMessageMode getAreaMailMessageMode() {
 		return areaMailMessageMode;
 	}
 
-	public void setAreaMailMessageMode(AreaMailMessageModes areaMailMessageMode) {
+	public void setAreaMailMessageMode(AreaMailMessageMode areaMailMessageMode) {
 		this.areaMailMessageMode = areaMailMessageMode;
 	}
 

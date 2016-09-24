@@ -17,7 +17,7 @@
            <f:facet name="filter">
              <p:selectOneMenu onchange="PF('areaEventsTable').filter()" immediate="true">
                <f:selectItem itemLabel="Wszystkie" itemValue="#{null}" noSelectionOption="true" />
-               <f:selectItems value="#{messageController.providers()}" />
+               <f:selectItems value="#{messageController.provider()}" />
              </p:selectOneMenu>
            </f:facet>
            <h:outputText value="#{areaEvent.location.providerType}" />

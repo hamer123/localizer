@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,17 +12,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SignalStrength implements Serializable{
-
-	@XmlElement
-	@Column(name="assus_level", nullable = true)
+	@NotNull
 	private int assusLevel;
-	@XmlElement
-	@Column(name="dbm", nullable = true)
+
+	@NotNull
 	private int dbm;
-	@XmlElement
-	@Column(name="signal_level", nullable = true)
+
+	@NotNull
 	private int level;
 	
 	public int getAssusLevel() {

@@ -3,61 +3,51 @@ package com.pw.localizer.model.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import com.pw.localizer.model.enums.Providers;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.*;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pw.localizer.model.enums.Provider;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+//@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Location implements Serializable{
-	@XmlElement
 	@Id
-	@TableGenerator(
-			name="LOCATION_GEN",
-			table="ID_GEN",
-			pkColumnName="GEN_KEY",
-			valueColumnName="GEN_VALUE",
-			pkColumnValue="LOCATIO_NETWORK_ID"
-	)
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="LOCATION_GEN")
-	@Column(name = "location_id")
+	@GeneratedValue(strategy=GenerationType.TABLE)
     private Long id;
-	
-	@XmlElement
-	@Column(name="latitude", nullable=false, updatable = false)
+
+	@NotNull
+	@Column(updatable = false)
 	private double latitude;
 
-	@XmlElement
-	@Column(name="longtitude", nullable=false, updatable = false)
+	@NotNull
+	@Column(updatable = false)
 	private double longitude;
-	
+
+//	@XmlTransient
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="user_id")
 	private User user;
 
-	@XmlElement
+	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date", nullable=false, updatable = false)
+	@Column(updatable = false)
 	private Date date;
-	
-	@XmlElement
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(name="provider_type", nullable=false, updatable = false)
-	private Providers providerType;
-	
-	@XmlElement
+	@Column(updatable = false)
+	private Provider providerType;
+
 	@Embedded
 	private Address address;
-	
-	@XmlElement
-	@Column(name = "accuracy", nullable = false, updatable = false)
+
+	@NotNull
+	@Column(updatable = false)
 	private double accuracy;
-	
-	@Column(name = "event_check")
+
+	@XmlTransient
 	private boolean eventCheck;
 
 	public Long getId() {
@@ -84,6 +74,7 @@ public abstract class Location implements Serializable{
 		this.longitude = longitude;
 	}
 
+	@JsonIgnore
 	public User getUser() {
 		return user;
 	}
@@ -108,11 +99,11 @@ public abstract class Location implements Serializable{
 		this.address = address;
 	}
 
-	public Providers getProviderType() {
+	public Provider getProviderType() {
 		return providerType;
 	}
 
-	public void setProviderType(Providers providerType) {
+	public void setProviderType(Provider providerType) {
 		this.providerType = providerType;
 	}
 

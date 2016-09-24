@@ -10,8 +10,8 @@ import com.pw.localizer.model.entity.AreaMessageMail;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.AreaFollows;
-import com.pw.localizer.model.enums.AreaMailMessageModes;
+import com.pw.localizer.model.enums.AreaFollow;
+import com.pw.localizer.model.enums.AreaMailMessageMode;
 
 public class AreaEventBuilder {
 
@@ -52,14 +52,14 @@ public class AreaEventBuilder {
 		if(location instanceof LocationNetwork){
 			LocationNetwork locationNetwork = (LocationNetwork)location;
 			provider += " ";
-			provider += locationNetwork.getLocalizationServices();
+			provider += locationNetwork.getLocalizerService();
 		}
 		
 		return provider;
 	}
 	
 	private String getMessagePartFollowType(Area area){
-		if(area.getAreaFollowType() == AreaFollows.INSIDE)
+		if(area.getAreaFollowType() == AreaFollow.INSIDE)
 			return " opuscil obszar sledzenia ( "
 			       + area.getName()
 			       + " )";
@@ -81,9 +81,9 @@ public class AreaEventBuilder {
 	
 	private boolean shouldSendMailMessage(AreaMessageMail areaMessageMail){
 		if( areaMessageMail.isActive() ){
-			if( areaMessageMail.getAreaMailMessageMode() == AreaMailMessageModes.ACCEPT && areaMessageMail.isAccept()){
+			if( areaMessageMail.getAreaMailMessageMode() == AreaMailMessageMode.ACCEPT && areaMessageMail.isAccept()){
 				return true;
-			} else if( areaMessageMail.getAreaMailMessageMode() == AreaMailMessageModes.EVER ){
+			} else if( areaMessageMail.getAreaMailMessageMode() == AreaMailMessageMode.EVER ){
 				return true;
 			}
 		}

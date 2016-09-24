@@ -44,30 +44,32 @@ public class AreaRepositoryImpl implements AreaRepository{
 				  .getResultList();
 	}
 
-	@Override
-	public List<Area> findByTargetId(long id){
-		return em.createNamedQuery("Area.findByTargetId", Area.class)
-		         .setParameter("id", id)
-		         .getResultList();
-	}
+//	@Override
+//	public List<Area> findByTargetId(long id){
+//		return em.createNamedQuery("Area.findByTargetId", Area.class)
+//		         .setParameter("id", id)
+//		         .getResultList();
+//	}
 
 	@Override
 	public List<Area> findWithEagerFetchPointsAndTargetByProviderId(long id) {
 		List<Area>polygonModels = em.createNamedQuery("Area.findWithEagerFetchPointsAndTargetByProviderId", Area.class)
+				 .setHint("javax.persistence.fetchgraph", em.getEntityGraph("Area.fetchAll"))
 				 .setParameter("id", id)
 				 .getResultList();	
-
-		for(Area polygonModel : polygonModels)
-			polygonModel.getPoints().size();
+//
+//		em.getEntityGraph("Area.fetchAll")
+//		for(Area polygonModel : polygonModels)
+//			polygonModel.getPoints().size();
 		
 		return polygonModels;
 	}
 
 	@Override
-	public int updateAktywnyById(boolean aktywny, long id) {
-		return em.createQuery(Area.AREA_updateAktywnyById)
-				 .setParameter("id", id)
-				 .setParameter("aktywny", aktywny)
+	public int updateSetActiveById(boolean active, long id) {
+		return em.createNamedQuery("Area.updateByIdSetActive")
+				 .setParameter("areaId", id)
+				 .setParameter("active", active)
 		         .executeUpdate();
 	}
 
@@ -79,7 +81,7 @@ public class AreaRepositoryImpl implements AreaRepository{
 	}
 
 	@Override
-	public List<Area> finbByActive(boolean active) {
+	public List<Area> findByActive(boolean active) {
 		return em.createNamedQuery("Area.findByAktywny", Area.class)
 				 .setParameter("aktywny", active)
 				 .getResultList();
@@ -93,10 +95,10 @@ public class AreaRepositoryImpl implements AreaRepository{
 				 .getResultList();
 	}
 
-	@Override
-	public void removeById(long id) {
-		Area area = em.find(Area.class, id);
-		em.remove(area);
-	}
+//	@Override
+//	public void removeById(long id) {
+//		Area area = em.find(Area.class, id);
+//		em.remove(area);
+//	}
 
 }

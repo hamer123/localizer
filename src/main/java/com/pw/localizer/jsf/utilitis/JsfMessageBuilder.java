@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 
 public class JsfMessageBuilder {
 	
-	private static final String MESSAGE_PROPERTIES_NAME = "backend.message.properties";
+	private static final String MESSAGE_PROPERTIES_NAME = "WEB-INF/ValidationMessages.properties";
 	
 	public static void errorMessageBundle(String bundle){
 		PropertiesReader propertiesReader = new PropertiesReader(MESSAGE_PROPERTIES_NAME);

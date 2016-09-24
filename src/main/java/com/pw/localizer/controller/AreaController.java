@@ -10,9 +10,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.service.area.AreaService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.model.map.LatLng;
@@ -26,14 +26,12 @@ import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaMessageMail;
 import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.enums.AreaFollows;
-import com.pw.localizer.model.enums.AreaMailMessageModes;
 import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.repository.area.AreaPointRepository;
 import com.pw.localizer.repository.user.UserRepository;
 
-@Named(value= "area")
 @ViewScoped
+@Named(value="createArea")
 public class AreaController implements Serializable{
 	@Inject
 	private LocalizerSession localizerSession;
@@ -42,66 +40,74 @@ public class AreaController implements Serializable{
 	@Inject
 	private AreaRepository areaRepository;
 	@Inject
+	private AreaService areaService;
+	@Inject
 	private AreaPointRepository polygonPointRepository;
 	@Inject
 	private GoogleMapController googleMapController;
+	@Inject
+	private PolygonFactory polygonFactory;
 	@Inject 
 	private Logger logger;
-	
-	static final AreaMailMessageModes[] areaMailMessageModes = AreaMailMessageModes.values();
-	static final AreaFollows[] polygonFollowTypes = AreaFollows.values();
-	
+
+	/** */
 	private Polygon polygon;
+
+	/** */
 	private Area area;
-	private List<Area>areaList = new ArrayList<Area>();
+
+	/** */
+	private List<Area> areas = new ArrayList<Area>();
+
+	/** */
 	private List<String>targetLoginList;
 
 	@PostConstruct
 	private void postConstruct(){
-		clearArea();
-		areaList = areaRepository.findByProviderId( localizerSession.getUser().getId() );
-		this.polygon = PolygonFactory.getInstance().empty();
+		areas = areaRepository.findByProviderId(localizerSession.getUser().getId());
+		polygon = polygonFactory.empty();
 		googleMapController.addOverlay(polygon);
+		//init area
+		area = new Area();
+		area.setAreaMessageMail(new AreaMessageMail());
+		area.setTarget(new User());
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   ACTIONS   ///////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	/** Create area */
 	public void onSaveArea(){
 		try{
-			
-			if(isAreaWithName(area.getName())){
-				JsfMessageBuilder.errorMessage("Obszar sledzenia o tej nazwie juz istnieje... zmien nazwe");
-				return;
-			} 
-			
-			if(polygon.getPaths().size() < 2){
-				JsfMessageBuilder.errorMessage("Obszar sledzenia musi posiadac przynaimej 2 punkty");
-				return;
-			}
+			if(validateAreaBeforeCreate()){
+				prepareAreaBeforeSave();
 
-			prepareAreaBeforeSave();
-			area = areaRepository.create(area);
-			areaList.add(area);
-			clearArea();
-			clearPolygon();
-			JsfMessageBuilder.infoMessage("Udalo sie utworzyc obszar sledzenia o nazwie " + area.getName() + " sledzacy uzytkownika " + area.getTarget().getLogin());
+				//Create
+				area = areaService.create(area);
+				areas.add(area);
+
+				//Clear
+				clearArea();
+				clearPolygon();
+
+				JsfMessageBuilder.infoMessage("Udalo sie utworzyc obszar sledzenia o nazwie " + area.getName() + " sledzacy uzytkownika " + area.getTarget().getLogin());
+			}
 		} catch(Exception e) {
 			JsfMessageBuilder.errorMessage("Nie udalo sie utworzyc obszaru sledzenia " + e);
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional
+	/** Change area active on opposite */
 	public void onChangeAreaActiveStatus(Area area){
 		try{	
 			if(area.isActive()){
-				areaRepository.updateAktywnyById(false, area.getId());
+				areaService.updateActive(area.getId(),false);
 				area.setActive(false);
 				JsfMessageBuilder.infoMessage("Udalo sie dezaktywowac obszar sledzenia");
 			} else {
-				areaRepository.updateAktywnyById(true, area.getId());
+				areaService.updateActive(area.getId(),true);
 				area.setActive(true);
 				JsfMessageBuilder.infoMessage("Udalo sie aktywowac obszar sledzenia");
 			}
@@ -110,16 +116,36 @@ public class AreaController implements Serializable{
 			JsfMessageBuilder.errorMessage("Nie udalo sie zmienic stanu aktywnosci obszaru sledzenia");
 		}
 	}
-	
+
+	/** Remove area */
 	public void onRemoveArea(Area area){
 		try{
-			areaRepository.removeById(area.getId());
-			areaList.remove(area);
+			areaService.remove(area.getId());
+			areas.remove(area);
 			JsfMessageBuilder.infoMessage("Udalo sie usunac polygon");
 		} catch(Exception e) {
 			logger.error("[AreaController] Nie udalo sie usunac PolygonModel dla id: " + area.getId());
 			JsfMessageBuilder.errorMessage("Nie udalo sie usunac polygon");
 		}
+	}
+
+	private boolean validateAreaBeforeCreate(){
+		boolean valid = true;
+
+		if(isAreaWithName(area.getName())){
+			JsfMessageBuilder.errorMessage("Obszar sledzenia o tej nazwie juz istnieje... zmien nazwe");
+			valid =  false;
+		}
+		if(polygon.getPaths().size() < 2){
+			JsfMessageBuilder.errorMessage("Obszar sledzenia musi posiadac przynaimej 2 punkty");
+			valid =  false;
+		}
+		if(area.getTarget().getLogin().equals(localizerSession.getUser().getLogin())){
+			JsfMessageBuilder.errorMessage("Obszar sledzenia nie moze byc ustawiony na sledzenie providera");
+			valid =  false;
+		}
+
+		return valid;
 	}
 	
 	public List<String> onAutoCompleteUser(String userLogin){
@@ -137,8 +163,8 @@ public class AreaController implements Serializable{
 		setPolygonFillColor(area.getColor());
 	}
 	
-	public void onPointShow(LatLng latLng){
-		googleMapController.setCenter( GoogleMapModel.center(latLng) );
+	public void onPathShow(LatLng latLng){
+		googleMapController.setCenter(GoogleMapModel.center(latLng));
 	}
 	
 	public void onPathRemove(LatLng latLng){
@@ -155,7 +181,7 @@ public class AreaController implements Serializable{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private boolean isAreaWithName(String name){
-		for(Area area : areaList)
+		for(Area area : areas)
 			if(area.getName().equals(name))
 				return true;
 		
@@ -239,9 +265,9 @@ public class AreaController implements Serializable{
 		area.setTarget(new User());
 		area.setPoints(new HashMap<Integer, AreaPoint>());
 	}
-	
+
 	void clearPolygon(){
-		polygon = PolygonFactory.getInstance().empty();
+		polygon.setPaths(new ArrayList());
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -268,18 +294,9 @@ public class AreaController implements Serializable{
 		this.targetLoginList = listTargetsId;
 	}
 
-	public AreaFollows[] getPolygonFollowTypes() {
-		return polygonFollowTypes;
+	public List<Area> getAreas() {
+		return areas;
 	}
-
-	public List<Area> getAreaList() {
-		return areaList;
-	}
-
-	public AreaMailMessageModes[] getAreaMailMessageModes() {
-		return areaMailMessageModes;
-	}
-
 
 	public Area getArea() {
 		return area;
@@ -353,8 +370,8 @@ public class AreaController implements Serializable{
 		this.targetLoginList = targetLoginList;
 	}
 
-	public void setAreaList(List<Area> areaList) {
-		this.areaList = areaList;
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
 	}
 
 }

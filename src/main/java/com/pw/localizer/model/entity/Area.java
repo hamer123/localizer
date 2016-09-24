@@ -7,32 +7,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKey;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.pw.localizer.model.enums.AreaFollows;
+import com.pw.localizer.model.enums.AreaFollow;
 
 @Entity
-@Table(name="area")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+			name = "Area.fetchAll",
+			includeAllAttributes = true,
+			subgraphs = @NamedSubgraph(
+					name = "Polygon.path",
+					attributeNodes = {@NamedAttributeNode("")}
+			)
+	),
+	@NamedEntityGraph(
+
+	)
+})
 @NamedQueries(value={
+	          @NamedQuery(name="Area.updateByIdSetActive",
+			             query="UPDATE Area a SET a.active =:active WHERE a.id =:areaId"),
 	          @NamedQuery(name="Area.findByProviderId", 
     		              query="SELECT a FROM Area a WHERE a.provider.id = :id"),
 		      @NamedQuery(name="Area.findByTargetId", 
@@ -48,45 +49,35 @@ import com.pw.localizer.model.enums.AreaFollows;
 		      @NamedQuery(name="Area.findIdByProviderIdAndAktywny", 
 		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.active =:active")
 })
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Area {
-	public static final String AREA_updateAktywnyById = "UPDATE Area a SET a.aktywny =:aktywny WHERE a.id =:id";
-	
-    @TableGenerator
-    (
-       name="areaGenerator", 
-       table="ID_GEN", 
-       pkColumnName="GEN_KEY", 
-       valueColumnName="GEN_VALUE", 
-       pkColumnValue="AREA_ID", 
-       allocationSize=1
-    )
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="areaGenerator")
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
     
 	@NotNull
 	@Size(min = 4, max = 16)
     @Column
 	private String name;
-    
+
+	@XmlTransient
 	@NotNull
 	@ManyToOne(optional = false)
-	@JoinColumn(unique = false)
 	private User target;
-	
+
+	@XmlTransient
 	@NotNull
 	@ManyToOne(optional = false)
 	private User provider;
-	
-	@Column(name = "active")
+
 	private boolean active;
-	
-	@Column(name = "color")
+
+	@NotNull
 	private String color;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private AreaFollows polygonFollowType;
+	private AreaFollow polygonFollowType;
 	
 	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
 	private List<AreaEventNetwork>areaEventNetworks;
@@ -105,37 +96,48 @@ public class Area {
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Map<Integer, AreaPoint> getPoints() {
 		return points;
 	}
+
 	public void setPoints(Map<Integer, AreaPoint> points) {
 		this.points = points;
 	}
+
 	public User getTarget() {
 		return target;
 	}
+
 	public void setTarget(User target) {
 		this.target = target;
 	}
+
 	public User getProvider() {
 		return provider;
 	}
+
 	public void setProvider(User provider) {
 		this.provider = provider;
 	}
-	public AreaFollows getAreaFollowType() {
+
+	public AreaFollow getAreaFollowType() {
 		return polygonFollowType;
 	}
-	public void setAreaFollowType(AreaFollows polygonFollowType) {
+
+	public void setAreaFollowType(AreaFollow polygonFollowType) {
 		this.polygonFollowType = polygonFollowType;
 	}
 
@@ -143,9 +145,7 @@ public class Area {
 		return areaEventNetworks;
 	}
 
-	public void setAreaEventNetworks(List<AreaEventNetwork> areaEventNetworks) {
-		this.areaEventNetworks = areaEventNetworks;
-	}
+	public void setAreaEventNetworks(List<AreaEventNetwork> areaEventNetworks) {this.areaEventNetworks = areaEventNetworks;}
 
 	public List<AreaEventGPS> getAreaEventGPSs() {
 		return areaEventGPSs;
@@ -163,11 +163,11 @@ public class Area {
 		this.active = aktywny;
 	}
 
-	public AreaFollows getPolygonFollowType() {
+	public AreaFollow getPolygonFollowType() {
 		return polygonFollowType;
 	}
 
-	public void setPolygonFollowType(AreaFollows polygonFollowType) {
+	public void setPolygonFollowType(AreaFollow polygonFollowType) {
 		this.polygonFollowType = polygonFollowType;
 	}
 

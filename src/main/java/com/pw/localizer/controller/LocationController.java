@@ -12,18 +12,18 @@ import javax.inject.Named;
 import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.google.controller.DialogUserLocationGoogleMapController;
+import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.model.google.UserComponentVisibility;
 import com.pw.localizer.google.controller.UserGoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.*;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
-import com.pw.localizer.model.utilitis.UserAdvanceSearch;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
+import com.pw.localizer.model.wrapper.UserAdvanceSearch;
 import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
-import org.omnifaces.util.Ajax;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.Circle;
@@ -34,7 +34,6 @@ import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.model.google.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
-import com.pw.localizer.model.enums.LocalizationServices;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.repository.area.AreaRepository;
@@ -211,12 +210,12 @@ public class LocationController implements Serializable{
 		try{
 			for(String login : users.keySet()) {
 				User user = updateUserLastLocations(login);
-				this.userGoogleMapController.update(user, Overlays.MARKER);
-				this.userGoogleMapController.update(user,Overlays.CIRCLE);
-				this.userGoogleMapController.update(user,Overlays.POLYLINE);
+				this.userGoogleMapController.update(user, OverlayType.MARKER);
+				this.userGoogleMapController.update(user, OverlayType.CIRCLE);
+				this.userGoogleMapController.update(user, OverlayType.POLYLINE);
 				if(updateUserAreasOnPolling) {
 					user = updateUserAreas(login);
-					this.userGoogleMapController.update(user,Overlays.POLYGON);
+					this.userGoogleMapController.update(user, OverlayType.POLYGON);
 				}
 			}
 		} catch(Exception e){
@@ -331,10 +330,10 @@ public class LocationController implements Serializable{
 			OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(userOverlay.getId());
 			User user = users.get(uuidRaw.getLogin());
 			userAvatar = user.getAvatar();
-			if(uuidRaw.getProvider() == Providers.GPS){
+			if(uuidRaw.getProvider() == Provider.GPS){
 				userLocation = user.getLastLocationGPS();
 			}else{
-				if(uuidRaw.getLocalizationService() == LocalizationServices.NASZ)
+				if(uuidRaw.getLocalizationService() == LocalizerService.NASZ)
 					userLocation = user.getLastLocationNetworkNaszaUsluga();
 				else
 					userLocation = user.getLastLocationNetworObcaUsluga();
@@ -403,9 +402,9 @@ public class LocationController implements Serializable{
 		return locations;
 	}
 
-	public LocalizationServices getLocalizationServices(Location location){
+	public LocalizerService getLocalizationServices(Location location){
 		if(location instanceof LocationNetwork)
-			return ( (LocationNetwork)location ).getLocalizationServices();
+			return ( (LocationNetwork)location ).getLocalizerService();
 		return null;
 	}
 

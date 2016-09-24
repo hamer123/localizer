@@ -4,15 +4,15 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.model.enums.Role;
 
 @Named
 @SessionScoped
 public class LocalizerSession implements Serializable{
 	private User user;
 
-	public boolean isInRole(Roles role){
-		for(Roles _role : user.getRoles())
+	public boolean isInRole(Role role){
+		for(Role _role : user.getRoles())
 			if(_role.equals(role))
 				return true;
 		return false;

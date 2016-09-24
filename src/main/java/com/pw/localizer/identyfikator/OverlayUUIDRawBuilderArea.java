@@ -1,7 +1,7 @@
 package com.pw.localizer.identyfikator;
 
 import com.pw.localizer.model.entity.Area;
-import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.OverlayType;
 
 import java.util.regex.Pattern;
 
@@ -19,7 +19,7 @@ public class OverlayUUIDRawBuilderArea implements OverlayUUIDBuilder{
 
     private void buildUUIDRaw(){
         this.uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
-                .overlay(Overlays.POLYGON)
+                .overlay(OverlayType.POLYGON)
                 .login(area.getProvider().getLogin())
                 .id(area.getId())
                 .build();

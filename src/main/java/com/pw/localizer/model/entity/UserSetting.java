@@ -2,30 +2,21 @@ package com.pw.localizer.model.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.TableGenerator;
 
 @Entity
 public class UserSetting implements Serializable{
 	@Id
-    @TableGenerator(
-            name="userSettingGen", 
-            table="ID_GEN", 
-            pkColumnName="GEN_KEY", 
-            valueColumnName="GEN_VALUE", 
-            pkColumnValue="USER_SETTING_ID"
-            )
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="userSettingGen")
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-	@Column(name = "default_latitude")
+
 	private double defaultLatitude;
-	@Column(name = "default_longtitude")
-	private double defaultLongtitude;
-	@Column(name = "g_map_zoom")
+
+	private double defaultLongitude;
+
 	private int gMapZoom;
 	
 	
@@ -35,11 +26,11 @@ public class UserSetting implements Serializable{
 	public void setDefaultLatitude(double defaultLatitude) {
 		this.defaultLatitude = defaultLatitude;
 	}
-	public double getDefaultLongtitude() {
-		return defaultLongtitude;
+	public double getDefaultLongitude() {
+		return defaultLongitude;
 	}
-	public void setDefaultLongtitude(double defaultLongtitude) {
-		this.defaultLongtitude = defaultLongtitude;
+	public void setDefaultLongitude(double defaultLongitude) {
+		this.defaultLongitude = defaultLongitude;
 	}
 	public int getgMapZoom() {
 		return gMapZoom;

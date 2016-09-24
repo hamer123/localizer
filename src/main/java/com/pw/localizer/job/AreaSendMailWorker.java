@@ -27,7 +27,7 @@ public class AreaSendMailWorker {
 	@Inject
 	private Logger logger;
 
-	@Schedule(minute = "*/1", hour="*", persistent = false)
+//	@Schedule(minute = "*/1", hour="*", persistent = false)
 	public int job(){
 		List<AreaEvent>areaEvents = findAreaEvents();
 		

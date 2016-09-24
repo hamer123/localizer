@@ -6,14 +6,14 @@ import java.util.List;
 
 import com.pw.localizer.identyfikator.OverlayUUIDFactory;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
+import com.pw.localizer.model.enums.Provider;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
 
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.OverlayType;
 import org.primefaces.push.annotation.Singleton;
 
 import javax.annotation.PostConstruct;
@@ -62,7 +62,7 @@ public class CircleFactory implements Serializable{
 		circle.setFillOpacity(CIRCLE_FILL_OPACITY);
 		circle.setStrokeColor(chooseStrokeColor(location));
 		circle.setStrokeOpacity(CIRCLE_STROKE_OPACITY);
-		String uuid = OverlayUUIDFactory.builder(location,Overlays.CIRCLE).uuid();
+		String uuid = OverlayUUIDFactory.builder(location, OverlayType.CIRCLE).uuid();
 		circle.setId(uuid);
 		return circle;
 	}
@@ -72,11 +72,11 @@ public class CircleFactory implements Serializable{
 	}
 	
 	private String chooseColor(Location location){
-		Providers type = location.getProviderType();
+		Provider type = location.getProviderType();
 		
-		if(type == Providers.GPS)
+		if(type == Provider.GPS)
 			return GPS_CIRCLE_COLOR;
-		else if(type == Providers.NETWORK)
+		else if(type == Provider.NETWORK)
 			return chooseColorNetwork(location);
 		else
 			throw new IllegalStateException("[CircleFactory] Nie znaleziono koloru dla providera " + type);
@@ -85,20 +85,20 @@ public class CircleFactory implements Serializable{
 	private String chooseColorNetwork(Location location){
 		LocationNetwork locationNetwork = (LocationNetwork)location;
 		
-		if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ)
+		if(locationNetwork.getLocalizerService() == LocalizerService.NASZ)
 			return NETWORK_NASZ_CIRCLE_COLOR;
-		else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
+		else if(locationNetwork.getLocalizerService() == LocalizerService.OBCY)
 			return NETWORK_OBCY_CIRCLE_COLOR;
 		else
-			throw new IllegalStateException("[CircleFactory] Nie znaleziono koloru dla Network Localization Services " + locationNetwork.getLocalizationServices());
+			throw new IllegalStateException("[CircleFactory] Nie znaleziono koloru dla Network Localization Services " + locationNetwork.getLocalizerService());
 	}
 	
 	private String chooseStrokeColor(Location location){
-		Providers type = location.getProviderType();
+		Provider type = location.getProviderType();
 		
-		if(type == Providers.GPS){
+		if(type == Provider.GPS){
 			return GPS_CIRCLE_STROKE_COLOR;
-		} else if(type == Providers.NETWORK){
+		} else if(type == Provider.NETWORK){
 			return chooseStrokeColorNetwork(location);
 		} else {
 			throw new IllegalStateException("[CircleFactory] Nie znaleziono stroke koloru dla providera " + type);
@@ -108,12 +108,12 @@ public class CircleFactory implements Serializable{
 	private String chooseStrokeColorNetwork(Location location){
 		LocationNetwork locationNetwork = (LocationNetwork)location;
 		
-		if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ)
+		if(locationNetwork.getLocalizerService() == LocalizerService.NASZ)
 			return NETWORK_NASZ_CIRCLE_STROKE_COLOR;
-		else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
+		else if(locationNetwork.getLocalizerService() == LocalizerService.OBCY)
 			return NETWORK_OBCY_CIRCLE_STROKE_COLOR;
 		else
-			throw new IllegalStateException("[CircleFactory] Nie znaleziono stroke koloru dla Network Localization Services " + locationNetwork.getLocalizationServices());
+			throw new IllegalStateException("[CircleFactory] Nie znaleziono stroke koloru dla Network Localization Services " + locationNetwork.getLocalizerService());
 	}
 	
 	private void findCircleColor(PropertiesReader propertiesReader){

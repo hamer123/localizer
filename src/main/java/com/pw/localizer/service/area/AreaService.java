@@ -10,7 +10,8 @@ import javax.ejb.Local;
 
 @Local
 public interface AreaService {
-    void updateStatus(long areaId, boolean status);
+    void updateActive(long areaId, boolean status);
     Area update(Area area);
     void remove(long areaId);
+    Area create(Area area);
 }

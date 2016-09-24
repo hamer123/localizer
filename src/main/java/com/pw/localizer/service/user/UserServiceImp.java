@@ -2,7 +2,7 @@ package com.pw.localizer.service.user;
 
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.model.enums.Role;
 import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.service.resource.image.ImageService;
@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Patryk on 2016-09-07.
@@ -34,7 +35,7 @@ public class UserServiceImp implements UserService, Serializable{
     @Override
     public User getUserFetchAreas(String login) {
         User user = userRepository.findByLogin(login);
-        List<Area> areas = user.getAreas();
+        Set<Area> areas = user.getAreas();
         for(Area area : areas) area.getPoints().size();
         return user;
     }
@@ -79,9 +80,9 @@ public class UserServiceImp implements UserService, Serializable{
         return user;
     }
 
-    private List<Roles> createUserRoles(){
-        List<Roles>roles = new ArrayList<>();
-        roles.add(Roles.USER);
+    private List<Role> createUserRoles(){
+        List<Role>roles = new ArrayList<>();
+        roles.add(Role.USER);
         return roles;
     }
 }

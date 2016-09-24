@@ -9,10 +9,10 @@ import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.factory.PolylineFactory;
-import com.pw.localizer.model.enums.GoogleMaps;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.GoogleMap;
+import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
 import com.pw.localizer.model.google.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.google.OverlayCreateFilter;
@@ -27,10 +27,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by wereckip on 08.09.2016.
@@ -77,7 +74,7 @@ public class UserGoogleMapController implements Serializable{
     private boolean streetVisible = true;
 
     /** Google map type */
-    private GoogleMaps googleMapType = GoogleMaps.TERRAIN;
+    private GoogleMap googleMapType = GoogleMap.TERRAIN;
 
     /** Display message on overlay select ? */
     private boolean displayMessageOnSelectOverlay = true;
@@ -87,14 +84,14 @@ public class UserGoogleMapController implements Serializable{
 
     @PostConstruct
     private void postConstruct(){
-        this.googleMapType = GoogleMaps.HYBRID;
+        this.googleMapType = GoogleMap.HYBRID;
         if(this.localizerSession.getUser() == null){
             center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
             zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
         } else {
             UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
             this.zoom = userSetting.getgMapZoom();
-            this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongtitude());
+            this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
             this.overlayCreateFilter.setCreateActivePolygon(true);
             this.overlayCreateFilter.setCreateNotActivePolygon(true);
         }
@@ -116,16 +113,16 @@ public class UserGoogleMapController implements Serializable{
         userComponentVisibilityMap.remove(login);
     }
 
-    public void update(User user, Overlays overlay){
-        if(overlay == Overlays.MARKER){
+    public void update(User user, OverlayType overlay){
+        if(overlay == OverlayType.MARKER){
             removeMarker(user.getLogin());
             addMarker(user);
-        } else if(overlay == Overlays.CIRCLE){
+        } else if(overlay == OverlayType.CIRCLE){
             removeCircle(user.getLogin());
             addCircle(user);
-        } else if(overlay == Overlays.POLYLINE){
+        } else if(overlay == OverlayType.POLYLINE){
             updatePolylines(user);
-        } else if(overlay == Overlays.POLYGON){
+        } else if(overlay == OverlayType.POLYGON){
             removePolygon(user.getLogin());
             addPolygon(user);
         } else {
@@ -140,14 +137,14 @@ public class UserGoogleMapController implements Serializable{
         renderPolylines();
     }
 
-    public void render(Overlays overlay){
-        if(overlay == Overlays.MARKER){
+    public void render(OverlayType overlay){
+        if(overlay == OverlayType.MARKER){
             renderMarkers();
-        } else if(overlay == Overlays.CIRCLE){
+        } else if(overlay == OverlayType.CIRCLE){
             renderCircles();
-        } else if(overlay == Overlays.POLYGON){
+        } else if(overlay == OverlayType.POLYGON){
             renderPolygons();
-        } else if(overlay == Overlays.POLYLINE){
+        } else if(overlay == OverlayType.POLYLINE){
             renderPolylines();
         } else {
             throw new RuntimeException("Not supported overlay " + overlay);
@@ -215,7 +212,9 @@ public class UserGoogleMapController implements Serializable{
     /** Polygon data is boolean active variable */
     private void addPolygon(User user){
         List<Polygon>polygons = googleMapModel.getPolygons();
-        List<Area>areas = user.getAreas();
+        //TODO
+        //List<Area>areas = new ArrayList<>(user.getAreas());
+        Set<Area>areas = user.getAreas();
         for(Area area : areas){
             if(overlayCreateFilter.isCreateActivePolygon() && area.isActive()){
                 Polygon polygon = polygonFactory.create(area, true);
@@ -240,7 +239,7 @@ public class UserGoogleMapController implements Serializable{
         Location location = user.getLastLocationGPS();
         OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
                 .login(user.getLogin())
-                .provider(Providers.GPS)
+                .provider(Provider.GPS)
                 .build();
         updatePolyline(location,uuidRaw);
     }
@@ -249,16 +248,16 @@ public class UserGoogleMapController implements Serializable{
         Location location = user.getLastLocationNetworkNaszaUsluga();
         OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
                 .login(user.getLogin())
-                .provider(Providers.NETWORK)
-                .localizationService(LocalizationServices.NASZ)
+                .provider(Provider.NETWORK)
+                .localizationService(LocalizerService.NASZ)
                 .build();
         updatePolyline(location,uuidRaw);
 
         location = user.getLastLocationNetworObcaUsluga();
         uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
                 .login(user.getLogin())
-                .provider(Providers.NETWORK)
-                .localizationService(LocalizationServices.OBCY)
+                .provider(Provider.NETWORK)
+                .localizationService(LocalizerService.OBCY)
                 .build();
         updatePolyline(location,uuidRaw);
     }
@@ -272,9 +271,9 @@ public class UserGoogleMapController implements Serializable{
                     polyline.setData(location.getDate());
                 }
             } else {
-                if(location.getProviderType() == Providers.GPS){
+                if(location.getProviderType() == Provider.GPS){
                     addPolylineGps(location);
-                } else if(location.getProviderType() == Providers.NETWORK){
+                } else if(location.getProviderType() == Provider.NETWORK){
                     addPolylineNetwork(location);
                 } else {
                     throw new ProviderNotSupportedException("Not supported provider " + location.getProviderType());
@@ -319,7 +318,7 @@ public class UserGoogleMapController implements Serializable{
     private void addPolylineNetwork(Location location){
         List<Polyline>polylines = googleMapModel.getPolylines();
         LocationNetwork locationNetwork = (LocationNetwork)location;
-        if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ){
+        if(locationNetwork.getLocalizerService() == LocalizerService.NASZ){
             if(overlayCreateFilter.isCreateNetworkNaszPolyline()){
                 Polyline polyline = polylineFactory.create(location,location.getDate());
                 polylines.add(polyline);
@@ -327,7 +326,7 @@ public class UserGoogleMapController implements Serializable{
                     googleMapModelOutput.getPolylines().add(polyline);
                 }
             }
-        } else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY){
+        } else if(locationNetwork.getLocalizerService() == LocalizerService.OBCY){
             if(overlayCreateFilter.isCreateNetworkObcyPolyline()){
                 Polyline polyline = polylineFactory.create(location,location.getDate());
                 polylines.add(polyline);
@@ -336,7 +335,7 @@ public class UserGoogleMapController implements Serializable{
                 }
             }
         } else {
-            throw new LocalizerServiceNotSupportedException("Not supported localizer service " + ((LocationNetwork) location).getLocalizationServices());
+            throw new LocalizerServiceNotSupportedException("Not supported localizer service " + ((LocationNetwork) location).getLocalizerService());
         }
     }
 
@@ -394,10 +393,10 @@ public class UserGoogleMapController implements Serializable{
 
         for(Marker marker : googleMapModel.getMarkers()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(marker.getId());
-            if(uuidRaw.getProvider() == Providers.GPS){
+            if(uuidRaw.getProvider() == Provider.GPS){
                 if(filterGpsMarker(marker,uuidRaw))
                     markers.add(marker);
-            } else if(uuidRaw.getProvider() == Providers.NETWORK){
+            } else if(uuidRaw.getProvider() == Provider.NETWORK){
                 if(filterNetworkMarker(marker,uuidRaw))
                     markers.add(marker);
             } else {
@@ -416,12 +415,12 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private boolean filterNetworkMarker(Marker marker, OverlayUUIDRaw uuidRaw){
-        LocalizationServices service = uuidRaw.getLocalizationService();
+        LocalizerService service = uuidRaw.getLocalizationService();
         UserComponentVisibility userComponentVisibility = userComponentVisibilityMap.get(uuidRaw.getLogin());
-        if(service == LocalizationServices.NASZ){
+        if(service == LocalizerService.NASZ){
             if(googleMapComponentVisible.isMarkerNetworkNasz())
                 return userComponentVisibility.isNetworkNaszMarker();
-        } else if(service == LocalizationServices.OBCY){
+        } else if(service == LocalizerService.OBCY){
             if(googleMapComponentVisible.isMarkerNetworkObcy())
                 return userComponentVisibility.isNetworkObcyMarker();
         } else {
@@ -437,10 +436,10 @@ public class UserGoogleMapController implements Serializable{
 
         for(Circle circle : googleMapModel.getCircles()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(circle.getId());
-            if(uuidRaw.getProvider() == Providers.GPS){
+            if(uuidRaw.getProvider() == Provider.GPS){
                 if(filterCircleGps(circle,uuidRaw))
                     circles.add(circle);
-            } else if(uuidRaw.getProvider() == Providers.NETWORK){
+            } else if(uuidRaw.getProvider() == Provider.NETWORK){
                 if(filterCircleNetwork(circle,uuidRaw))
                     circles.add(circle);
             } else {
@@ -459,13 +458,13 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private boolean filterCircleNetwork(Circle circle, OverlayUUIDRaw uuidRaw){
-        LocalizationServices service = uuidRaw.getLocalizationService();
+        LocalizerService service = uuidRaw.getLocalizationService();
         UserComponentVisibility userComponentVisibility = userComponentVisibilityMap.get(uuidRaw.getLogin());
-        if(service == LocalizationServices.NASZ){
+        if(service == LocalizerService.NASZ){
             if(googleMapComponentVisible.isCircleNetworkNasz()){
                 return userComponentVisibility.isNetworkNaszCircle();
             }
-        } else if(service == LocalizationServices.OBCY){
+        } else if(service == LocalizerService.OBCY){
             if(googleMapComponentVisible.isCircleNetworkObcy())
                 return userComponentVisibility.isNetworkObcyCircle();
         } else {
@@ -506,14 +505,14 @@ public class UserGoogleMapController implements Serializable{
 
         for(Polyline polyline : googleMapModel.getPolylines()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(polyline.getId());
-            if(uuidRaw.getProvider() == Providers.GPS){
+            if(uuidRaw.getProvider() == Provider.GPS){
                 if(filterPolylineGps(uuidRaw))
                     googleMapModelOutput.getPolylines().add(polyline);
-            } else if(uuidRaw.getProvider() == Providers.NETWORK) {
-                if(uuidRaw.getLocalizationService() == LocalizationServices.NASZ){
+            } else if(uuidRaw.getProvider() == Provider.NETWORK) {
+                if(uuidRaw.getLocalizationService() == LocalizerService.NASZ){
                     if(filterPolylineNetwork(uuidRaw))
                         googleMapModelOutput.getPolylines().add(polyline);
-                } else if(uuidRaw.getLocalizationService() == LocalizationServices.OBCY) {
+                } else if(uuidRaw.getLocalizationService() == LocalizerService.OBCY) {
                     if(filterPolylineNetwork(uuidRaw))
                         googleMapModelOutput.getPolylines().add(polyline);
                 } else {
@@ -535,12 +534,12 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private boolean filterPolylineNetwork(OverlayUUIDRaw uuidRaw){
-        if(uuidRaw.getLocalizationService() == LocalizationServices.NASZ){
+        if(uuidRaw.getLocalizationService() == LocalizerService.NASZ){
             if(overlayCreateFilter.isCreateNetworkNaszPolyline() && googleMapComponentVisible.isNetworkNaszPolyline()){
                 UserComponentVisibility userComponentVisibility = userComponentVisibilityMap.get(uuidRaw.getLogin());
                 return userComponentVisibility.isNetworkNaszPolyline();
             }
-        } else if(uuidRaw.getLocalizationService() == LocalizationServices.OBCY){
+        } else if(uuidRaw.getLocalizationService() == LocalizerService.OBCY){
             if(overlayCreateFilter.isCreateNetworkObcyPolyline() && googleMapComponentVisible.isNetworkObcyPolyline()) {
                 UserComponentVisibility userComponentVisibility = userComponentVisibilityMap.get(uuidRaw.getLogin());
                 return userComponentVisibility.isNetworkObcyPolyline();
@@ -671,11 +670,11 @@ public class UserGoogleMapController implements Serializable{
         this.streetVisible = streetVisible;
     }
 
-    public GoogleMaps getGoogleMapType() {
+    public GoogleMap getGoogleMapType() {
         return googleMapType;
     }
 
-    public void setGoogleMapType(GoogleMaps googleMapType) {
+    public void setGoogleMapType(GoogleMap googleMapType) {
         this.googleMapType = googleMapType;
     }
 

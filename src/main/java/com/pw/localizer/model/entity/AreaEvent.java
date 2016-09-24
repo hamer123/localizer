@@ -16,15 +16,7 @@ import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 public abstract class AreaEvent implements Serializable{
-    @TableGenerator
-    (
-     name="areaEventGenerator", 
-     table="ID_GEN", 
-     pkColumnName="GEN_KEY", 
-     valueColumnName="GEN_VALUE", 
-     pkColumnValue="AREA_EVENT_ID"
-    )
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "areaEventGenerator")
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Id
 	private long id;
     

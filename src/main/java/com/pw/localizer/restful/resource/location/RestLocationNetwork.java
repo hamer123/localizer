@@ -23,12 +23,9 @@ import com.pw.localizer.service.location.LocationService;
 import com.pw.localizer.inceptor.LoggingInterceptor;
 
 @Secured
-@Path(RestLocationNetwork.MAIN_PATH)
+@Path("/locations/network")
 @Interceptors(value = LoggingInterceptor.class)
 public class RestLocationNetwork {
-	public static final String MAIN_PATH = "/location/network";
-	public static final String CREATE_PATH = "/create";
-	public static final String FIND_PATH = "/find/{id}";
 	@Inject
 	private LocationService locationService;
 	@Inject
@@ -37,7 +34,6 @@ public class RestLocationNetwork {
 	private Logger logger;
 	
 	@POST
-	@Path(CREATE_PATH)
 	@Consumes( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
 	@Produces( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
 	public Response createLocation(LocationNetwork locationNetwork, @Context RestSession restSession){
@@ -47,7 +43,7 @@ public class RestLocationNetwork {
 	}
 	
 	@GET
-	@Path(FIND_PATH)
+	@Path("{id}")
 	@Produces( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
 	public Response findLocation(@PathParam("id") long id){
 		try{

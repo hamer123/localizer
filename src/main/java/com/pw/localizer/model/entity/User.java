@@ -3,15 +3,24 @@ package com.pw.localizer.model.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pw.localizer.model.enums.Role;
 
-import com.pw.localizer.model.enums.Roles;
 
 
+//javax.persistence.loadgraph
 @Entity
-@Table(name ="user")
+@NamedEntityGraphs({
+	@NamedEntityGraph(name = "User.areas",
+			          attributeNodes = {@NamedAttributeNode(value = "areas")}
+//			          subgraphs = @NamedSubgraph(name = "points", attributeNodes = @NamedAttributeNode("points"))
+	)
+})
 @NamedQueries(
 		value = {
 				@NamedQuery(name ="USER.findAll",
@@ -41,7 +50,6 @@ import com.pw.localizer.model.enums.Roles;
 						query="SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.login =:login AND u.password =:password"),
 				@NamedQuery(name ="USER.findByEmail",
 						query="SELECT u FROM User u WHERE u.email =:email"),
-
 				@NamedQuery(name ="USER.deleteByID",
 						query="DELETE FROM User u WHERE u.id = :id")
 		})
@@ -49,57 +57,46 @@ import com.pw.localizer.model.enums.Roles;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User implements Serializable {
 	@Id
-    @TableGenerator(
-            name="userGen", 
-            table="ID_GEN", 
-            pkColumnName="GEN_KEY", 
-            valueColumnName="GEN_VALUE", 
-            pkColumnValue="USER_ID"
-            )
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="userGen")
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
 	
 	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.ALL})
-	@JoinColumn(name = "user_setting")
 	private UserSetting userSetting;
 
-	@Column(name="login", unique=true, updatable=false, nullable=false, length=16)
+	@Pattern(regexp = "^[a-zA-Z0-9_-]{4,16}$")
 	private String login;
 
 	@XmlTransient
-	@Column(name="password", nullable=false, length=16)
+	@Pattern(regexp = "^[a-zA-Z0-9_-]{4,16}$")
 	private String password;
 
-	@Column(name="email", unique=true, nullable=false, length=50)
+	@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+			+"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+			+"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 	private String email;
 
-	@Column(name="phone")
+	@NotNull
 	private String phone;
 
-	@ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-	@Column(name = "role", nullable = false)
+	@JsonIgnore
+	@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
-	private List<Roles> roles = new ArrayList<>();
+	private List<Role> roles = new ArrayList<>();
 	
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	private Avatar avatar;
 	
 	@OneToOne
-	@JoinColumn(updatable = true, name = "last_location_gps_id")
 	private LocationGPS lastLocationGPS;
 	
 	@OneToOne
-	@JoinColumn(updatable = true, name = "last_location_network_nasz_id")
 	private LocationNetwork lastLocationNetworkNaszaUsluga;
 	
 	@OneToOne
-	@JoinColumn(updatable = true, name = "last_location_network_obcy_id")
 	private LocationNetwork lastLocationNetworObcaUsluga;
 
-	@XmlTransient
 	@OneToMany(mappedBy = "provider", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	private List<Area>areas;
+	private Set<Area> areas;
 
 	public User(){}
 
@@ -149,11 +146,11 @@ public class User implements Serializable {
 		this.lastLocationGPS = lastLocationGPS;
 	}
 
-	public List<Area> getAreas() {
+	public Set<Area> getAreas() {
 		return areas;
 	}
 
-	public void setAreas(List<Area> polygons) {
+	public void setAreas(Set<Area> polygons) {
 		this.areas = polygons;
 	}
 
@@ -199,11 +196,11 @@ public class User implements Serializable {
 		this.avatar = avatar;
 	}
 
-	public List<Roles> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Roles> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 }

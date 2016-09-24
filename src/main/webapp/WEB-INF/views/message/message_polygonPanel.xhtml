@@ -5,8 +5,8 @@
       xmlns:p="http://primefaces.org/ui">
 
    <h:form>
-     <p:dataTable id="areaTable" var="area" value="#{messageController.areaList}"
-                  selectionMode="single" selection="#{messageController.selectedArea}" rowKey="#{area.id}">
+     <p:dataTable id="areaTable" var="area" value="#{messageController.areas}"
+                  selectionMode="single" selection="#{messageController.selectedArea}" rowKey="#{ createArea .id}">
         <p:ajax event="rowSelect" listener="#{messageController.onAreaSelect}" 
                 update=":#{p:component('options')} :#{p:component('messages')}"/>
                 

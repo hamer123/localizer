@@ -1,6 +1,6 @@
 package com.pw.localizer.security.restful;
 import com.pw.localizer.model.session.RestSession;
-import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.model.enums.Role;
 import com.pw.localizer.restful.resource.RestAttribute;
 import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;
@@ -39,12 +39,12 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 			// Get the resource class which matches with the requested URL
 			// Extract the roles declared by it
 			Class<?> resourceClass = resourceInfo.getResourceClass();
-			List<Roles> classRoles = extractRoles(resourceClass);
+			List<Role> classRoles = extractRoles(resourceClass);
 
 			// Get the resource method which matches with the requested URL
 			// Extract the roles declared by it
 			Method resourceMethod = resourceInfo.getResourceMethod();
-			List<Roles> methodRoles = extractRoles(resourceMethod);
+			List<Role> methodRoles = extractRoles(resourceMethod);
 
 			// Check if there are annotations on method or class, if they are check user permission
 			try{
@@ -64,8 +64,8 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 		}
 	}
 
-	private void checkPermissions(RestSession restSession, List<Roles>roles) throws Exception {
-		for(Roles role : roles)
+	private void checkPermissions(RestSession restSession, List<Role>roles) throws Exception {
+		for(Role role : roles)
 			if(restSession.isInRole(role)) return;
 
 		throw new Exception("Authorization has been failed");
@@ -77,22 +77,22 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 	}
 
 	//Extract the roles from the annotated element
-	private List<Roles> extractRoles(AnnotatedElement annotatedElement) {
+	private List<Role> extractRoles(AnnotatedElement annotatedElement) {
 		if (annotatedElement == null) {
-			return new ArrayList<Roles>();
+			return new ArrayList<Role>();
 		} else {
 			Secured secured = annotatedElement.getAnnotation(Secured.class);
 			if (secured == null) {
-				return new ArrayList<Roles>();
+				return new ArrayList<Role>();
 			} else {
-				Roles[] allowedRoles = secured.value();
+				Role[] allowedRoles = secured.value();
 				return Arrays.asList(allowedRoles);
 			}
 		}
 	}
 
 	private class SecurityContextRestful implements SecurityContext{
-		private List<Roles>roles = new ArrayList<>();
+		private List<Role>roles = new ArrayList<>();
 		private String email;
 
 		public SecurityContextRestful(RestSession restSession){
@@ -110,7 +110,7 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 
 		@Override
 		public boolean isUserInRole(String role) {
-			for(Roles _role : roles)
+			for(Role _role : roles)
 				if(_role.name().equalsIgnoreCase(role))
 					return true;
 			return false;

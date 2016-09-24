@@ -19,7 +19,7 @@ import org.primefaces.model.map.Rectangle;
 
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.OverlayType;
 
 public class GoogleMapModel implements MapModel, Serializable{
 
@@ -176,15 +176,15 @@ public class GoogleMapModel implements MapModel, Serializable{
 	private List<Overlay> getOverlayList(String id){
 		List list = null;
 		
-		if(id.startsWith(Overlays.MARKER.toString()))
+		if(id.startsWith(OverlayType.MARKER.toString()))
 			list = markers;
-		else if(id.startsWith(Overlays.POLYLINE.toString()))
+		else if(id.startsWith(OverlayType.POLYLINE.toString()))
 			list = polylines;
-		else if(id.startsWith(Overlays.POLYGON.toString()))
+		else if(id.startsWith(OverlayType.POLYGON.toString()))
 			list = polygons;
-		else if(id.startsWith(Overlays.CIRCLE.toString()))
+		else if(id.startsWith(OverlayType.CIRCLE.toString()))
 			list = circles;
-		else if(id.startsWith(Overlays.RECTANGLE.toString()))
+		else if(id.startsWith(OverlayType.RECTANGLE.toString()))
 			list = rectangles;
 		
 		return list;

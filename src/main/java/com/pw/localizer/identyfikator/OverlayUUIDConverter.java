@@ -1,9 +1,9 @@
 package com.pw.localizer.identyfikator;
 
 import com.pw.localizer.identyfikator.exception.OverlayUUIDExpcetion;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
 
 import java.util.regex.Pattern;
 
@@ -46,9 +46,9 @@ public final class OverlayUUIDConverter {
     public static OverlayUUIDRaw uuidRaw(String uuid) {
         String[] parts = splitUUID(uuid);
         return OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
-                .overlay(parts[0].equals("any") ? null : Overlays.valueOf(parts[0]))
-                .provider(parts[1].equals("any") ? null : Providers.valueOf(parts[1]))
-                .localizationService(parts[2].equals("any") ? null : LocalizationServices.valueOf(parts[2]))
+                .overlay(parts[0].equals("any") ? null : OverlayType.valueOf(parts[0]))
+                .provider(parts[1].equals("any") ? null : Provider.valueOf(parts[1]))
+                .localizationService(parts[2].equals("any") ? null : LocalizerService.valueOf(parts[2]))
                 .login(parts[3].equals("any") ? null : parts[3])
                 .id(parts[4].equals("any") ? null : Long.valueOf(parts[4]))
                 .build();
@@ -74,19 +74,19 @@ public final class OverlayUUIDConverter {
         return Pattern.compile(regex(uuidRaw));
     }
 
-    public static Overlays extractOverlay(String uuid){
+    public static OverlayType extractOverlay(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[0].equals("any") ? null : Overlays.valueOf(parts[0]);
+        return parts[0].equals("any") ? null : OverlayType.valueOf(parts[0]);
     }
 
-    public static Providers extractProvider(String uuid){
+    public static Provider extractProvider(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[1].equals("any") ? null : Providers.valueOf(parts[1]);
+        return parts[1].equals("any") ? null : Provider.valueOf(parts[1]);
     }
 
-    public static LocalizationServices extractService(String uuid){
+    public static LocalizerService extractService(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[2].equals("any") ? null : LocalizationServices.valueOf(parts[2]);
+        return parts[2].equals("any") ? null : LocalizerService.valueOf(parts[2]);
     }
 
     public static String extractLogin(String uuid){

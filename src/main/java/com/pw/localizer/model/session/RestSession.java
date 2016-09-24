@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.model.enums.Role;
 
 public class RestSession {
 	private Date lastUsed = new Date();
@@ -17,8 +17,8 @@ public class RestSession {
 		this.user = user;
 	}
 
-	public boolean isInRole(Roles role){
-		for(Roles _role : user.getRoles())
+	public boolean isInRole(Role role){
+		for(Role _role : user.getRoles())
 			if(_role.equals(role))
 				return true;
 		return false;

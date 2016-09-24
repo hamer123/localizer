@@ -4,10 +4,11 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:o="http://omnifaces.org/ui"> 
-      
+      xmlns:o="http://omnifaces.org/ui">
+
       <h:form>
+         <o:importConstants type="com.pw.localizer.model.enums.Provider" var="provider"/>
+         <o:importConstants type="com.pw.localizer.model.enums.LocalizerService" var="service"/>
          <h:panelGrid columns="3" cellpadding="5" id="searchPanel">
           
             <p:outputLabel value="Login"/>
@@ -33,13 +34,13 @@
             <p:outputLabel value="Provider"/>
             <p:selectOneMenu id="provider" value="#{locationHistory.provider}">
                <p:ajax update=":#{p:component('service')}"/>
-               <f:selectItems value="#{locationHistory.providers()}"/>
+               <f:selectItems value="#{provider}"/>
             </p:selectOneMenu>
             <p:message for="provider"/>
  
             <p:outputLabel for="service" value="Usluga lokalizacji"/>
-            <p:selectOneMenu id="service" value="#{locationHistory.localizationServices}" disabled="#{locationHistory.provider != 'NETWORK'}">
-                <f:selectItems value="#{locationHistory.localizationServices()}"/>
+            <p:selectOneMenu id="service" value="#{locationHistory.localizerService}" disabled="#{locationHistory.provider != 'NETWORK'}">
+                <f:selectItems value="#{service}"/>
             </p:selectOneMenu>
             <p:message for="service"/>
           

@@ -6,15 +6,15 @@ import java.util.List;
 
 import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.Provider;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polyline;
 
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.OverlayType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
@@ -65,21 +65,21 @@ public class PolylineFactory implements Serializable {
 	}
 
 
-	private String color(Providers providers, LocalizationServices localizationServices){
-		if(providers == Providers.GPS)
+	private String color(Provider provider, LocalizerService localizerService){
+		if(provider == Provider.GPS)
 			return GPS_POLYLINE_COLOR;
-		else if(providers == Providers.NETWORK){
-			if(localizationServices.equals(LocalizationServices.NASZ))
+		else if(provider == Provider.NETWORK){
+			if(localizerService.equals(LocalizerService.NASZ))
 				return NETWORK_NASZ_POLYLINE_COLOR;
 			else
 				return NETWORK_OBCY_POLYLINE_COLOR;
 		} else {
-			throw new RuntimeException("Nie oblusgiwany Provider " + providers);
+			throw new RuntimeException("Nie oblusgiwany Provider " + provider);
 		}
 	}
 
 	private String id(Location location){
-		return new OverlayIdentyfikator(location, Overlays.POLYLINE).createIdentyfikator();
+		return new OverlayIdentyfikator(location, OverlayType.POLYLINE).createIdentyfikator();
 	}
 	
 	private List<LatLng> path(List<Location>locations){
@@ -97,7 +97,7 @@ public class PolylineFactory implements Serializable {
 		} else {
 			LocationNetwork locationNetwork = (LocationNetwork)location;
 			
-			if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ)
+			if(locationNetwork.getLocalizerService() == LocalizerService.NASZ)
 				return NETWORK_NASZ_POLYLINE_COLOR;
 			else
 				return NETWORK_OBCY_POLYLINE_COLOR;

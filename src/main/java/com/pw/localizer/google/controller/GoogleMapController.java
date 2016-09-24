@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.pw.localizer.model.entity.UserSetting;
 import com.pw.localizer.model.session.LocalizerSession;
@@ -23,7 +22,7 @@ import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.enums.GoogleMaps;
+import com.pw.localizer.model.enums.GoogleMap;
 import com.pw.localizer.singleton.LocalizerProperties;
 
 @Dependent
@@ -34,7 +33,7 @@ public class GoogleMapController implements Serializable{
 	protected int zoom;
 	protected String center;
 	protected boolean streetVisible;
-	protected GoogleMaps googleMapType;
+	protected GoogleMap googleMapType;
 	protected Overlay lastSelectedOverlay;
 	protected boolean displayMessageOnSelectOverlay;
 
@@ -47,7 +46,7 @@ public class GoogleMapController implements Serializable{
 	public void postConstruct(){
 		GoogleMapModel googleMapModel = new GoogleMapModel();
 		this.googleMapModel = googleMapModel;
-		googleMapType = GoogleMaps.HYBRID;
+		googleMapType = GoogleMap.HYBRID;
 		streetVisible = true;
 
 		if(localizerSession == null || localizerSession.getUser() == null){
@@ -56,7 +55,7 @@ public class GoogleMapController implements Serializable{
 		} else {
 			UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
 			this.zoom = userSetting.getgMapZoom();
-			this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongtitude());
+			this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
 		}
 	}
 
@@ -183,11 +182,11 @@ public class GoogleMapController implements Serializable{
 		this.streetVisible = streetVisible;
 	}
 	
-	public GoogleMaps getGoogleMapType() {
+	public GoogleMap getGoogleMapType() {
 		return googleMapType;
 	}
 	
-	public void setGoogleMapType(GoogleMaps googleMapType) {
+	public void setGoogleMapType(GoogleMap googleMapType) {
 		this.googleMapType = googleMapType;
 	}
 

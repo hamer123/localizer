@@ -8,7 +8,7 @@
         
    <p:panel id="panelExistArea" header="Istniejace obszary sledzenia">
       <h:form id="existPolygons">
-         <p:dataTable var="user_area" value="#{area.areaList}">
+         <p:dataTable var="user_area" value="#{ createArea .areas}">
             <p:column headerText="Nazwa">
                <h:outputText value="#{user_area.name}" />
             </p:column>
@@ -19,15 +19,15 @@
                <h:outputText value="#{user_area.target.login}" />
             </p:column>
             <p:column headerText="Pokaz">
-               <p:commandButton update=":#{p:component('gmap')} :#{p:component('panelCreate')}" actionListener="#{area.onShowArea(user_area)}" value="POKAZ"/>
+               <p:commandButton update=":#{p:component('gmap')} :#{p:component('panelCreate')}" actionListener="#{ createArea .onShowArea(user_area)}" value="POKAZ"/>
             </p:column>
             <p:column headerText="Zmien status">
                <p:commandButton update=":#{p:component('existPolygons')}  :#{p:component('growl')}" 
-                                actionListener="#{area.onChangeAreaActiveStatus(user_area)}"
-                                value="#{area.getAreaActiveButtonValue(user_area)}"/>
+                                actionListener="#{ createArea .onChangeAreaActiveStatus(user_area)}"
+                                value="#{ createArea .getAreaActiveButtonValue(user_area)}"/>
             </p:column>
             <p:column headerText="Usun">
-               <p:commandButton update=":#{p:component('existPolygons')}" actionListener="#{area.onRemoveArea(user_area)}" value="USUN"/>
+               <p:commandButton update=":#{p:component('existPolygons')}" actionListener="#{ createArea .onRemoveArea(user_area)}" value="USUN"/>
             </p:column>
          </p:dataTable>
 	  </h:form>

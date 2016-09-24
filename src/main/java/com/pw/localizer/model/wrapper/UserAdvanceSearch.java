@@ -1,4 +1,4 @@
-package com.pw.localizer.model.utilitis;
+package com.pw.localizer.model.wrapper;
 
 /**
  * Created by Patryk on 2016-09-22.

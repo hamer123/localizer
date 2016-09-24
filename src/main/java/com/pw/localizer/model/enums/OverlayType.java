@@ -9,10 +9,10 @@ import org.primefaces.model.map.Polygon;
 import org.primefaces.model.map.Polyline;
 import org.primefaces.model.map.Rectangle;
 
-public enum Overlays {
+public enum OverlayType {
    CIRCLE,MARKER,POLYGON,POLYLINE,RECTANGLE;
 
-   public static Overlays convert(Class<? extends Overlay> type){
+   public static OverlayType convert(Class<? extends Overlay> type){
 	   
 	if(type == Circle.class)
 		return CIRCLE;

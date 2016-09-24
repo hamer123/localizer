@@ -13,7 +13,7 @@ import javax.mail.internet.MimeMessage;
 import com.pw.localizer.exception.AreaMialMessageException;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
-import com.pw.localizer.model.enums.AreaFollows;
+import com.pw.localizer.model.enums.AreaFollow;
 import com.pw.localizer.qualifier.AreaMailMessage;
 
 @AreaMailMessage 
@@ -41,7 +41,7 @@ public class AreaMailMessageService implements AreaMessageService {
 	}
 	
 	private String getSubjectPartFollowType(Area area){
-		if(area.getAreaFollowType() == AreaFollows.INSIDE)
+		if(area.getAreaFollowType() == AreaFollow.INSIDE)
 			return " opuscil obszar sledzenia "
 			       + area.getName();
 		else

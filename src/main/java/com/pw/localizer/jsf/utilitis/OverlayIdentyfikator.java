@@ -4,45 +4,45 @@ import java.util.regex.Pattern;
 
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
 
 public class OverlayIdentyfikator {
 	private long id;
 	private String login;
-	private Providers providerType;
-	private LocalizationServices localizationServices;
-	private Overlays overlay;
+	private Provider providerType;
+	private LocalizerService localizerService;
+	private OverlayType overlay;
 
 	public OverlayIdentyfikator(Location location){
 		this.id = location.getId();
 		this.login = location.getUser().getLogin();
 		this.providerType = location.getProviderType();
-		if(location.getProviderType() == Providers.NETWORK)
-			this.localizationServices = getLocalizationServicesFromLocation(location);
+		if(location.getProviderType() == Provider.NETWORK)
+			this.localizerService = getLocalizationServicesFromLocation(location);
 	}
 	
-	public OverlayIdentyfikator(Location location, Overlays overlay){
+	public OverlayIdentyfikator(Location location, OverlayType overlay){
 		this.id = location.getId();
 		this.login = location.getUser().getLogin();
 		this.providerType = location.getProviderType();
 		this.overlay = overlay;
-		if(location.getProviderType() == Providers.NETWORK)
-			this.localizationServices = getLocalizationServicesFromLocation(location);
+		if(location.getProviderType() == Provider.NETWORK)
+			this.localizerService = getLocalizationServicesFromLocation(location);
 	}
 	
-	private OverlayIdentyfikator(Overlays overlay, Providers providerType, LocalizationServices localizationServices, String login, long id){
+	private OverlayIdentyfikator(OverlayType overlay, Provider providerType, LocalizerService localizerService, String login, long id){
 		this.overlay = overlay;
 		this.id = id;
 		this.login = login;
 		this.providerType = providerType;
-		this.localizationServices = localizationServices;
+		this.localizerService = localizerService;
 	}
 
-	private LocalizationServices getLocalizationServicesFromLocation(Location location){
+	private LocalizerService getLocalizationServicesFromLocation(Location location){
 		LocationNetwork locationNetwork = (LocationNetwork)location;
-		return locationNetwork.getLocalizationServices();
+		return locationNetwork.getLocalizerService();
 	}
 	
 	public Pattern createPattern(){
@@ -70,7 +70,7 @@ public class OverlayIdentyfikator {
 		  .append("_")
 		  .append(providerType)
 		  .append("_")
-		  .append(localizationServices)
+		  .append(localizerService)
 		  .append("_")
 		  .append(login)
 		  .append("_")
@@ -96,10 +96,10 @@ public class OverlayIdentyfikator {
 	}
 	
 	private String getLocalizationServicesSection(){
-		if(localizationServices == null)
+		if(localizerService == null)
 			return ".+";
 		else
-			return localizationServices.toString();
+			return localizerService.toString();
 	}
 	
 	private String getProviderTypeSection(){
@@ -125,15 +125,15 @@ public class OverlayIdentyfikator {
 	}
 
 
-	public Providers getProviderType() {
+	public Provider getProviderType() {
 		return providerType;
 	}
 
-	public LocalizationServices getLocalizationServices() {
-		return localizationServices;
+	public LocalizerService getLocalizerService() {
+		return localizerService;
 	}
 
-	public Overlays getOverlay() {
+	public OverlayType getOverlay() {
 		return overlay;
 	}
 
@@ -142,9 +142,9 @@ public class OverlayIdentyfikator {
 	public static class OverlayIdentyfikatorBuilder{
 		private long id;
 		private String login;
-		private LocalizationServices localizationServices;
-		private Providers providerType;
-		private Overlays overlay;
+		private LocalizerService localizerService;
+		private Provider providerType;
+		private OverlayType overlay;
 		
 		public OverlayIdentyfikatorBuilder id(long id){
 			this.id = id;
@@ -156,17 +156,17 @@ public class OverlayIdentyfikator {
 			return this;
 		}
 		
-		public OverlayIdentyfikatorBuilder providerType(Providers providerType){
+		public OverlayIdentyfikatorBuilder providerType(Provider providerType){
 			this.providerType = providerType;
 			return this;
 		}
 		
-		public OverlayIdentyfikatorBuilder localzationServiceType(LocalizationServices localizationServices){
-			this.localizationServices = localizationServices;
+		public OverlayIdentyfikatorBuilder localzationServiceType(LocalizerService localizerService){
+			this.localizerService = localizerService;
 			return this;
 		}
 		
-		public OverlayIdentyfikatorBuilder overlayType(Overlays overlay){
+		public OverlayIdentyfikatorBuilder overlayType(OverlayType overlay){
 			this.overlay = overlay;
 			return this;
 		}
@@ -175,7 +175,7 @@ public class OverlayIdentyfikator {
 			return new OverlayIdentyfikator(
 					overlay,
 					providerType,
-					localizationServices,
+                    localizerService,
 					login,
 					id
 					);

@@ -13,7 +13,7 @@
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
 
-	<!-- Restfull JAX-RS Resteasy -->
+	<!-- Restfull JAX-RS Resteasy scan -->
 	<context-param>
 		<param-name>resteasy.scan</param-name>
 		<param-value>true</param-value>

@@ -25,17 +25,17 @@
                         <p:outputLabel for="login" value="Login"/>
                         <p:inputText id="login" value="#{createAccount.user.login}" required="true"
                                      title="Wprowadz nazwe uzytkownika o dlugosc 4-16 zawierajacy tylko cyfry i liter i znaki "
-                                     requiredMessage="Login: Login jest wymagany" maxlength="16">
+                                     requiredMessage="Login jest wymagany" maxlength="16">
                             <p:ajax event="change" update=":#{p:component('msg')}"/>
                             <o:validator validatorId="javax.faces.RegularExpression"
                                          pattern="^[a-zA-Z0-9_-]{4,16}$"
-                                         message="Login: Login jest nie poprawny"/>
+                                         message="Login jest nie poprawny"/>
                             <f:validator validatorId="loginUsedValidator"/>
                         </p:inputText>
 
                         <p:outputLabel for="password" value="Hasło"/>
                         <p:password id="password" value="#{createAccount.user.password}" feedback="true"
-                                    required="true" requiredMessage="Hasło: Hasło jest wymagane">
+                                    required="true" requiredMessage="Hasło jest wymagane">
                             <f:validateRegex pattern="^[a-zA-Z0-9_-]{4,16}$" for="password"/>
                             <o:validator validatorId="javax.faces.RegularExpression"
                                          pattern="^[a-zA-Z0-9_-]{4,16}$"
@@ -44,20 +44,20 @@
 
                         <p:outputLabel for="passwordRepeat" value="Powtorz hasło"/>
                         <p:password id="passwordRepeat" value="#{createAccount.passwordRepeat}"
-                                    required="true" requiredMessage="Powtorz hasło: Powtorz hasło jest wymagane">
+                                    required="true" requiredMessage="Powtorz hasło jest wymagane">
                             <o:validator validatorId="javax.faces.RegularExpression"
                                          pattern="^[a-zA-Z0-9_-]{4,16}$"
-                                         message="Powtorz hasło: Hasło jest nie poprawne" />
-                            <o:validateEqual components="password passwordRepeat" message="Hasło: Hasła nie sa takie same"
+                                         message="Hasło jest nie poprawne" />
+                            <o:validateEqual components="password passwordRepeat" message="Hasła nie sa takie same"
                                              showMessageFor="password"/>
                         </p:password>
 
                         <p:outputLabel for="email" value="Email"/>
                         <p:inputText id="email" value="#{createAccount.user.email}"
-                                     required="true" requiredMessage="Email: Email jest wymagane">
+                                     required="true" requiredMessage="Email jest wymagane">
                             <o:validator validatorId="javax.faces.RegularExpression"
                                          pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)"
-                                         message="Email: Email jest nie poprawny"/>
+                                         message="#{msg['invalid.email']}"/>
                             <p:ajax event="change" update=":#{p:component('msg')}"/>
                             <f:validator validatorId="emailUsedValidator"/>
                         </p:inputText>

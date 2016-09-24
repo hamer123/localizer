@@ -1,5 +1,5 @@
 package com.pw.localizer.model.enums;
 
-public enum AreaFollows {
+public enum AreaFollow {
 INSIDE, OUTSIDE
 }

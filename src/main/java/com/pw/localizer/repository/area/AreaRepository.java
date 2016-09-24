@@ -10,11 +10,9 @@ import com.pw.localizer.repository.JpaRepository;
 
 @Local
 public interface AreaRepository extends JpaRepository<Area, Long> {
-	List<Area> findByTargetId(long id);
 	List<Area> findByProviderId(long id);
 	List<Area> findWithEagerFetchPointsAndTargetByProviderId(long id);
-	List<Area>finbByActive(boolean active);
+	List<Area> findByActive(boolean active);
 	List<Long>findIdByProviderIdAndActive(long id, boolean active);
-	int updateAktywnyById(boolean aktywny, long id);
-	void removeById(long id);
+	int updateSetActiveById(boolean active, long id);
 }

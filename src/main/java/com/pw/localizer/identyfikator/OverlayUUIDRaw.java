@@ -1,8 +1,8 @@
 package com.pw.localizer.identyfikator;
 
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
 
 /**
  * Created by wereckip on 30.08.2016.
@@ -10,9 +10,9 @@ import com.pw.localizer.model.enums.Providers;
 public class OverlayUUIDRaw {
     private Long id;
     private String login;
-    private Overlays overlay;
-    private Providers provider;
-    private LocalizationServices localizationService;
+    private OverlayType overlay;
+    private Provider provider;
+    private LocalizerService localizationService;
 
     public boolean matches(String uuid){
         String uuidThis = OverlayUUIDConverter.uuid(this);
@@ -27,15 +27,15 @@ public class OverlayUUIDRaw {
         return login;
     }
 
-    public Overlays getOverlay() {
+    public OverlayType getOverlay() {
         return overlay;
     }
 
-    public Providers getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public LocalizationServices getLocalizationService() {
+    public LocalizerService getLocalizationService() {
         return localizationService;
     }
 
@@ -56,17 +56,17 @@ public class OverlayUUIDRaw {
             return this;
         }
 
-        public OverlayUUIDRawBuilder overlay(Overlays overlay){
+        public OverlayUUIDRawBuilder overlay(OverlayType overlay){
             this.overlayUUIDRaw.overlay = overlay;
             return this;
         }
 
-        public OverlayUUIDRawBuilder provider(Providers provider){
+        public OverlayUUIDRawBuilder provider(Provider provider){
             this.overlayUUIDRaw.provider = provider;
             return this;
         }
 
-        public OverlayUUIDRawBuilder localizationService(LocalizationServices localizationService){
+        public OverlayUUIDRawBuilder localizationService(LocalizerService localizationService){
             this.overlayUUIDRaw.localizationService = localizationService;
             return this;
         }

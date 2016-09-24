@@ -7,13 +7,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import com.pw.localizer.model.entity.*;
-import com.pw.localizer.model.utilitis.UserAdvanceSearch;
-import com.pw.localizer.repository.user.UserRepository;
+import com.pw.localizer.model.wrapper.UserAdvanceSearch;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -53,6 +49,7 @@ public class UserRepositoryImpl implements UserRepository{
 		return em.createNamedQuery("USER.findUserFetchRolesByLoginAndPassword", User.class)
 		         .setParameter("login", login)
 		         .setParameter("password", password)
+				 .setHint("javax.persistence.loadgraph", em.createEntityGraph("User.areas"))
 		         .getSingleResult();
 	}
 

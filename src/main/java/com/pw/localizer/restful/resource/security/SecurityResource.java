@@ -15,9 +15,8 @@ import org.jboss.logging.Logger;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.singleton.RestSessionManager;
 
-@Path(LogResource.LOG_PATH)
-public class LogResource {
-	public static final String LOG_PATH = "/log";
+@Path("authentication")
+public class SecurityResource {
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
 	@Inject
@@ -29,22 +28,23 @@ public class LogResource {
 	
 	@POST
 	@Path(LOGIN)
-	@Consumes( value = {MediaType.APPLICATION_FORM_URLENCODED} )
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(@BeanParam Credentials credentials){
 		try{
 			User user = authenticateService.authenticate(credentials.getLogin(), credentials.getPassword());
 			RestSession restSession = restSessionManager.addSession(user);
 			return Response.ok()
-					.entity(restSession.getToken())
+					.entity(user)
+					.header("X-Auth-Token",restSession.getToken())
 					.build();
 		}catch(NoResultException nre){
-			logger.error(nre);
 			return Response.status( Response.Status.UNAUTHORIZED )
 					       .entity("Konto o podanych parametrach nie istnieje !")
 					       .build();
 		}catch(Exception e){
 			logger.error(e);
-			return Response.status( Response.Status.INTERNAL_SERVER_ERROR )
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					       .build();
 		}
 	}

@@ -11,9 +11,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.factory.MarkerFactory;
-import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.factory.PolylineFactory;
 import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.model.enums.LocalizerService;
 import org.jboss.logging.Logger;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
@@ -21,8 +21,7 @@ import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.Provider;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.repository.user.UserRepository;
@@ -30,8 +29,8 @@ import com.pw.localizer.service.utilitis.RouteService;
 import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Polyline;
 
-@Named("locationHistory")
 @ViewScoped
+@Named("locationHistory")
 public class LocationHistoryController implements Serializable{
 	@Inject
 	private LocationNetworkRepository locationNetworkRepository;
@@ -63,10 +62,10 @@ public class LocationHistoryController implements Serializable{
 	private String login;
 
 	/** Choose provider */
-	private Providers provider;
+	private Provider provider;
 
 	/** Choose service */
-	private LocalizationServices localizationServices;
+	private LocalizerService localizerService;
 
 	/** Selected location */
 	private Location location;
@@ -140,7 +139,7 @@ public class LocationHistoryController implements Serializable{
 	private List<Location> findLocations(){
 		List<Location>locations = new ArrayList<Location>();
 		
-		if(provider == Providers.GPS){
+		if(provider == Provider.GPS){
 			locations.addAll( findLocationGPS() );
 		} else {
 			locations.addAll( findLocationNetwork() );
@@ -150,7 +149,7 @@ public class LocationHistoryController implements Serializable{
 	}
 	
 	private List<LocationNetwork> findLocationNetwork(){
-		if(localizationServices == LocalizationServices.NASZ){
+		if(localizerService == LocalizerService.NASZ){
 			return locationNetworkRepository.
 					findByLoginAndDateForServiceNaszOrderByDate(login, younger, older, maxRecords);
 		} else {
@@ -168,12 +167,12 @@ public class LocationHistoryController implements Serializable{
 	/////////////////////////////////////////////////////   GETTERS SETTERS    /////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public Providers[] providers(){
-		return Providers.values();
+	public Provider[] providers(){
+		return Provider.values();
 	}
 	
-	public LocalizationServices[] localizationServices(){
-		return LocalizationServices.values();
+	public LocalizerService[] localizationServices(){
+		return LocalizerService.values();
 	}
 	
 	public int getMaxRecords() {
@@ -218,18 +217,18 @@ public class LocationHistoryController implements Serializable{
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public Providers getProvider() {
+	public Provider getProvider() {
 		return provider;
 	}
-	public void setProvider(Providers provider) {
+	public void setProvider(Provider provider) {
 		this.provider = provider;
 	}
-	public LocalizationServices getLocalizationServices() {
-		return localizationServices;
+	public LocalizerService getLocalizerService() {
+		return localizerService;
 	}
 
-	public void setLocalizationServices(LocalizationServices localizationServices) {
-		this.localizationServices = localizationServices;
+	public void setLocalizerService(LocalizerService localizerService) {
+		this.localizerService = localizerService;
 	}
 
 	public LocationNetworkRepository getLocationNetworkRepository() {

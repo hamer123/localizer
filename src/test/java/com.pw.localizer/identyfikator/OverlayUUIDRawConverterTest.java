@@ -5,8 +5,8 @@ package com.pw.localizer.identyfikator;
  */
 
 import static org.junit.Assert.*;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -31,8 +31,8 @@ public class OverlayUUIDRawConverterTest {
     public void regexShouldReturnValidRegex(){
         String regex = "MARKER-GPS-any-hamer123-1";
         OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
-                .overlay(Overlays.MARKER)
-                .provider(Providers.GPS)
+                .overlay(OverlayType.MARKER)
+                .provider(Provider.GPS)
                 .login("hamer123")
                 .id(1L)
                 .build();

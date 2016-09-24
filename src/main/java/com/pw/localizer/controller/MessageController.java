@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.model.enums.Provider;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.map.Polygon;
 
@@ -27,7 +28,6 @@ import com.pw.localizer.model.entity.AreaMessageMail;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.AreaPoint;
-import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.repository.area.message.AreaMessageMailRepository;
@@ -52,6 +52,8 @@ public class MessageController implements Serializable{
 	@Inject
 	private AreaMessageMailRepository areaMessageMailRepository;
 
+	@Inject
+	private PolygonFactory polygonFactory;
 	@Inject
 	private MarkerFactory markerFactory;
 	@Inject
@@ -90,7 +92,7 @@ public class MessageController implements Serializable{
 		List<AreaPoint>areaPoints = areaPointRepository.findByAreaId(area.getId());
 		dialogMap.clear();
 		area.setPoints(mapAreaPoint(areaPoints));
-		Polygon polygon = PolygonFactory.getInstance().create(area);
+		Polygon polygon = polygonFactory.create(area);
 		dialogMap.addOverlay(polygon);
 		AreaPoint areaPoint = areaPoints.get(0);
 		dialogMap.setCenter(GoogleMapModel.center(areaPoint.getLat(), areaPoint.getLng()));
@@ -127,7 +129,7 @@ public class MessageController implements Serializable{
 		
 		if(location instanceof LocationNetwork){
 			LocationNetwork locationNetwork = (LocationNetwork)location;
-			return locationNetwork.getLocalizationServices().toString();
+			return locationNetwork.getLocalizerService().toString();
 		}
 		
 		return null;
@@ -221,8 +223,8 @@ public class MessageController implements Serializable{
 		this.areaEvents = areaEvents;
 	}
 	
-	public Providers[] providers(){
-		return Providers.values();
+	public Provider[] providers(){
+		return Provider.values();
 	}
 
 	public AreaMessageMailRepository getAreaMessageMailRepository() {

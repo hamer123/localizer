@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.model.enums.Provider;
 import org.omnifaces.cdi.Param;
 import org.primefaces.model.map.Polygon;
 import com.pw.localizer.model.google.GoogleMapModel;
@@ -15,13 +16,12 @@ import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.enums.Providers;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.repository.area.AreaPointRepository;
 
-@Named
 @ViewScoped
+@Named
 public class AreaEventController implements Serializable{
 	@Inject
 	private AreaEventGPSRepository areaEventGPSRepository;
@@ -37,7 +37,7 @@ public class AreaEventController implements Serializable{
 	@Param(name = "id") @Inject
 	private long id;
 	@Param(name = "provider") @Inject
-	private Providers provider;
+	private Provider provider;
 	
 	private String msgError;
 	private AreaEvent areaEvent;
@@ -109,7 +109,7 @@ public class AreaEventController implements Serializable{
 	}
 	
 	AreaEvent findEvent(){
-		if(provider == Providers.GPS)
+		if(provider == Provider.GPS)
 			return areaEventGPSRepository.findById(id);
 		else
 			return areaEventNetworkRepository.findById(id);
@@ -139,11 +139,11 @@ public class AreaEventController implements Serializable{
 
 	public void setAreaEventNetworkRepository(AreaEventNetworkRepository areaEventNetworkRepository) { this.areaEventNetworkRepository = areaEventNetworkRepository; }
 
-	public Providers getProvider() {
+	public Provider getProvider() {
 		return provider;
 	}
 
-	public void setProvider(Providers provider) {
+	public void setProvider(Provider provider) {
 		this.provider = provider;
 	}
 

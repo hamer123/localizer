@@ -3,8 +3,8 @@ package com.pw.localizer.identyfikator;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.Overlays;
-import com.pw.localizer.model.enums.Providers;
+import com.pw.localizer.model.enums.OverlayType;
+import com.pw.localizer.model.enums.Provider;
 
 import static com.pw.localizer.identyfikator.OverlayUUIDRaw.*;
 
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
 
     private Location location;
-    private Overlays overlay;
+    private OverlayType overlay;
     private OverlayUUIDRaw overlayUUIDRaw;
 
     public OverlayUUIDBuilderLocation(Location location){
@@ -25,7 +25,7 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
         buildRaw();
     }
 
-    public OverlayUUIDBuilderLocation(Location location, Overlays overlay){
+    public OverlayUUIDBuilderLocation(Location location, OverlayType overlay){
         this.location = location;
         this.overlay = overlay;
         buildRaw();
@@ -58,7 +58,7 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
                     .id(locationGPS.getId())
                     .login(locationGPS.getUser().getLogin())
                     .overlay(overlay)
-                    .provider(Providers.GPS)
+                    .provider(Provider.GPS)
                     .build();
         } else if(location instanceof LocationNetwork) {
             LocationNetwork locationNetwork = (LocationNetwork)location;
@@ -66,8 +66,8 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
                     .id(locationNetwork.getId())
                     .login(locationNetwork.getUser().getLogin())
                     .overlay(overlay)
-                    .provider(Providers.NETWORK)
-                    .localizationService(locationNetwork.getLocalizationServices())
+                    .provider(Provider.NETWORK)
+                    .localizationService(locationNetwork.getLocalizerService())
                     .build();
         }
     }

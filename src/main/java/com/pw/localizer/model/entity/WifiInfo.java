@@ -14,39 +14,31 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 @NamedQueries(value = {
 		@NamedQuery(name="WifiInfo.findByLocationId", query="SELECT l.wifiInfo FROM LocationNetwork l WHERE l.id =:id")
 })
+@Entity
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class WifiInfo implements Serializable{
 	@Id
-    @TableGenerator(
-            name="INFO_WIFI_GEN", 
-            table="ID_GEN", 
-            pkColumnName="GEN_KEY", 
-            valueColumnName="GEN_VALUE", 
-            pkColumnValue="INFO_WIFI_GEN"
-            )
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="INFO_WIFI_GEN")
-	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-	@Column(name="frequency")
+
 	private int frequency;
-	@Column(name="bssid")
+
 	private String bssid;
-	@Column(name="ip_address")
+
 	private int ipAddress;
-	@Column(name="link_speed")
+
 	private int linkSpeed;
-	@Column(name="mac_address")
+
 	private String macAddress;
-	@Column(name="network_id")
+
 	private int networkId;
-	@Column(name="rssi")
+
 	private int rssi;
-	@Column(name="ssid")
+
 	private String ssid;
 	
 	public long getId() {

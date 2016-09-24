@@ -1,6 +1,6 @@
 package com.pw.localizer.model.enums;
 
-public enum AreaMailMessageModes {
+public enum AreaMailMessageMode {
 	EVER,
 	ACCEPT;
 }

@@ -2,7 +2,7 @@ package com.pw.localizer.identyfikator;
 
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.OverlayType;
 
 /**
  * Created by wereckip on 30.08.2016.
@@ -15,7 +15,7 @@ public final class OverlayUUIDFactory {
 //        return new OverlayUUIDBuilderLocation(location);
 //    }
 
-    public static OverlayUUIDBuilderLocation builder(Location location, Overlays overlay){
+    public static OverlayUUIDBuilderLocation builder(Location location, OverlayType overlay){
         return new OverlayUUIDBuilderLocation(location,overlay);
     }
 

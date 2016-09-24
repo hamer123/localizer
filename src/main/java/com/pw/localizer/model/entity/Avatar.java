@@ -7,25 +7,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
 
-import com.pw.localizer.model.enums.ImageTypes;
+import com.pw.localizer.model.enums.ImageType;
 
 @Entity
 public class Avatar implements Serializable{
 	@Id
-    @TableGenerator(
-            name="avatarGen", 
-            table="ID_GEN", 
-            pkColumnName="GEN_KEY", 
-            valueColumnName="GEN_VALUE", 
-            pkColumnValue="AVATAR_ID"
-            )
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="avatarGen")
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-	
-	private ImageTypes format;
+
+	@NotNull
+	private ImageType format;
+
+	@NotNull
 	private String uuid;
+
+	@NotNull
 	private String name;
+
+	@NotNull
 	private long size;
 	
 	public long getId() {
@@ -52,10 +53,10 @@ public class Avatar implements Serializable{
 	public void setSize(long size) {
 		this.size = size;
 	}
-	public ImageTypes getFormat() {
+	public ImageType getFormat() {
 		return format;
 	}
-	public void setFormat(ImageTypes format) {
+	public void setFormat(ImageType format) {
 		this.format = format;
 	}
 

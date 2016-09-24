@@ -20,8 +20,8 @@ import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.enums.AreaFollows;
-import com.pw.localizer.model.enums.AreaMailMessageModes;
+import com.pw.localizer.model.enums.AreaFollow;
+import com.pw.localizer.model.enums.AreaMailMessageMode;
 import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.singleton.RestSessionManager;
 
@@ -48,7 +48,7 @@ public class AreaEventWorker {
 				User target = area.getTarget();
 				List<Location>locations = validLocation(target);
 				
-				if(area.getAreaFollowType() == AreaFollows.INSIDE){
+				if(area.getAreaFollowType() == AreaFollow.INSIDE){
 					for(Location location : locations)
 						if(!area.contains(location))
 							createAreaEventAndUpdateLocationEventCheck(location, area);
@@ -87,7 +87,7 @@ public class AreaEventWorker {
 	}
 	
 	private List<Area>findActiveArea(){
-		return areaRepository.finbByActive(true);
+		return areaRepository.findByActive(true);
 	}
 	
 	private List<Location> validLocation(User user){
@@ -113,6 +113,6 @@ public class AreaEventWorker {
 	}
 	
 	private boolean shouldChangeMessageMail(Area area){
-		return area.getAreaMessageMail().getAreaMailMessageMode() == AreaMailMessageModes.ACCEPT;
+		return area.getAreaMessageMail().getAreaMailMessageMode() == AreaMailMessageMode.ACCEPT;
 	}
 }

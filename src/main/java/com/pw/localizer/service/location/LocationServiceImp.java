@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.enums.LocalizationServices;
+import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.repository.user.UserRepository;
@@ -39,9 +39,9 @@ public class LocationServiceImp implements LocationService{
 	}
 	
 	private void updateUserCurrentLocationNetwork(LocationNetwork locationNetwork, User user){
-		if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ)
+		if(locationNetwork.getLocalizerService() == LocalizerService.NASZ)
 			user.setLastLocationNetworkNaszaUsluga(locationNetwork);
-		else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
+		else if(locationNetwork.getLocalizerService() == LocalizerService.OBCY)
 			user.setLastLocationNetworObcaUsluga(locationNetwork);
 	}
 

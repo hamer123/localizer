@@ -1,5 +1,5 @@
 package com.pw.localizer.security.restful;
-import com.pw.localizer.model.enums.Roles;
+import com.pw.localizer.model.enums.Role;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.ElementType;
@@ -18,5 +18,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ElementType.TYPE,ElementType.METHOD})
 public @interface Secured {
     /** Provide Authorization*/
-    Roles[] value() default {};
+    Role[] value() default {};
 }

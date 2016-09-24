@@ -6,13 +6,13 @@ import java.util.List;
 
 import com.pw.localizer.identyfikator.OverlayUUIDFactory;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
+import com.pw.localizer.model.enums.LocalizerService;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Marker;
 
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.enums.LocalizationServices;
-import com.pw.localizer.model.enums.Overlays;
+import com.pw.localizer.model.enums.OverlayType;
 import org.primefaces.push.annotation.Singleton;
 
 import javax.annotation.PostConstruct;
@@ -40,7 +40,7 @@ public class MarkerFactory implements Serializable {
 		marker.setDraggable(false);
 		marker.setClickable(true);
 		marker.setTitle(createTitle(location));
-		String uuid = OverlayUUIDFactory.builder(location,Overlays.MARKER).uuid();
+		String uuid = OverlayUUIDFactory.builder(location, OverlayType.MARKER).uuid();
 		marker.setId(uuid);
 		return marker;
 	}
@@ -60,9 +60,9 @@ public class MarkerFactory implements Serializable {
 			return GPS_MARKER_ICON_URL;
 		case NETWORK:
 			LocationNetwork locationNetwork = (LocationNetwork)location;
-			if(locationNetwork.getLocalizationServices() == LocalizationServices.NASZ)
+			if(locationNetwork.getLocalizerService() == LocalizerService.NASZ)
 				return NETWORK_MARKER_NASZA_USLUGA_ICON_URL;
-			else if(locationNetwork.getLocalizationServices() == LocalizationServices.OBCY)
+			else if(locationNetwork.getLocalizerService() == LocalizerService.OBCY)
 				return NETWORK_MARKER_OBCA_USLUGA_ICON_URL;
 		default:
 			throw new IllegalArgumentException("Nie ma dla takiego providera icony");

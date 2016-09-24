@@ -17,15 +17,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlSeeAlso({CellInfoLte.class, CellInfoGSM.class})
 @XmlTransient
 public abstract class CellInfoMobile implements Serializable{
-    @TableGenerator(
-            name="cellInfoGen", 
-            table="ID_GEN", 
-            pkColumnName="GEN_KEY", 
-            valueColumnName="GEN_VALUE", 
-            pkColumnValue="LOCATIO_NETWORK_ID"
-            )
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="cellInfoGen")
+	@GeneratedValue(strategy=GenerationType.TABLE)
     private long id;
     
 	@Embedded

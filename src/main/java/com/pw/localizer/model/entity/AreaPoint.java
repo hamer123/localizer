@@ -10,37 +10,32 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="polygonpoint")
 @NamedQueries(value={
 		@NamedQuery(name  = "AreaPoint.findByPolygonModelId",
 				    query = "SELECT pp FROM AreaPoint pp WHERE pp.area.id =:id"),
 		@NamedQuery(name  = "AreaPoint.findByAreaIdOrderByNumber",
 		            query = "SELECT p FROM AreaPoint p WHERE p.area.id =:id ORDER BY p.number DESC")
-		
 })
 public class AreaPoint {
-    @TableGenerator(
-            name="ppGen", 
-            table="ID_GEN", 
-            pkColumnName="GEN_KEY", 
-            valueColumnName="GEN_VALUE", 
-            pkColumnValue="PP_ID"
-            )
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE, generator="ppGen")
+    @GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-    
+
+	@NotNull
 	private int number;
-	
+
+	@NotNull
 	private double lat;
-	
+
+	@NotNull
 	private double lng;
-	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+
+	@ManyToOne
 	private Area area;
-	
+
 	public long getId() {
 		return id;
 	}
@@ -65,11 +60,6 @@ public class AreaPoint {
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-	public Area getArea() {
-		return area;
-	}
-	public void setArea(Area polygon) {
-		this.area = polygon;
-	}
-	
+	public Area getArea() { return area; }
+	public void setArea(Area area) { this.area = area; }
 }

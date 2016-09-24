@@ -13,7 +13,7 @@ import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
 import com.pw.localizer.model.entity.Avatar;
-import com.pw.localizer.model.enums.ImageTypes;
+import com.pw.localizer.model.enums.ImageType;
 import com.pw.localizer.model.upload.ImageFileUpload;
 import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
@@ -104,7 +104,7 @@ public class CreateAccountController implements Serializable{
 		try{
 			UserSetting setting = new UserSetting();
 			setting.setDefaultLatitude(latitude);
-			setting.setDefaultLongtitude(longtitude);
+			setting.setDefaultLongitude(longtitude);
 		    setting.setgMapZoom(googleMapController.getZoom());
 		    user.setUserSetting(setting);
 			ImageFileUpload imageFileUpload = this.getAvatarUploadController().getImageFileUpload();
@@ -130,7 +130,7 @@ public class CreateAccountController implements Serializable{
 		ImageFileUpload imageFileUpload = this.getAvatarUploadController().getImageFileUpload();
 		avatar.setSize(imageFileUpload.getSize());
 		avatar.setName(imageFileUpload.getFileName());
-		avatar.setFormat(ImageTypes.convert(imageFileUpload.getContentType()));
+		avatar.setFormat(ImageType.convert(imageFileUpload.getContentType()));
 		return avatar;
 	}
 

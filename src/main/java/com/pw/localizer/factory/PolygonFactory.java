@@ -13,6 +13,7 @@ import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaPoint;
 import org.primefaces.push.annotation.Singleton;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
 
 @Startup
@@ -24,18 +25,8 @@ public class PolygonFactory implements Serializable {
 	private double POLYGON_FILL_OPACITY;
 	private double POLYGON_STROKE_OPACITY;
 
-	public static PolygonFactory getInstance(){
-		if(polygonFactory == null){
-			synchronized (PolygonFactory.class){
-				if(polygonFactory == null)
-					polygonFactory = new PolygonFactory();
-			}
-		}
-
-		return polygonFactory;
-	}
-
-	public PolygonFactory(){
+	@PostConstruct
+	private void postConstruct(){
 		PropertiesReader propertiesReader = new PropertiesReader("localizer");
 		findProperties(propertiesReader);
 	}

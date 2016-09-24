@@ -1,5 +1,5 @@
 package com.pw.localizer.model.enums;
 
-public enum LocalizationServices {
+public enum LocalizerService {
 NASZ,OBCY
 }
