@@ -95,7 +95,8 @@ public class User implements Serializable {
 	@OneToOne
 	private LocationNetwork lastLocationNetworObcaUsluga;
 
-	@OneToMany(mappedBy = "provider", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JsonIgnore
+	@OneToMany(mappedBy = "provider", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private Set<Area> areas;
 
 	public User(){}

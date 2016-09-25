@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.localizer.model.enums.AreaFollow;
 
 @Entity
@@ -49,7 +50,7 @@ import com.pw.localizer.model.enums.AreaFollow;
 		      @NamedQuery(name="Area.findIdByProviderIdAndAktywny", 
 		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.active =:active")
 })
-@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class Area {
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
@@ -60,12 +61,11 @@ public class Area {
     @Column
 	private String name;
 
-	@XmlTransient
 	@NotNull
 	@ManyToOne(optional = false)
 	private User target;
 
-	@XmlTransient
+	@JsonIgnore
 	@NotNull
 	@ManyToOne(optional = false)
 	private User provider;
@@ -78,20 +78,22 @@ public class Area {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private AreaFollow polygonFollowType;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
 	private List<AreaEventNetwork>areaEventNetworks;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
 	private List<AreaEventGPS>areaEventGPSs;
-	
-	@NotNull
-	@OneToOne(orphanRemoval = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-	private AreaMessageMail areaMessageMail;
-	
+
 	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@MapKey(name="number")
 	private Map<Integer,AreaPoint>points = new HashMap<Integer, AreaPoint>();
+
+	@NotNull
+	@OneToOne(orphanRemoval = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	private AreaMessageMail areaMessageMail;
 	
 	public long getId() {
 		return id;

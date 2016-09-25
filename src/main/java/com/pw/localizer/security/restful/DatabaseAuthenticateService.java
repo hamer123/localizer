@@ -19,13 +19,13 @@ public class DatabaseAuthenticateService implements AuthenticateService {
     private UserRepository userRepository;
 
     @Override
-    public User authenticate(String login, String password) throws AuthenticateExcpetion {
+    public User authenticate(String login, String password) throws AuthenticateException {
         try{
             User user = userRepository.findByLoginAndPassword(login, password);
             return user;
         } catch(EJBTransactionRolledbackException e){
             if(e.getCause() instanceof NoResultException)
-                throw new AuthenticateExcpetion("Invalid login or password");
+                throw new AuthenticateException("Invalid login or password");
 
             throw new RuntimeException(e.getCause());
         }
