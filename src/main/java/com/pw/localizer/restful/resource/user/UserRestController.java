@@ -9,6 +9,7 @@ import com.pw.localizer.service.user.UserService;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -50,7 +51,15 @@ public class UserRestController{
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@Valid User user){
-        return null;
+    public Response updatePartialUser(@Valid User user){
+        user = userService.updatePartial(user);
+        return Response.ok(user).build();
+    }
+
+    @GET
+    @Path("login/search/findByLoginLike")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLogin(@NotNull @QueryParam("loginLike")String loginLike){
+        return Response.ok(userRepository.findLoginByLoginLike(loginLike)).build();
     }
 }
