@@ -54,6 +54,13 @@ public class UserServiceImp implements UserService, Serializable{
     }
 
     @Override
+    public User updatePartial(User _user) {
+        User user = userRepository.findById(_user.getId());
+        user.setPassword(_user.getPassword());
+        return user;
+    }
+
+    @Override
     public User create(User user) {
         user.setRoles(createUserRoles());
         userRepository.create(user);

@@ -16,6 +16,7 @@ public interface UserService {
     User getUserFetchAreas(String login);
     List<Area> getUserAreasFetchAreaPoints(long userId);
     User update(User user);
+    User updatePartial(User user);
     User create(User user);
     User create(User user, InputStream avatarStream);
 }
