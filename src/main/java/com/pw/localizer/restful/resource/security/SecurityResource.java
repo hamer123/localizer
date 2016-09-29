@@ -6,8 +6,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.pw.localizer.model.dto.UserDTO;
 import com.pw.localizer.model.security.Credentials;
 import com.pw.localizer.model.session.RestSession;
+import com.pw.localizer.repository.user.UserRepository;
+import com.pw.localizer.security.restful.AuthenticateException;
 import com.pw.localizer.security.restful.AuthenticateService;
 import com.pw.localizer.security.restful.DatabaseAuthenticat;
 import com.pw.localizer.security.restful.Secured;
@@ -17,39 +20,41 @@ import com.pw.localizer.singleton.RestSessionManager;
 
 @Path("authentication")
 public class SecurityResource {
-	public static final String LOGIN = "/login";
-	public static final String LOGOUT = "/logout";
+	@Inject @DatabaseAuthenticat
+	private AuthenticateService authenticateService;
+	@Inject
+	private UserRepository userRepository;
 	@Inject
 	private RestSessionManager restSessionManager;
 	@Inject
 	private Logger logger;
-	@Inject @DatabaseAuthenticat
-	private AuthenticateService authenticateService;
 	
 	@POST
-	@Path(LOGIN)
+	@Path("login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(@BeanParam Credentials credentials){
 		try{
-			User user = authenticateService.authenticate(credentials.getLogin(), credentials.getPassword());
-			RestSession restSession = restSessionManager.addSession(user);
-			return Response.ok()
-					.entity(user)
-					.header("X-Auth-Token",restSession.getToken())
-					.build();
-		}catch(NoResultException nre){
-			return Response.status( Response.Status.UNAUTHORIZED )
-					       .entity("Konto o podanych parametrach nie istnieje !")
-					       .build();
-		}catch(Exception e){
+			if(authenticateService.authenticate(credentials.getLogin(), credentials.getPassword())){
+				User user = userRepository.findByLoginEagerFetchAll(credentials.getLogin());
+				RestSession restSession = restSessionManager.addSession(user);
+				return Response.ok()
+						.entity(UserDTO.convertToDto(user))
+						.header("X-Auth-Token",restSession.getToken())
+						.build();
+			} else {
+				return Response.status( Response.Status.UNAUTHORIZED )
+						.entity("Nie poprawny login lub haslo")
+						.build();
+			}
+		} catch(Exception e){
 			logger.error(e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					       .build();
 		}
 	}
 	
-	@Path(LOGOUT)
+	@Path("logout")
 	@GET
 	@Secured
 	public Response logout(@HeaderParam("Authenticate")String token){

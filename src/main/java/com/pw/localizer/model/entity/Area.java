@@ -50,7 +50,6 @@ import com.pw.localizer.model.enums.AreaFollow;
 		      @NamedQuery(name="Area.findIdByProviderIdAndAktywny", 
 		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.active =:active")
 })
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class Area {
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
@@ -79,15 +78,13 @@ public class Area {
 	@Enumerated(EnumType.STRING)
 	private AreaFollow polygonFollowType;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
 	private List<AreaEventNetwork>areaEventNetworks;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
 	private List<AreaEventGPS>areaEventGPSs;
 
-	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany(orphanRemoval = true, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@MapKey(name="number")
 	private Map<Integer,AreaPoint>points = new HashMap<Integer, AreaPoint>();
 

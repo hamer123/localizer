@@ -213,7 +213,6 @@ public class AreaController implements Serializable{
 			AreaPoint areaPoint = new AreaPoint();
 			areaPoint.setLat(latLng.getLat());
 			areaPoint.setLng(latLng.getLng());
-			areaPoint.setArea(area);
 			areaPoint.setNumber(i);
 			
 			map.put(i, areaPoint);

@@ -21,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long>, Serializable 
 	Location findLastNetworkNaszLocationByUserId(long id);
 	Location findLastNetworkObcyLocationByUserId(long id);
 	List<User> findByLoginLikeAndEmailLikeAndPhoneLike(UserAdvanceSearch userAdvanceSearch);
+	User findByLoginEagerFetchAll(String login);
 }

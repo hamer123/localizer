@@ -49,7 +49,6 @@ public class UserRepositoryImpl implements UserRepository{
 		return em.createNamedQuery("USER.findUserFetchRolesByLoginAndPassword", User.class)
 		         .setParameter("login", login)
 		         .setParameter("password", password)
-				 .setHint("javax.persistence.loadgraph", em.createEntityGraph("User.areas"))
 		         .getSingleResult();
 	}
 
@@ -113,5 +112,13 @@ public class UserRepositoryImpl implements UserRepository{
 				.setParameter("email", userAdvanceSearch.getEmail() == null ? "%" : "%" + userAdvanceSearch.getEmail() + "%")
 				.setParameter("phone", userAdvanceSearch.getPhone() == null ? "%" : "%" + userAdvanceSearch.getPhone() + "%")
 				.getResultList();
+	}
+
+	@Override
+	public User findByLoginEagerFetchAll(String login) {
+		return em.createNamedQuery("USER.findByLogin",User.class)
+				.setParameter("login",login)
+				.setHint("javax.persistence.loadgraph",em.createEntityGraph("User.graph.areas"))
+				.getSingleResult();
 	}
 }

@@ -19,8 +19,7 @@ public abstract class AreaEvent implements Serializable{
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Id
 	private long id;
-    
-    @NotNull
+
     @ManyToOne
     private Area area;
     
@@ -30,8 +29,7 @@ public abstract class AreaEvent implements Serializable{
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-    
-    @Column(name = "mail_send")
+
     private boolean mailSend;
     
 //    @NotNull

@@ -1,12 +1,10 @@
 package com.pw.localizer.security.restful;
 
-import com.pw.localizer.model.entity.User;
 import com.pw.localizer.repository.user.UserRepository;
-
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 /**
  * Created by wereckip on 18.08.2016.
@@ -14,20 +12,18 @@ import javax.persistence.NoResultException;
 
 @Stateless
 @DatabaseAuthenticat
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class DatabaseAuthenticateService implements AuthenticateService {
     @Inject
     private UserRepository userRepository;
 
     @Override
-    public User authenticate(String login, String password) throws AuthenticateException {
+    public boolean authenticate(String login, String password){
         try{
-            User user = userRepository.findByLoginAndPassword(login, password);
-            return user;
-        } catch(EJBTransactionRolledbackException e){
-            if(e.getCause() instanceof NoResultException)
-                throw new AuthenticateException("Invalid login or password");
-
-            throw new RuntimeException(e.getCause());
+            userRepository.findByLoginAndPassword(login, password);
+            return true;
+        } catch(Exception e){
+            return false;
         }
     }
 }
