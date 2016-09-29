@@ -44,7 +44,7 @@ public class UserRestController{
         User user = userRepository.findById(id);
         if(user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(user).build();
+        return Response.ok(UserLastLocationsDTO.convertToDto(user)).build();
     }
 
     @PATCH
@@ -53,7 +53,7 @@ public class UserRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePartialUser(@Valid User user){
         user = userService.updatePartial(user);
-        return Response.ok(user).build();
+        return Response.ok(UserLastLocationsDTO.convertToDto(user)).build();
     }
 
     @GET

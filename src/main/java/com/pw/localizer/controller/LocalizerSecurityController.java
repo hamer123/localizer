@@ -30,7 +30,7 @@ public class LocalizerSecurityController implements Serializable{
 			return "/app/location.xhtml?faces-redirect=true";
 		} catch (Exception e){
 			JsfMessageBuilder.errorMessage("Invalid or unknown credentials");
-			logger.info("[LocalizerSecurityController] Nie udana proba logowania na konto " + login + e.getMessage());
+			logger.info("[LocalizerSecurityController] Nie udana proba logowania na konto " + login);
 			return null;
 		}
 	}

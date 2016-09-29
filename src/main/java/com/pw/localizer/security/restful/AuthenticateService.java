@@ -9,5 +9,5 @@ import javax.ejb.Local;
 
 @Local
 public interface AuthenticateService {
-    User authenticate(String login, String password) throws AuthenticateException;
+    boolean authenticate(String login, String password);
 }

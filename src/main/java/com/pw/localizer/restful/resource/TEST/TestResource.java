@@ -1,7 +1,11 @@
 package com.pw.localizer.restful.resource.TEST;
 
+import com.pw.localizer.model.dto.DTOUtilitis;
+import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
+import com.pw.localizer.model.entity.User;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
+import com.pw.localizer.repository.user.UserRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -10,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Set;
 
 /**
  * Created by Patryk on 2016-09-24.
@@ -19,6 +24,8 @@ import javax.ws.rs.core.Response;
 public class TestResource {
     @Inject
     private LocationNetworkRepository locationNetworkRepository;
+    @Inject
+    private UserRepository userRepository;
 
     @Path("{id}")
     @GET
@@ -36,6 +43,15 @@ public class TestResource {
         bean.setName2("kasia");
         bean.setName3("zosia");
         return Response.ok(bean).build();
+    }
+
+    @GET
+    @Path("/test2")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTwo(){
+        User user = userRepository.findById(2L);
+        DTOUtilitis.convertHibernateProxyToNull(user);
+        return Response.ok(user).build();
     }
 
 }

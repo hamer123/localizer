@@ -9,16 +9,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pw.localizer.model.enums.Role;
-
-
 
 //javax.persistence.loadgraph
 @Entity
 @NamedEntityGraphs({
-	@NamedEntityGraph(name = "User.areas",
-			          attributeNodes = {@NamedAttributeNode(value = "areas")}
-//			          subgraphs = @NamedSubgraph(name = "points", attributeNodes = @NamedAttributeNode("points"))
+	@NamedEntityGraph(name = "User.graph.areas",
+			          attributeNodes = {@NamedAttributeNode(value = "areas", subgraph = "points")},
+			          subgraphs = @NamedSubgraph(name = "points", attributeNodes = @NamedAttributeNode("points"))
 	)
 })
 @NamedQueries(
@@ -53,20 +52,17 @@ import com.pw.localizer.model.enums.Role;
 				@NamedQuery(name ="USER.deleteByID",
 						query="DELETE FROM User u WHERE u.id = :id")
 		})
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
 	
-	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.ALL})
+	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private UserSetting userSetting;
 
 	@Pattern(regexp = "^[a-zA-Z0-9_-]{4,16}$")
 	private String login;
 
-	@XmlTransient
 	@Pattern(regexp = "^[a-zA-Z0-9_-]{4,16}$")
 	private String password;
 
@@ -78,7 +74,6 @@ public class User implements Serializable {
 	@NotNull
 	private String phone;
 
-	@JsonIgnore
 	@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
 	private List<Role> roles = new ArrayList<>();
@@ -95,7 +90,7 @@ public class User implements Serializable {
 	@OneToOne
 	private LocationNetwork lastLocationNetworObcaUsluga;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "provider", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private Set<Area> areas;
 
