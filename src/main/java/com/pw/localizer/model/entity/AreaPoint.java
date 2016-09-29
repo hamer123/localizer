@@ -13,12 +13,6 @@ import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 
 @Entity
-//@NamedQueries(value={
-//		@NamedQuery(name  = "AreaPoint.findByPolygonModelId",
-//				    query = "SELECT pp FROM AreaPoint pp WHERE pp.area.id =:id"),
-//		@NamedQuery(name  = "AreaPoint.findByAreaIdOrderByNumber",
-//		            query = "SELECT p FROM AreaPoint p WHERE p.area.id =:id ORDER BY p.number DESC")
-//})
 public class AreaPoint {
     @Id
     @GeneratedValue(strategy=GenerationType.TABLE)
@@ -33,8 +27,13 @@ public class AreaPoint {
 	@NotNull
 	private double lng;
 
-//	@ManyToOne
-//	private Area area;
+	public AreaPoint(int number, double lat, double lng) {
+		this.number = number;
+		this.lat = lat;
+		this.lng = lng;
+	}
+
+	public AreaPoint() {}
 
 	public long getId() {
 		return id;
@@ -60,6 +59,4 @@ public class AreaPoint {
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-//	public Area getArea() { return area; }
-//	public void setArea(Area area) { this.area = area; }
 }

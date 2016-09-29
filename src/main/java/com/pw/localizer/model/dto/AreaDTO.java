@@ -6,6 +6,7 @@ import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.enums.AreaFollow;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ public class AreaDTO {
     private boolean active;
     private String color;
     private AreaFollow polygonFollowType;
-    private Map<Integer,AreaPoint> points;
+    private List<AreaPoint> points;
 
     public static AreaDTO convertToDTO(Area area){
         AreaDTO areaDTO = new AreaDTO();
@@ -84,11 +85,11 @@ public class AreaDTO {
         this.polygonFollowType = polygonFollowType;
     }
 
-    public Map<Integer, AreaPoint> getPoints() {
+    public List<AreaPoint> getPoints() {
         return points;
     }
 
-    public void setPoints(Map<Integer, AreaPoint> points) {
+    public void setPoints(List<AreaPoint> points) {
         this.points = points;
     }
 }

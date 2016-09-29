@@ -3,6 +3,7 @@ package com.pw.localizer.model.entity;
 
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,28 +11,11 @@ import java.util.Map;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.localizer.model.enums.AreaFollow;
 
 @Entity
-@NamedEntityGraphs({
-	@NamedEntityGraph(
-			name = "Area.fetchAll",
-			includeAllAttributes = true,
-			subgraphs = @NamedSubgraph(
-					name = "Polygon.path",
-					attributeNodes = {@NamedAttributeNode("")}
-			)
-	),
-	@NamedEntityGraph(
-
-	)
-})
 @NamedQueries(value={
 	          @NamedQuery(name="Area.updateByIdSetActive",
 			             query="UPDATE Area a SET a.active =:active WHERE a.id =:areaId"),
@@ -48,7 +32,9 @@ import com.pw.localizer.model.enums.AreaFollow;
 		      @NamedQuery(name="Area.findByAktywny",
 		    		      query="SELECT a FROM Area a WHERE a.active =:aktywny"),
 		      @NamedQuery(name="Area.findIdByProviderIdAndAktywny", 
-		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.active =:active")
+		                  query="SELECT a.id FROM Area a WHERE a.provider.id =:id AND a.active =:active"),
+		      @NamedQuery(name="Area.findAreaPointsByAreaId",
+			              query ="SELECT a.points FROM Area a WHERE a.id =:id")
 })
 public class Area {
 	@Id
@@ -85,8 +71,9 @@ public class Area {
 	private List<AreaEventGPS>areaEventGPSs;
 
 	@OneToMany(orphanRemoval = true, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
-	@MapKey(name="number")
-	private Map<Integer,AreaPoint>points = new HashMap<Integer, AreaPoint>();
+	@OrderBy(value = "number ASC")
+	@JoinColumn
+	private List<AreaPoint> points = new ArrayList();
 
 	@NotNull
 	@OneToOne(orphanRemoval = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
@@ -108,11 +95,11 @@ public class Area {
 		this.name = name;
 	}
 
-	public Map<Integer, AreaPoint> getPoints() {
+	public List<AreaPoint> getPoints() {
 		return points;
 	}
 
-	public void setPoints(Map<Integer, AreaPoint> points) {
+	public void setPoints(List<AreaPoint> points) {
 		this.points = points;
 	}
 
@@ -192,7 +179,7 @@ public class Area {
 		return path2d.contains(point2d);
 	}
 	
-	private Path2D createPath(Map<Integer, AreaPoint>points){
+	private Path2D createPath(List<AreaPoint>points){
 		Path2D path = new Path2D.Double();
 		
 		AreaPoint firstPoint = points.get(0);

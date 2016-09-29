@@ -1,6 +1,7 @@
 package com.pw.localizer.repository.area;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.Area;
+import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.repository.area.AreaRepository;
 
 @Stateless
@@ -44,24 +46,12 @@ public class AreaRepositoryImpl implements AreaRepository{
 				  .getResultList();
 	}
 
-//	@Override
-//	public List<Area> findByTargetId(long id){
-//		return em.createNamedQuery("Area.findByTargetId", Area.class)
-//		         .setParameter("id", id)
-//		         .getResultList();
-//	}
-
 	@Override
 	public List<Area> findWithEagerFetchPointsAndTargetByProviderId(long id) {
 		List<Area>polygonModels = em.createNamedQuery("Area.findWithEagerFetchPointsAndTargetByProviderId", Area.class)
 				 .setHint("javax.persistence.fetchgraph", em.getEntityGraph("Area.fetchAll"))
 				 .setParameter("id", id)
-				 .getResultList();	
-//
-//		em.getEntityGraph("Area.fetchAll")
-//		for(Area polygonModel : polygonModels)
-//			polygonModel.getPoints().size();
-		
+				 .getResultList();
 		return polygonModels;
 	}
 
@@ -95,10 +85,13 @@ public class AreaRepositoryImpl implements AreaRepository{
 				 .getResultList();
 	}
 
-//	@Override
-//	public void removeById(long id) {
-//		Area area = em.find(Area.class, id);
-//		em.remove(area);
-//	}
-
+	@Override
+	public List<AreaPoint> findAreaPointsByAreaId(long id) {
+		 List list = em.createNamedQuery("Area.findAreaPointsByAreaId", Collection.class)
+				.setParameter("id",id)
+				.getResultList();
+		return ((List<AreaPoint>)list).stream()
+				.sorted((p1,p2) -> Integer.compare(p1.getNumber(),p2.getNumber()))
+				.collect(Collectors.toList());
+	}
 }

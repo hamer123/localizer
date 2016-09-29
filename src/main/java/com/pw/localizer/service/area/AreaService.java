@@ -14,4 +14,5 @@ public interface AreaService {
     Area update(Area area);
     void remove(long areaId);
     Area create(Area area);
+    Area fetchPoints(Area area);
 }

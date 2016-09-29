@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.pw.localizer.identyfikator.OverlayUUIDFactory;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
 import org.primefaces.model.map.LatLng;
@@ -19,7 +21,6 @@ import javax.ejb.Startup;
 @Startup
 @Singleton
 public class PolygonFactory implements Serializable {
-	private static PolygonFactory polygonFactory;
 	private String POLYGON_STROKE_COLOR;
 	private String POLYGON_FILL_COLOR;
 	private double POLYGON_FILL_OPACITY;
@@ -85,23 +86,10 @@ public class PolygonFactory implements Serializable {
 		return polygon;
 	}
 
-	private List<LatLng> createPaths(Map<Integer, AreaPoint> polygonPointsMap){
-		List<LatLng>latlngList = new ArrayList<>();
-
-		List<Integer>numberList = getSortedPointNumber( polygonPointsMap.keySet() );
-		for(int number : numberList){
-			AreaPoint polygonPoint = polygonPointsMap.get(number);
-			LatLng latLng = new LatLng(polygonPoint.getLat(), polygonPoint.getLng());
-			latlngList.add(latLng);
-		}
-
-		return latlngList;
-	}
-
-	private List<Integer> getSortedPointNumber(Collection<Integer>numberCollection){
-		List<Integer>pointSortedList = new ArrayList<Integer>(numberCollection);
-		Collections.sort(pointSortedList);
-		return pointSortedList;
+	private List<LatLng> createPaths(List<AreaPoint> areaPoints){
+		return areaPoints.stream()
+				.map(a -> new LatLng(a.getLat(),a.getLng()))
+				.collect(Collectors.toList());
 	}
 
 	private void findProperties(PropertiesReader propertiesReader){

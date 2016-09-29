@@ -6,6 +6,7 @@ import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.repository.user.UserRepository;
+import com.pw.localizer.service.area.AreaService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -26,6 +27,8 @@ public class TestResource {
     private LocationNetworkRepository locationNetworkRepository;
     @Inject
     private UserRepository userRepository;
+    @Inject
+    private AreaService areaService;
 
     @Path("{id}")
     @GET

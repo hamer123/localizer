@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.service.area.AreaPointService;
 import com.pw.localizer.service.area.AreaService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.map.PointSelectEvent;
@@ -41,6 +42,8 @@ public class AreaController implements Serializable{
 	private AreaRepository areaRepository;
 	@Inject
 	private AreaService areaService;
+	@Inject
+	private AreaPointService areaPointService;
 	@Inject
 	private AreaPointRepository polygonPointRepository;
 	@Inject
@@ -82,20 +85,17 @@ public class AreaController implements Serializable{
 		try{
 			if(validateAreaBeforeCreate()){
 				prepareAreaBeforeSave();
-
 				//Create
 				area = areaService.create(area);
 				areas.add(area);
-
 				//Clear
 				clearArea();
 				clearPolygon();
-
 				JsfMessageBuilder.infoMessage("Udalo sie utworzyc obszar sledzenia o nazwie " + area.getName() + " sledzacy uzytkownika " + area.getTarget().getLogin());
 			}
 		} catch(Exception e) {
-			JsfMessageBuilder.errorMessage("Nie udalo sie utworzyc obszaru sledzenia " + e);
 			e.printStackTrace();
+			logger.error("Nie udalo sie utworzyc obszaru sledzenia " + e);
 		}
 	}
 
@@ -112,8 +112,8 @@ public class AreaController implements Serializable{
 				JsfMessageBuilder.infoMessage("Udalo sie aktywowac obszar sledzenia");
 			}
 		} catch(Exception e) {
-			logger.error("[AreaController] Nie udalo sie zmienic stanu aktywnosci obszaru sledzenia " + e);
 			JsfMessageBuilder.errorMessage("Nie udalo sie zmienic stanu aktywnosci obszaru sledzenia");
+			logger.error("[AreaController] Nie udalo sie zmienic stanu aktywnosci obszaru sledzenia " + e);
 		}
 	}
 
@@ -131,7 +131,6 @@ public class AreaController implements Serializable{
 
 	private boolean validateAreaBeforeCreate(){
 		boolean valid = true;
-
 		if(isAreaWithName(area.getName())){
 			JsfMessageBuilder.errorMessage("Obszar sledzenia o tej nazwie juz istnieje... zmien nazwe");
 			valid =  false;
@@ -144,7 +143,6 @@ public class AreaController implements Serializable{
 			JsfMessageBuilder.errorMessage("Obszar sledzenia nie moze byc ustawiony na sledzenie providera");
 			valid =  false;
 		}
-
 		return valid;
 	}
 	
@@ -154,11 +152,9 @@ public class AreaController implements Serializable{
 	
 	public void onShowArea(Area area){
 		Area areaToDisplay  = copyArea(area);
-		
-		List<AreaPoint>points = polygonPointRepository.findByAreaId(area.getId());
+		List<AreaPoint>points = areaRepository.findAreaPointsByAreaId(area.getId()); //polygonPointRepository.findByAreaId(area.getId());
 		setArea(areaToDisplay);
-		
-		List<LatLng>paths =  convertAreaPoint(points);
+		List<LatLng>paths =  convertToLatLng(points);
 		polygon.setPaths(paths);
 		setPolygonFillColor(area.getColor());
 	}
@@ -192,7 +188,7 @@ public class AreaController implements Serializable{
 		User user = userRepository.findByLogin(area.getTarget().getLogin());
 		area.setTarget(user);
 		area.setProvider(localizerSession.getUser());
-		area.setPoints( convertLatLng(polygon.getPaths(), area) );
+		area.setPoints(areaPointService.convertToAreaPoint(polygon.getPaths()));
 	}
 
 	private void addPathToPolygon(LatLng latLng){
@@ -203,25 +199,8 @@ public class AreaController implements Serializable{
 		List<LatLng>paths = polygon.getPaths();
 		paths.remove(latLng);
 	}
-	
-	private Map<Integer, AreaPoint> convertLatLng(List<LatLng>latLngs, Area area){
-		Map<Integer, AreaPoint>map = new HashMap<Integer, AreaPoint>();
-		
-		for(int i = 0; i < latLngs.size(); i++){
-			LatLng latLng = latLngs.get(i);
-			
-			AreaPoint areaPoint = new AreaPoint();
-			areaPoint.setLat(latLng.getLat());
-			areaPoint.setLng(latLng.getLng());
-			areaPoint.setNumber(i);
-			
-			map.put(i, areaPoint);
-		}
-		
-		return map;
-	}
 
-	private List<LatLng> convertAreaPoint(List<AreaPoint>points){
+	private List<LatLng> convertToLatLng(List<AreaPoint>points){
 		List<LatLng>paths = new ArrayList<LatLng>();
 		
 		for(AreaPoint point : points){
@@ -262,7 +241,8 @@ public class AreaController implements Serializable{
 		area.setName("");
 		area.setAreaMessageMail(new AreaMessageMail());
 		area.setTarget(new User());
-		area.setPoints(new HashMap<Integer, AreaPoint>());
+
+		area.setPoints(new ArrayList());
 	}
 
 	void clearPolygon(){

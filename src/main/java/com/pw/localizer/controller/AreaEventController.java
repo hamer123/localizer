@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
 import com.pw.localizer.model.enums.Provider;
+import com.pw.localizer.service.area.AreaService;
 import org.omnifaces.cdi.Param;
 import org.primefaces.model.map.Polygon;
 import com.pw.localizer.model.google.GoogleMapModel;
@@ -33,6 +34,8 @@ public class AreaEventController implements Serializable{
 //	private GoogleMapUserComponentService googleMapUserComponentService;
 	@Inject
 	private GoogleMapController googleMapController;
+	@Inject
+	private AreaService areaService;
 	
 	@Param(name = "id") @Inject
 	private long id;
@@ -52,7 +55,7 @@ public class AreaEventController implements Serializable{
 		if(validParameters()){
 			areaEvent = findEvent();
 			if(validateAreaEvent()){
-				Area area = fetchAreaPoints(areaEvent.getArea());
+				Area area = areaService.fetchPoints(areaEvent.getArea());
 				areaEvent.setArea(area);
 
 				//TODO
@@ -79,13 +82,7 @@ public class AreaEventController implements Serializable{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////   UTILITIS   //////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	Area fetchAreaPoints (Area area){
-		Map<Integer,AreaPoint>points = areaPointRepository.findByAreaIdOrderByNumberMapToNumber(area.getId());
-		area.setPoints(points);
-		return area;
-	}
-	
+
 	boolean validParameters(){
 		if(id == 0){
 			msgError = "Podany id nie jest poprawny";

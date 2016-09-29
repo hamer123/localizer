@@ -13,7 +13,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.model.enums.GoogleMap;
 import com.pw.localizer.model.enums.Provider;
+import com.pw.localizer.service.area.AreaService;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.map.Polygon;
 
@@ -59,7 +61,9 @@ public class MessageController implements Serializable{
 	@Inject
 	private CircleFactory circleFactory;
 
-	
+	@Inject
+	private AreaService areaService;
+
 	private Area selectedArea;
 	private List<Area> areaList;
 	private List<AreaEvent>areaEvents;
@@ -87,14 +91,12 @@ public class MessageController implements Serializable{
 		dialogMap.addOverlay(markerFactory.createMarker(location));
 		dialogMap.setCenter(GoogleMapModel.center((location)));
 	}
-	
+
+	/** Set Dialog GMap Polygon and center using first AreaPoint data*/
 	public void onDisplayAreaInDialog(Area area){
-		List<AreaPoint>areaPoints = areaPointRepository.findByAreaId(area.getId());
-		dialogMap.clear();
-		area.setPoints(mapAreaPoint(areaPoints));
-		Polygon polygon = polygonFactory.create(area);
-		dialogMap.addOverlay(polygon);
-		AreaPoint areaPoint = areaPoints.get(0);
+		area = areaService.fetchPoints(area);
+		replaceDialogGMapPolygon(area);
+		AreaPoint areaPoint = area.getPoints().get(0);
 		dialogMap.setCenter(GoogleMapModel.center(areaPoint.getLat(), areaPoint.getLng()));
 	}
 	
@@ -103,7 +105,14 @@ public class MessageController implements Serializable{
 		areaMessageMail.setAccept(true);
 		areaMessageMailRepository.save(areaMessageMail);
 	}
-	
+
+	/** Replace Dialog GMap Polygon */
+	void replaceDialogGMapPolygon(Area area){
+		dialogMap.clear();
+		Polygon polygon = polygonFactory.create(area);
+		dialogMap.addOverlay(polygon);
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////    UTILITIS    //////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

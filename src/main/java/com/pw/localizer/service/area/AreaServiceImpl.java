@@ -4,6 +4,8 @@ import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.repository.area.AreaRepository;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 /**
@@ -33,5 +35,12 @@ public class AreaServiceImpl implements AreaService{
     @Override
     public Area create(Area area) {
         return areaRepository.create(area);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Area fetchPoints(Area area) {
+        area.setPoints(areaRepository.findAreaPointsByAreaId(area.getId()));
+        return area;
     }
 }

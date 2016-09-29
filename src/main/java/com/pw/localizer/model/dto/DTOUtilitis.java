@@ -19,12 +19,12 @@ public class DTOUtilitis {
                 field.setAccessible(true);
                 Object objField = field.get(obj);
                 try{
-                    //do something
                     if(objField != null){
                         System.out.println(objField.getClass());
-                        objField.hashCode();
-                        if(objField instanceof PersistentCollection)
-                            System.out.println("WE GOT IT !" + field.getName());
+                        //do something
+                        objField.equals(null);
+//                        if(objField instanceof PersistentCollection)
+//                            System.out.println("WE GOT IT !" + field.getName());
                     }
                 }catch (LazyInitializationException e){
                     //if throw lazy set to null
