@@ -6,25 +6,25 @@
 
       <h:form id="exists-polygons">
          <p:dataTable var="user_area" value="#{areaController.areas}" paginator="true" rows="10">
-            <p:column headerText="Nazwa" style="text-align:center !important;">
+            <p:column headerText="#{msg['name']}" style="text-align:center !important;">
                <h:outputText value="#{user_area.name}" />
             </p:column>
-            <p:column headerText="Typ sledzenia" style="text-align:center !important;">
+            <p:column headerText="#{msg['follow.mode']}" style="text-align:center !important;">
                <h:outputText value="#{user_area.areaFollowType}" />
             </p:column>
-            <p:column headerText="Sledzony uzytkownik" style="text-align:center !important;">
+            <p:column headerText="#{msg['followed.user']}" style="text-align:center !important;">
                <h:outputText value="#{user_area.target.login}" />
             </p:column>
-            <p:column headerText="Pokaz" style="text-align:center !important;">
+            <p:column headerText="#{msg['show']}" style="text-align:center !important;">
                <p:commandButton update=":#{p:component('gmap')} :#{p:component('panel-create-area')}" actionListener="#{areaController.onShowArea(user_area)}" value="POKAZ"/>
             </p:column>
-            <p:column headerText="Zmien status" style="text-align:center !important;">
+            <p:column headerText="#{msg['change.status']}" style="text-align:center !important;">
                <p:commandButton update=":#{p:component('exists-polygons')}  :#{p:component('growl')}"
                                 actionListener="#{areaController.onChangeAreaActiveStatus(user_area)}"
                                 value="#{areaController.getAreaActiveButtonValue(user_area)}"/>
             </p:column>
-            <p:column headerText="Usun" style="text-align:center !important;">
-               <p:commandButton update=":#{p:component('exists-polygons')}" actionListener="#{areaController.onRemoveArea(user_area)}" value="USUN"/>
+            <p:column headerText="#{msg['remove']}" style="text-align:center !important;">
+               <p:commandButton update=":#{p:component('exists-polygons')}" actionListener="#{areaController.onRemoveArea(user_area)}" value="#{msg['remove']}"/>
             </p:column>
          </p:dataTable>
 	  </h:form>
