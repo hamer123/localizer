@@ -11,6 +11,8 @@
 .body{
 	background-image: url("../images/loginBackground.png");
 	background-size: 100% auto;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 .footer{
@@ -20,5 +22,9 @@
 	margin-bottom: 0.2%;
 	background-color: #111111;
 	color: white;
+}
+
+.panel-column{
+	vertical-align: top;
 }
 

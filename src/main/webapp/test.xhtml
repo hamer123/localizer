@@ -19,13 +19,13 @@
          <p:ajax event="stateChange" listener="#{areaController.googleMapController.onGoogleMapStateChange}" update="gmap" />
       </p:gmap>
 
-      <h:panelGrid columns="2" width="100%" style="background-color: #111111; vertical-align: top;">
+      <h:panelGrid columns="2" width="100%" columnClasses="panel-column, panel-column">
 
-         <p:panel id="panel-create-area" header="Tworzenie polygonu" style="width: 74%; vertical-align: top">
+         <p:panel id="panel-create-area" header="Tworzenie polygonu" style="width: 79%;">
             <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
          </p:panel>
 
-         <p:panel id="panel-exist-areas" header="Istniejace obszary sledzenia" style="width: 120%; float: right; vertical-align: top">
+         <p:panel id="panel-exist-areas" header="Istniejace obszary sledzenia" style="width: 120%; float: right;">
             <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
          </p:panel>
 

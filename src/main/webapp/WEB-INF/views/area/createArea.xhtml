@@ -6,62 +6,65 @@
       xmlns:p="http://primefaces.org/ui"
 	  xmlns:o="http://omnifaces.org/ui">
 
+	<h:form id="create-area">
+		<o:importConstants type="com.pw.localizer.model.enums.AreaFollow" var="areaFollow"/>
+		<o:importConstants type="com.pw.localizer.model.enums.AreaMailMessageMode" var="areaMailMessageMode"/>
+		<h:panelGrid columns="3" cellpadding="5" styleClass="panelGrid">
+			<p:outputLabel for="name" value="#{msg['area.name']}"/>
+			<p:inputText id="name" required="true" value="#{areaController.area.name}">
+				<f:validateLength minimum="4" maximum="16"/>
+			</p:inputText>
+			<p:message for="name" display="icon" />
 
-      <h:form id="createArea">
-		 <o:importConstants type="com.pw.localizer.model.enums.AreaFollow" var="areaFollow"/>
-		 <o:importConstants type="com.pw.localizer.model.enums.AreaMailMessageMode" var="areaMailMessageMode"/>
-	     <h:panelGrid columns="3" cellpadding="5" styleClass="panelGrid">
-            <p:outputLabel for="nazwa" value="Nazwa obszaru:"/>
-	        <p:inputText id="nazwa" required="true" value="#{areaController.area.name}">
-	           <f:validateLength minimum="4" maximum="16"/> 
-	        </p:inputText>
-	        <p:message for="nazwa" display="icon" />
-	         
-	        <p:outputLabel for="followType" value="#{msg['area.follow.mode']}"/>
-	        <p:selectOneMenu id="followType" value="#{areaController.area.areaFollowType}">
-	           <f:selectItems value="#{areaFollow}"/>
-	        </p:selectOneMenu>
-	        <p:message for="followType" display="icon" />
-	        
-	        <p:outputLabel for="login" value="Login Targetu:"/>
-	        <p:autoComplete id="login" value="#{areaController.area.target.login}" completeMethod="#{areaController.onAutoCompleteUser}" required="true" forceSelection="true"/>
-	        <p:message for="login" display="icon" />
-	        
-	        <p:outputLabel for="color" value="Kolor obszaru"/>
-	        <p:colorPicker id="color" value="#{areaController.area.color}"/>
-	        <p:message for="color" display="icon" />
-	        
-	        <p:outputLabel for="mailMessage" value="Wysylanie wiadomosci email"/>
-	        <p:selectBooleanCheckbox id="mailMessage" value="#{areaController.area.areaMessageMail.active}">
-               <p:ajax event="change" update=":#{p:component('mailMessageMode')}"/>
-	        </p:selectBooleanCheckbox>
-	        <p:message for="mailMessage"/>
+			<p:outputLabel for="follow-type" value="#{msg['area.follow.type']}"/>
+			<p:selectOneMenu id="follow-type" value="#{areaController.area.areaFollowType}" title="#{msg['follow.type.title']}">
+				<f:selectItems value="#{areaFollow}"/>
+			</p:selectOneMenu>
+			<p:message for="follow-type" display="icon" />
 
-            
-	        <p:outputLabel  for="mailMessageMode" value="Tryb wysylania email" />
-	        <p:selectOneMenu id="mailMessageMode" value="#{ areaController.area.areaMessageMail.areaMailMessageMode}" disabled="#{!areaController.area.areaMessageMail.active}">
-	           <f:selectItems value="#{areaMailMessageMode}"/>
-	        </p:selectOneMenu>
-	        <p:message for="mailMessageMode"/>
-            
-            <p:commandButton value="Creacte" update=":#{p:component('growl')} :#{p:component('exists-polygons')} :#{p:component('paths')} @form"
-	                         action="#{areaController.onSaveArea()}"/>
-         </h:panelGrid>
+			<p:outputLabel for="login" value="#{msg['target.login']}"/>
+			<p:autoComplete id="login" value="#{areaController.area.target.login}" completeMethod="#{areaController.onAutoCompleteUser}" required="true" forceSelection="true"/>
+			<p:message for="login" display="icon" />
 
-	  </h:form> 
-	  <h:form id="paths">
-	     <p:dataTable value="#{areaController.paths}" var="path" rowIndexVar="index" rows="15" paginator="true">
-	        <p:column headerText="Wartosc">
-	           <h:outputText value="#{path}" />
-	        </p:column>
-	       <p:column headerText="Pokaz">
-	          <p:commandButton value="POKAZ" actionListener="#{areaController.onPathShow(path)}" update=":#{p:component('gmap')}"/>
-	       </p:column>
-	       <p:column headerText="Usun">
-	          <p:commandButton value="USUN" actionListener="#{areaController.onPathRemove(path, index)}" update=":#{p:component('gmap')} :#{p:component('paths')}"/>
-	       </p:column>
-	    </p:dataTable>
-	 </h:form>
+			<p:outputLabel for="color" value="#{msg['follow.area.color']}"/>
+			<p:colorPicker id="color" value="#{areaController.area.color}"/>
+			<p:message for="color" display="icon" />
 
-   
+			<p:outputLabel for="mail-message" value="#{msg['send.email.on.area.event']}"/>
+			<p:selectBooleanCheckbox id="mail-message" value="#{areaController.area.areaMessageMail.active}">
+				<p:ajax event="change" update=":#{p:component('mail-message-mode')}"/>
+			</p:selectBooleanCheckbox>
+			<p:message for="mail-message"/>
+
+
+			<p:outputLabel  for="mail-message-mode" value="#{msg['mode.send.email.on.area.event']}" />
+			<p:selectOneMenu id="mail-message-mode" value="#{ areaController.area.areaMessageMail.areaMailMessageMode}" disabled="#{!areaController.area.areaMessageMail.active}"
+							 title="#{msg['mode.send.email.on.area.event.title']}" >
+				<f:selectItems value="#{areaMailMessageMode}"/>
+			</p:selectOneMenu>
+			<p:message for="mail-message-mode"/>
+
+		</h:panelGrid>
+
+		<p:commandButton value="#{msg['create']}" update=":#{p:component('growl')} :#{p:component('exists-polygons')} :#{p:component('paths')} @form"
+						 action="#{areaController.onSaveArea()}" style="margin: 0.5%"/>
+
+		<p:commandButton value="#{msg['clean']}" style="margin: 0.5%" action="#{areaController.onClear}"
+		                 update=":#{p:component('create-area')} :#{p:component('paths')} :#{p:component('gmap')}"/>
+
+	</h:form>
+	<h:form id="paths">
+		<p:dataTable value="#{areaController.paths}" var="path" rowIndexVar="index" rows="15" paginator="true">
+			<p:column headerText="#{msg['location']}" style="text-align:center !important;">
+				<h:outputText value="#{path}" />
+			</p:column>
+			<p:column headerText="#{msg['show']}" style="text-align:center !important;">
+				<p:commandButton value="#{msg['show']}" actionListener="#{areaController.onPathShow(path)}" update=":#{p:component('gmap')}"/>
+			</p:column>
+			<p:column headerText="#{msg['remove']}" style="text-align:center !important;">
+				<p:commandButton value="#{msg['remove']}" actionListener="#{areaController.onPathRemove(path)}" update=":#{p:component('gmap')} :#{p:component('paths')}"/>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
 </ui:composition>

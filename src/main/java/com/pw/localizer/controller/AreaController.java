@@ -53,18 +53,17 @@ public class AreaController implements Serializable{
 	@Inject 
 	private Logger logger;
 
-	/** */
+	/** Polygon in GMap */
 	private Polygon polygon;
 
-	/** */
+	/** Area to save */
 	private Area area;
 
-	/** */
+	/** User`areas */
 	private List<Area> areas = new ArrayList<Area>();
 
 	/** */
-	private List<String>targetLoginList;
-
+//	private List<String>targetLoginList;
 	@PostConstruct
 	private void postConstruct(){
 		areas = areaRepository.findByProviderId(localizerSession.getUser().getId());
@@ -127,6 +126,12 @@ public class AreaController implements Serializable{
 			logger.error("[AreaController] Nie udalo sie usunac PolygonModel dla id: " + area.getId());
 			JsfMessageBuilder.errorMessage("Nie udalo sie usunac polygon");
 		}
+	}
+
+	/** Clear area create panel */
+	public void onClear(){
+		clearArea();
+		clearPolygon();
 	}
 
 	private boolean validateAreaBeforeCreate(){
@@ -261,17 +266,16 @@ public class AreaController implements Serializable{
 	public String getAreaActiveButtonValue(Area area){
 		if(area.isActive())
 			return "Dezaktywuj";
-		
 		return "Aktywuj";
 	}
 	
-	public List<String> getListTargetsId() {
-		return targetLoginList;
-	}
-
-	public void setListTargetsId(List<String> listTargetsId) {
-		this.targetLoginList = listTargetsId;
-	}
+//	public List<String> getListTargetsId() {
+//		return targetLoginList;
+//	}
+//
+//	public void setListTargetsId(List<String> listTargetsId) {
+//		this.targetLoginList = listTargetsId;
+//	}
 
 	public List<Area> getAreas() {
 		return areas;
@@ -340,14 +344,14 @@ public class AreaController implements Serializable{
 	public void setPolygon(Polygon polygon) {
 		this.polygon = polygon;
 	}
-
-	public List<String> getTargetLoginList() {
-		return targetLoginList;
-	}
-
-	public void setTargetLoginList(List<String> targetLoginList) {
-		this.targetLoginList = targetLoginList;
-	}
+//
+//	public List<String> getTargetLoginList() {
+//		return targetLoginList;
+//	}
+//
+//	public void setTargetLoginList(List<String> targetLoginList) {
+//		this.targetLoginList = targetLoginList;
+//	}
 
 	public void setAreas(List<Area> areas) {
 		this.areas = areas;

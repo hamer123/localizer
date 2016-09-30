@@ -1,43 +1,33 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"> 
+<ui:composition template="/WEB-INF/views/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-    <title>Obszary</title>
-    <h:outputStylesheet library="css" name="standardPanelGrid.css"/>
-    <h:outputStylesheet library="css" name="polygonPanles.css"/>
-    <h:outputStylesheet library="css" name="default.css"/>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCs17b5OinBtGu-5P4VLLLV-yYuaMn2T4c"/>
-</h:head> 
+    <ui:define name="head">
+        <title>#{msg['follow.areas']}</title>
+    </ui:define>
 
-<h:body styleClass="body"> 
+    <ui:define name="content">
 
-     <ui:insert name="menu" >
-	    <ui:include src="/WEB-INF/views/menu_templete.xhtml" />
-	  </ui:insert>
-	 
-	 <h:form>
-       <p:growl id="growl"/>
-       
-	   <p:gmap id="gmap" center="#{areaController.googleMapController.center}" zoom="#{areaController.googleMapController.zoom}"
-               style="width:100%;height:500px" model="#{areaController.googleMapController.googleMapModel}"
-               type="#{areaController .googleMapController.googleMapType}">
-          <p:ajax event="pointSelect" listener="#{areaController.onPointSelect}" update="gmap :#{p:component('paths')}" />
-          <p:ajax event="stateChange" listener="#{areaController.googleMapController.onGoogleMapStateChange}" update="gmap" />
-       </p:gmap>
-     
-     </h:form>
-     
-     <p:panelGrid columns="2" layout="grid" style="margin-top: 5px">
-        <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
-     
-        
-        <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
-        
-    </p:panelGrid>
-    
-    
-</h:body> 
-</html>
+        <p:gmap id="gmap" center="#{areaController.googleMapController.center}" zoom="#{areaController.googleMapController.zoom}"
+                model="#{areaController.googleMapController.googleMapModel}" type="#{areaController .googleMapController.googleMapType}"
+                style="width:100%;height:500px" >
+            <p:ajax event="pointSelect" listener="#{areaController.onPointSelect}" update="gmap :#{p:component('paths')}" />
+            <p:ajax event="stateChange" listener="#{areaController.googleMapController.onGoogleMapStateChange}" update="gmap" />
+        </p:gmap>
+
+        <h:panelGrid columns="2" width="100%" columnClasses="panel-column, panel-column">
+
+            <p:panel id="panel-create-area" header="#{msg['create.follow.area']}" style="width: 79%;">
+                <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
+            </p:panel>
+
+            <p:panel id="panel-exist-areas" header="#{msg['exist.follow.area']}" style="width: 120%; float: right;">
+                <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
+            </p:panel>
+
+        </h:panelGrid>
+    </ui:define>
+
+</ui:composition>
