@@ -21,10 +21,17 @@ public class DTOUtilitis {
                 try{
                     if(objField != null){
                         System.out.println(objField.getClass());
+
+                        Class<?>classType = objField.getClass();
                         //do something
-                        objField.equals(null);
-//                        if(objField instanceof PersistentCollection)
-//                            System.out.println("WE GOT IT !" + field.getName());
+                        objField.hashCode();
+
+                        if(objField instanceof Collection ||
+                           objField instanceof org.hibernate.collection.internal.AbstractPersistentCollection);//TODO
+                            //convertCollectionHibernateProxyToNull(objField);
+                        else ;
+//                            convertHibernateProxyToNull(objField);
+
                     }
                 }catch (LazyInitializationException e){
                     //if throw lazy set to null

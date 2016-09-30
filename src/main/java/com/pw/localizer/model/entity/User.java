@@ -2,6 +2,7 @@ package com.pw.localizer.model.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
@@ -90,9 +91,8 @@ public class User implements Serializable {
 	@OneToOne
 	private LocationNetwork lastLocationNetworObcaUsluga;
 
-//	@JsonIgnore
 	@OneToMany(mappedBy = "provider", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	private Set<Area> areas;
+	private Set<Area> areas = new HashSet();
 
 	public User(){}
 

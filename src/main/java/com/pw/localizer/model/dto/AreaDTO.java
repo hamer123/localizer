@@ -3,6 +3,7 @@ package com.pw.localizer.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaPoint;
+import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.AreaFollow;
 
 import java.util.HashSet;
@@ -16,7 +17,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AreaDTO {
     private long id;
-    private UserDTO userDTOTarget;
+    private BasicUserDTO target;
     private String name;
     private boolean active;
     private String color;
@@ -24,6 +25,8 @@ public class AreaDTO {
     private List<AreaPoint> points;
 
     public static AreaDTO convertToDTO(Area area){
+        //lazy init converter
+       DTOUtilitis.convertHibernateProxyToNull(area);
         AreaDTO areaDTO = new AreaDTO();
         areaDTO.id = area.getId();
         areaDTO.name = area.getName();
@@ -31,9 +34,8 @@ public class AreaDTO {
         areaDTO.color = area.getColor();
         areaDTO.points = area.getPoints();
         areaDTO.polygonFollowType = area.getAreaFollowType();
-        //lazy initial
-        area.getTarget().setAreas(new HashSet());
-        areaDTO.userDTOTarget = UserDTO.convertToDto(area.getTarget());
+//        area.getTarget().setAreas(new HashSet());
+        areaDTO.target = BasicUserDTO.convertToBasicUserDTO(area.getTarget());
         return areaDTO;
     }
 
@@ -43,14 +45,6 @@ public class AreaDTO {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public UserDTO getUserDTOTarget() {
-        return userDTOTarget;
-    }
-
-    public void setUserDTOTarget(UserDTO userDTOTarget) {
-        this.userDTOTarget = userDTOTarget;
     }
 
     public String getName() {
@@ -91,5 +85,13 @@ public class AreaDTO {
 
     public void setPoints(List<AreaPoint> points) {
         this.points = points;
+    }
+
+    public BasicUserDTO getTarget() {
+        return target;
+    }
+
+    public void setTarget(BasicUserDTO target) {
+        this.target = target;
     }
 }

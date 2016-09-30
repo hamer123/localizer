@@ -12,53 +12,53 @@
 		 <o:importConstants type="com.pw.localizer.model.enums.AreaMailMessageMode" var="areaMailMessageMode"/>
 	     <h:panelGrid columns="3" cellpadding="5" styleClass="panelGrid">
             <p:outputLabel for="nazwa" value="Nazwa obszaru:"/>
-	        <p:inputText id="nazwa" required="true" value="#{createArea.area.name}">
+	        <p:inputText id="nazwa" required="true" value="#{areaController.area.name}">
 	           <f:validateLength minimum="4" maximum="16"/> 
 	        </p:inputText>
 	        <p:message for="nazwa" display="icon" />
 	         
 	        <p:outputLabel for="followType" value="#{msg['area.follow.mode']}"/>
-	        <p:selectOneMenu id="followType" value="#{createArea.area.areaFollowType}">
+	        <p:selectOneMenu id="followType" value="#{areaController.area.areaFollowType}">
 	           <f:selectItems value="#{areaFollow}"/>
 	        </p:selectOneMenu>
 	        <p:message for="followType" display="icon" />
 	        
 	        <p:outputLabel for="login" value="Login Targetu:"/>
-	        <p:autoComplete id="login" value="#{createArea.area.target.login}" completeMethod="#{createArea.onAutoCompleteUser}" required="true" forceSelection="true"/>
+	        <p:autoComplete id="login" value="#{areaController.area.target.login}" completeMethod="#{areaController.onAutoCompleteUser}" required="true" forceSelection="true"/>
 	        <p:message for="login" display="icon" />
 	        
 	        <p:outputLabel for="color" value="Kolor obszaru"/>
-	        <p:colorPicker id="color" value="#{createArea.area.color}"/>
+	        <p:colorPicker id="color" value="#{areaController.area.color}"/>
 	        <p:message for="color" display="icon" />
 	        
 	        <p:outputLabel for="mailMessage" value="Wysylanie wiadomosci email"/>
-	        <p:selectBooleanCheckbox id="mailMessage" value="#{createArea.area.areaMessageMail.active}">
+	        <p:selectBooleanCheckbox id="mailMessage" value="#{areaController.area.areaMessageMail.active}">
                <p:ajax event="change" update=":#{p:component('mailMessageMode')}"/>
 	        </p:selectBooleanCheckbox>
 	        <p:message for="mailMessage"/>
 
             
 	        <p:outputLabel  for="mailMessageMode" value="Tryb wysylania email" />
-	        <p:selectOneMenu id="mailMessageMode" value="#{ createArea.area.areaMessageMail.areaMailMessageMode}" disabled="#{!createArea.area.areaMessageMail.active}">
+	        <p:selectOneMenu id="mailMessageMode" value="#{ areaController.area.areaMessageMail.areaMailMessageMode}" disabled="#{!areaController.area.areaMessageMail.active}">
 	           <f:selectItems value="#{areaMailMessageMode}"/>
 	        </p:selectOneMenu>
 	        <p:message for="mailMessageMode"/>
             
             <p:commandButton value="Creacte" update=":#{p:component('growl')} :#{p:component('existPolygons')} :#{p:component('paths')} @form" 
-	                         action="#{createArea.onSaveArea()}"/>
+	                         action="#{areaController.onSaveArea()}"/>
          </h:panelGrid>
 
 	  </h:form> 
 	  <h:form id="paths">
-	     <p:dataTable value="#{createArea.paths}" var="path" rowIndexVar="index" rows="15" paginator="true">
+	     <p:dataTable value="#{areaController.paths}" var="path" rowIndexVar="index" rows="15" paginator="true">
 	        <p:column headerText="Wartosc">
 	           <h:outputText value="#{path}" />
 	        </p:column>
 	       <p:column headerText="Pokaz">
-	          <p:commandButton value="POKAZ" actionListener="#{createArea.onPathShow(path)}" update=":#{p:component('gmap')}"/>
+	          <p:commandButton value="POKAZ" actionListener="#{areaController.onPathShow(path)}" update=":#{p:component('gmap')}"/>
 	       </p:column>
 	       <p:column headerText="Usun">
-	          <p:commandButton value="USUN" actionListener="#{createArea.onPathRemove(path, index)}" update=":#{p:component('gmap')} :#{p:component('paths')}"/>
+	          <p:commandButton value="USUN" actionListener="#{areaController.onPathRemove(path, index)}" update=":#{p:component('gmap')} :#{p:component('paths')}"/>
 	       </p:column>
 	    </p:dataTable>
 	 </h:form>

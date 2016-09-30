@@ -32,7 +32,7 @@ import com.pw.localizer.repository.area.AreaPointRepository;
 import com.pw.localizer.repository.user.UserRepository;
 
 @ViewScoped
-@Named(value="createArea")
+@Named(value= "areaController")
 public class AreaController implements Serializable{
 	@Inject
 	private LocalizerSession localizerSession;

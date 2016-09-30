@@ -12,14 +12,7 @@ import java.util.Set;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO {
-
-    private long id;
-    private String login;
-    private String email;
-    private String phone;
-    private Avatar avatar;
-    private UserLastLocationsDTO userLastLocationsDTO;
+public class UserDTO extends BasicUserDTO {
     private Set<AreaDTO> areaDTO;
     private Set<ContactInvite> contactInvite;
     private UserSetting userSetting;

@@ -72,7 +72,7 @@ public class Area {
 
 	@OneToMany(orphanRemoval = true, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@OrderBy(value = "number ASC")
-	@JoinColumn
+	@JoinColumn(name = "area_id")
 	private List<AreaPoint> points = new ArrayList();
 
 	@NotNull
