@@ -86,7 +86,7 @@ public class AreaController implements Serializable{
 				JsfMessageBuilder.infoMessage("Udało się utworzyć obszar śledzenia o nazwie " + area.getName() + " sledzący użytkownika " + area.getTarget().getLogin());
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			JsfMessageBuilder.infoMessage("Nie udało się utworzyć obszar śledzenia o nazwie " + area.getName() + " sledzący użytkownika " + area.getTarget().getLogin());
 			logger.error("Nie udało sie utworzyć obszaru śledzenia " + e);
 		}
 	}
