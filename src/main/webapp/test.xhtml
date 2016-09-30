@@ -3,13 +3,33 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
 
    <ui:define name="head">
-      <title>TEST</title>
+      <title>TEST ???</title>
    </ui:define>
+
    <ui:define name="content">
-      <p>Here goes your view-specific content.</p>
+
+      <p:gmap id="gmap" center="#{areaController.googleMapController.center}" zoom="#{areaController.googleMapController.zoom}"
+              model="#{areaController.googleMapController.googleMapModel}" type="#{areaController .googleMapController.googleMapType}"
+              style="width:100%;height:500px" >
+         <p:ajax event="pointSelect" listener="#{areaController.onPointSelect}" update="gmap :#{p:component('paths')}" />
+         <p:ajax event="stateChange" listener="#{areaController.googleMapController.onGoogleMapStateChange}" update="gmap" />
+      </p:gmap>
+
+      <h:panelGrid columns="2" width="100%" style="background-color: #111111; vertical-align: top;">
+
+         <p:panel id="panel-create-area" header="Tworzenie polygonu" style="width: 74%; vertical-align: top">
+            <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
+         </p:panel>
+
+         <p:panel id="panel-exist-areas" header="Istniejace obszary sledzenia" style="width: 120%; float: right; vertical-align: top">
+            <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
+         </p:panel>
+
+      </h:panelGrid>
    </ui:define>
 
 </ui:composition>

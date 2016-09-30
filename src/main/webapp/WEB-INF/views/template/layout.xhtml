@@ -4,8 +4,6 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <h:outputStylesheet library="css" name="standardPanelGrid.css"/>
-    <h:outputStylesheet library="css" name="polygonPanles.css"/>
     <h:outputStylesheet library="css" name="default.css"/>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCs17b5OinBtGu-5P4VLLLV-yYuaMn2T4c"/>
     <ui:insert name="head"></ui:insert>
@@ -19,6 +17,22 @@
         </ui:insert>
     </div>
 
+    <div>
+        <ui:insert name="message">
+            <h:form>
+                <p:growl id="growl"/>
+            </h:form>
+        </ui:insert>
+        <ui:insert name="content">
+            Content
+        </ui:insert>
+    </div>
+
+    <div class="footer">
+        <ui:insert name="footer">
+            Copyright © Localizator
+        </ui:insert>
+    </div>
 
 </h:body>
 </html>

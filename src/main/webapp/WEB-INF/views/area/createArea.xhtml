@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
 	  xmlns:o="http://omnifaces.org/ui">
 
-   <p:panel id="panelCreate" header="Tworzenie polygonu">
+
       <h:form id="createArea">
 		 <o:importConstants type="com.pw.localizer.model.enums.AreaFollow" var="areaFollow"/>
 		 <o:importConstants type="com.pw.localizer.model.enums.AreaMailMessageMode" var="areaMailMessageMode"/>
@@ -44,7 +44,7 @@
 	        </p:selectOneMenu>
 	        <p:message for="mailMessageMode"/>
             
-            <p:commandButton value="Creacte" update=":#{p:component('growl')} :#{p:component('existPolygons')} :#{p:component('paths')} @form" 
+            <p:commandButton value="Creacte" update=":#{p:component('growl')} :#{p:component('exists-polygons')} :#{p:component('paths')} @form"
 	                         action="#{areaController.onSaveArea()}"/>
          </h:panelGrid>
 
@@ -62,6 +62,6 @@
 	       </p:column>
 	    </p:dataTable>
 	 </h:form>
-   </p:panel>
+
    
 </ui:composition>
