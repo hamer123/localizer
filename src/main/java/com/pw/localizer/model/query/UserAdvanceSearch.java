@@ -1,4 +1,4 @@
-package com.pw.localizer.model.wrapper;
+package com.pw.localizer.model.query;
 
 /**
  * Created by Patryk on 2016-09-22.

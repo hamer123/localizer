@@ -16,6 +16,8 @@ public class UserDTO extends BasicUserDTO {
     private Set<AreaDTO> areaDTO;
     private Set<ContactInvite> contactInvite;
     private UserSetting userSetting;
+    private UserLastLocationsDTO userLastLocationsDTO;
+    private Avatar avatar;
 
     public static UserDTO convertToDto(User user){
         UserDTO userDTO = new UserDTO();
@@ -26,6 +28,7 @@ public class UserDTO extends BasicUserDTO {
         userDTO.userSetting = user.getUserSetting();
         userDTO.userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
         userDTO.avatar = user.getAvatar();
+        userDTO.userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
 
         Set<AreaDTO>areaDTOs = new HashSet<>();
         for(Area area : user.getAreas())
@@ -107,4 +110,5 @@ public class UserDTO extends BasicUserDTO {
     public void setUserSetting(UserSetting userSetting) {
         this.userSetting = userSetting;
     }
+
 }

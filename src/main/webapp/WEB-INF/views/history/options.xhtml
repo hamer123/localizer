@@ -8,7 +8,7 @@
       
       <h:form id="option_form">
          <p:commandButton value="Wyznacz dlugosc trasy" actionListener="#{locationHistory.onCalculateRouteLength()}"
-                          update=":#{p:component('growl')}" rendered="#{locationHistory.polyline != null}"/>
+                          update=":#{p:component('growl')}" rendered="#{locationHistory.polyline == null}"/>
       </h:form>
 </ui:composition>
 

@@ -1,7 +1,6 @@
 package com.pw.localizer.security.restful;
 import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.enums.Role;
-import com.pw.localizer.restful.resource.RestAttribute;
 import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
@@ -33,7 +32,7 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		if(!isLoginRequest(request)){
-			RestSession restSession = (RestSession) request.getAttribute(RestAttribute.REST_SESSION);
+			RestSession restSession = (RestSession) request.getAttribute("rest_session");
 			restSession.setLastUsed(new Date());
 
 			// Get the resource class which matches with the requested URL

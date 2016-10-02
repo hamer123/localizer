@@ -2,16 +2,16 @@ package com.pw.localizer.restful.resource.location;
 
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
+import com.pw.localizer.inceptor.ErrorLog;
+import com.pw.localizer.model.dto.LocationNetworkDTO;
 import com.pw.localizer.security.restful.Secured;
 import org.jboss.logging.Logger;
 
@@ -30,31 +30,25 @@ public class RestLocationNetwork {
 	private LocationService locationService;
 	@Inject
 	private LocationNetworkRepository LocationNetworkRepository;
-	@Inject
-	private Logger logger;
-	
+
+	@ErrorLog
 	@POST
-	@Consumes( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
-	@Produces( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
-	public Response createLocation(LocationNetwork locationNetwork, @Context RestSession restSession){
-		long id = restSession.getUser().getId();
-		locationService.createLocationNetworkUpdateUserCurrentLocationNetwork(locationNetwork, id);
-		return Response.status(Response.Status.OK).build();
-	}
-	
-	@GET
-	@Path("{id}")
-	@Produces( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
-	public Response findLocation(@PathParam("id") long id){
-		try{
-			Location location = LocationNetworkRepository.findById(id);
-			return Response.status( Response.Status.OK )
-					       .entity(location)
-					       .build();
-		}catch(Exception e){
-			return Response.status( Response.Status.NOT_FOUND )
-					       .build();
-		}
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createLocation(LocationNetworkDTO locationNetworkDTO, @Context UriInfo uriInfo){
+
+		//TODO
+		return null;
 	}
 
+	@ErrorLog
+	@GET
+	@Produces( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
+	public Response findLocation(@NotNull @QueryParam("login") String login,
+								 @NotNull @QueryParam("fromDate") String fromDate,
+								 @NotNull @QueryParam("toDate") String toDate,
+								 @DefaultValue("1000") @Max(1000) @QueryParam("maxRecords")int maxRecords){
+		//TODO
+		return null;
+	}
 }

@@ -8,24 +8,21 @@ import javax.xml.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.localizer.model.enums.Provider;
+import org.jboss.resteasy.links.RESTServiceDiscovery;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-//@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Location implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
     private Long id;
 
 	@NotNull
-	@Column(updatable = false)
 	private double latitude;
 
 	@NotNull
-	@Column(updatable = false)
 	private double longitude;
 
-//	@XmlTransient
 	@JsonIgnore
 	@ManyToOne
 	private User user;

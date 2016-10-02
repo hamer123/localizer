@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.*;
-import com.pw.localizer.model.wrapper.UserAdvanceSearch;
+import com.pw.localizer.model.query.UserAdvanceSearch;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)

@@ -18,17 +18,17 @@
         </p:gmap>
 
         <p:panel header="#{msg['follow.area.panel']}">
-        <h:panelGrid columns="2" width="100%" columnClasses="panel-column, panel-column">
+            <h:panelGrid columns="2" width="100%" columnClasses="panel-column, panel-column">
 
-            <p:panel id="panel-create-area" header="#{msg['create.follow.area']}" style="width: 69%;">
-                <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
-            </p:panel>
+                <p:panel id="panel-create-area" header="#{msg['create.follow.area']}" style="width: 69%;">
+                    <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
+                </p:panel>
 
-            <p:panel id="panel-exist-areas" header="#{msg['exist.follow.area']}" style="width: 130%; float: right;">
-                <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
-            </p:panel>
+                <p:panel id="panel-exist-areas" header="#{msg['exist.follow.area']}" style="width: 130%; float: right;">
+                    <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
+                </p:panel>
 
-        </h:panelGrid>
+            </h:panelGrid>
         </p:panel>
     </ui:define>
 

@@ -24,10 +24,11 @@ import com.pw.localizer.model.session.LocalizerSession;
 	"/app/*"
 })
 public class JsfRootFilter implements Filter {
-	@Inject
-	LocalizerSession localizerSession;
 	private final String LOGIN_URI = "/login.xhtml";
-	
+
+	@Inject
+	private LocalizerSession localizerSession;
+
     /**
      * Default constructor. 
      */

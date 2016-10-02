@@ -74,7 +74,7 @@ public class LocationHistoryController implements Serializable{
 	private Polyline polyline;
 
 	/** Locations */
-	private List<Location>locationList;
+	private List<Location>locationList = new ArrayList<>();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   ACTIONS    /////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +84,7 @@ public class LocationHistoryController implements Serializable{
 		try{
 			//Clear
 			polyline = null;
+			locationList.clear();
 			googleMapController.clear();
 
 			List<Location>locations = findLocations();

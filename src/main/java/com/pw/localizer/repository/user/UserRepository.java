@@ -7,7 +7,7 @@ import javax.ejb.Local;
 
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.wrapper.UserAdvanceSearch;
+import com.pw.localizer.model.query.UserAdvanceSearch;
 import com.pw.localizer.repository.JpaRepository;
 
 @Local

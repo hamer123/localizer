@@ -23,19 +23,20 @@ public class LocationServiceImp implements LocationService{
 	private LocationNetworkRepository locationNetworkRepository;
 
 	@Override
-	public void createLocationNetworkUpdateUserCurrentLocationNetwork(LocationNetwork locationNetwork, long userId) {
+	public LocationNetwork createLocationNetwork(LocationNetwork locationNetwork, long userId) {
 		User user = userRepository.findById(userId);
 		locationNetwork.setUser(user);
-		locationNetworkRepository.create(locationNetwork);
+		locationNetwork = locationNetworkRepository.create(locationNetwork);
 		updateUserCurrentLocationNetwork(locationNetwork, user);
+		return locationNetwork;
 	}
 
 	@Override
-	public void createLocationGPSUpdateUserCurrentLocationGPS(LocationGPS locationGPS, long userId) {
-		User user = userRepository.findById(userId);
-		locationGPS.setUser(user);
-		locationGPSRepository.create(locationGPS);
+	public LocationGPS createLocationGPS(LocationGPS locationGPS) {
+		User user = userRepository.findById(locationGPS.getUser().getId());
+		locationGPS = locationGPSRepository.create(locationGPS);
 		user.setLastLocationGPS(locationGPS);
+		return user.getLastLocationGPS();
 	}
 	
 	private void updateUserCurrentLocationNetwork(LocationNetwork locationNetwork, User user){

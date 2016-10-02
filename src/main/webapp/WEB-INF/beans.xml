@@ -4,5 +4,6 @@
     <interceptors>
         <class>com.pw.localizer.inceptor.DurationInterceptor</class>
         <class>com.pw.localizer.inceptor.LoggingInterceptor</class>
+        <class>com.pw.localizer.inceptor.ErrorInterceptor</class>
     </interceptors>
 </beans>

@@ -47,11 +47,11 @@ public class LocationGPSRepositoryImpl implements LocationGPSRepository{
 	}
 
 	@Override
-	public List<LocationGPS> findByLoginAndDateOrderByDate(String login, Date younger, Date older, int maxResults) {
+	public List<LocationGPS> findByLoginAndDateOrderByDate(String login, Date from, Date to, int maxResults) {
 		return em.createNamedQuery("findByUserLoginAndDateYoungerThanOlderThanOrderByDateDesc", LocationGPS.class)
 				.setParameter("login", login)
-				 .setParameter("younger", younger, TemporalType.TIMESTAMP)
-				 .setParameter("older", older, TemporalType.TIMESTAMP)
+				 .setParameter("from", from, TemporalType.TIMESTAMP)
+				 .setParameter("to", to, TemporalType.TIMESTAMP)
 				 .setMaxResults(maxResults)
 				 .getResultList();
 	}

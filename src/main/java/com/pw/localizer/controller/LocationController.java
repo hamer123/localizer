@@ -21,7 +21,7 @@ import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.OverlayType;
 import com.pw.localizer.model.enums.Provider;
-import com.pw.localizer.model.wrapper.UserAdvanceSearch;
+import com.pw.localizer.model.query.UserAdvanceSearch;
 import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.ToggleEvent;

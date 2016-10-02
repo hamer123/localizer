@@ -11,5 +11,5 @@ import com.pw.localizer.repository.JpaRepository;
 @Local
 public interface LocationGPSRepository extends JpaRepository<LocationGPS, Long> {
 
-	List<LocationGPS> findByLoginAndDateOrderByDate(String login, Date younger, Date older, int maxResults);
+	List<LocationGPS> findByLoginAndDateOrderByDate(String login, Date from, Date to, int maxResults);
 }

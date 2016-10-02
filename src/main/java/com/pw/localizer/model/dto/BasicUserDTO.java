@@ -14,8 +14,6 @@ public class BasicUserDTO {
     protected String login;
     protected String email;
     protected String phone;
-    protected Avatar avatar;
-    protected UserLastLocationsDTO userLastLocationsDTO;
 
     public static BasicUserDTO convertToBasicUserDTO(User user){
         BasicUserDTO basicUserDTO = new BasicUserDTO();
@@ -23,9 +21,16 @@ public class BasicUserDTO {
         basicUserDTO.login = user.getLogin();
         basicUserDTO.email = user.getEmail();
         basicUserDTO.phone = user.getPhone();
-        basicUserDTO.avatar = user.getAvatar();
-        basicUserDTO.userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
         return basicUserDTO;
+    }
+
+    public static User convertToUser(BasicUserDTO basicUserDTO){
+        User user = new User();
+        user.setId(basicUserDTO.getId());
+        user.setLogin(basicUserDTO.getLogin());
+        user.setEmail(basicUserDTO.getEmail());
+        user.setPhone(basicUserDTO.getPhone());
+        return user;
     }
 
     public long getId() {
@@ -60,19 +65,4 @@ public class BasicUserDTO {
         this.phone = phone;
     }
 
-    public Avatar getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
-    }
-
-    public UserLastLocationsDTO getUserLastLocationsDTO() {
-        return userLastLocationsDTO;
-    }
-
-    public void setUserLastLocationsDTO(UserLastLocationsDTO userLastLocationsDTO) {
-        this.userLastLocationsDTO = userLastLocationsDTO;
-    }
 }

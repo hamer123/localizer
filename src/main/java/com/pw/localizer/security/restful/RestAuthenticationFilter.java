@@ -1,8 +1,6 @@
 package com.pw.localizer.security.restful;
 
-
 import com.pw.localizer.model.session.RestSession;
-import com.pw.localizer.restful.resource.RestAttribute;
 import com.pw.localizer.singleton.RestSessionManager;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import javax.annotation.Priority;
@@ -17,7 +15,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-
 
 @Provider
 @Secured
@@ -40,7 +37,7 @@ public class RestAuthenticationFilter implements ContainerRequestFilter{
 		if(restSession == null){
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Invalid token").build());
 		} else {
-			request.setAttribute(RestAttribute.REST_SESSION, restSession);
+			request.setAttribute("rest_session", restSession);
 			ResteasyProviderFactory factory = ResteasyProviderFactory.getInstance();
 			factory.pushContext(RestSession.class, restSession);
 		}
