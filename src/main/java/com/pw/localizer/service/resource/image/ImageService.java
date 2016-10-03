@@ -8,6 +8,4 @@ import java.io.InputStream;
 import javax.ejb.Local;
 
 @Local
-public interface ImageService extends ResourceService<Avatar, InputStream> {
-	byte[] content(String uuid);
-}
+public interface ImageService extends ResourceService<Avatar, InputStream> {}

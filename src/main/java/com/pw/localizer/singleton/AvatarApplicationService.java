@@ -1,7 +1,8 @@
 package com.pw.localizer.singleton;
 
+import com.pw.localizer.repository.resource.image.AvatarDao;
+import com.pw.localizer.repository.resource.image.AvatarDaoImp;
 import com.pw.localizer.model.entity.Avatar;
-import com.pw.localizer.service.resource.image.ImageService;
 import org.primefaces.model.StreamedContent;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -15,13 +16,13 @@ import javax.inject.Named;
 @ApplicationScoped
 public class AvatarApplicationService {
     @Inject
-    private ImageService avatarService;
+    private AvatarDao avatarDao;
 
     public StreamedContent streamedContent(Avatar avatar){
         return null;
     }
 
     public byte[] content(String uuid){
-        return avatarService.content(uuid);
+        return avatarDao.content(uuid);
     }
 }

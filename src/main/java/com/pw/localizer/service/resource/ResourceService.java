@@ -16,5 +16,4 @@ public interface ResourceService<UUID, ResourceType> {
     void create(UUID uuid, ResourceType resourceType) throws IOException;
     void update(UUID uuid, ResourceType resourceType) throws IOException;
     void remove(UUID uuid);
-    ResourceType find(UUID uuid) throws FileNotFoundException;
 }

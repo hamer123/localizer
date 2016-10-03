@@ -14,6 +14,25 @@ public class LocationNetworkDTO extends LocationDTO {
     private LocalizerService localizerService;
 
     public static LocationNetworkDTO convertToLocationNetworkDTO(LocationNetwork locationNetwork){
-        return null;
+        locationNetwork = DTOUtilitis.convertHibernateProxyToNull(locationNetwork);
+        LocationNetworkDTO locationNetworkDTO = new LocationNetworkDTO();
+        locationNetworkDTO.cellInfoMobile = locationNetwork.getCellInfoMobile();
+        locationNetworkDTO.wifiInfo = locationNetwork.getWifiInfo();
+        locationNetworkDTO.localizerService = locationNetwork.getLocalizerService();
+        locationNetworkDTO.user = BasicUserDTO.convertToBasicUserDTO(locationNetwork.getUser());
+        locationNetworkDTO.id = locationNetwork.getId();
+        locationNetworkDTO.latitude = locationNetwork.getLatitude();
+        locationNetworkDTO.longitude = locationNetwork.getLongitude();
+        locationNetworkDTO.date = locationNetwork.getDate();
+        locationNetworkDTO.providerType = locationNetwork.getProviderType();
+        locationNetworkDTO.address = locationNetwork.getAddress();
+        locationNetworkDTO.accuracy = locationNetwork.getAccuracy();
+        return locationNetworkDTO;
     }
+
+    public static LocationNetwork convertToLocationNetwork(LocationNetworkDTO locationNetworkDTO){
+        LocationNetwork locationNetwork = new LocationNetwork();
+        return locationNetwork;
+    }
+
 }
