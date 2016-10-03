@@ -24,7 +24,6 @@ import java.io.Serializable;
 						 + "ORDER BY l.date DESC")
 })
 @Entity
-//@PrimaryKeyJoinColumn(referencedColumnName = "location_id", name = "location_network_id")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LocationNetwork extends Location implements Serializable{

@@ -1,5 +1,10 @@
 package com.pw.localizer.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.pw.localizer.model.dto.LocationGPSDTO;
+import com.pw.localizer.model.dto.LocationNetworkDTO;
+
 import java.io.Serializable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,8 +19,11 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@XmlSeeAlso({CellInfoLte.class, CellInfoGSM.class})
-@XmlTransient
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.WRAPPER_OBJECT, property="type")
+@JsonSubTypes({
+		@JsonSubTypes.Type(name = "gsm", value = CellInfoGSM.class),
+		@JsonSubTypes.Type(name = "lte", value = CellInfoLte.class)
+})
 public abstract class CellInfoMobile implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
