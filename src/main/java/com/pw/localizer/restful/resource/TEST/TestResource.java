@@ -1,11 +1,14 @@
 package com.pw.localizer.restful.resource.TEST;
 
+import com.pw.localizer.model.dto.AreaDTO;
 import com.pw.localizer.model.dto.BasicUserDTO;
 import com.pw.localizer.model.dto.DTOUtilitis;
 import com.pw.localizer.model.dto.LocationGPSDTO;
+import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.query.LocationSearch;
+import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.repository.user.UserRepository;
@@ -34,6 +37,8 @@ public class TestResource {
     private AreaService areaService;
     @Inject
     private LocationGPSRepository locationGPSRepository;
+    @Inject
+    private AreaRepository areaRepository;
 
     @Path("{id}")
     @GET
@@ -58,7 +63,8 @@ public class TestResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTwo(){
         User user = userRepository.findById(2L);
-        DTOUtilitis.convertHibernateProxyToNull(user);
+        DTOUtilitis dtoUtilitis = new DTOUtilitis();
+        dtoUtilitis.convertHibernateProxyToNull(user);
         return Response.ok(user).build();
     }
 
@@ -88,6 +94,17 @@ public class TestResource {
         locationSearch.setLogin("hamer123");
 
         return Response.ok(locationSearch).build();
+    }
+
+    @GET
+    @Path("/test6")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSix(){
+        Area area = areaRepository.findById(7L);
+//        DTOUtilitis dtoUtilitis = new DTOUtilitis();
+//        area = dtoUtilitis.convertHibernateProxyToNull(area);
+
+        return Response.ok(AreaDTO.convertToDTO(area)).build();
     }
 
 }

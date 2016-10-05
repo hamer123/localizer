@@ -1,6 +1,8 @@
 package com.pw.localizer.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pw.localizer.jackson.serializer.HibernateProxySerializer;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.User;
@@ -15,6 +17,7 @@ import java.util.Map;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonSerialize(using = HibernateProxySerializer.class)
 public class AreaDTO {
     private long id;
     private BasicUserDTO target;
@@ -26,7 +29,8 @@ public class AreaDTO {
 
     public static AreaDTO convertToDTO(Area area){
         //lazy init converter
-       DTOUtilitis.convertHibernateProxyToNull(area);
+        DTOUtilitis dtoUtilitis = new DTOUtilitis();
+        dtoUtilitis.convertHibernateProxyToNull(area);
         AreaDTO areaDTO = new AreaDTO();
         areaDTO.id = area.getId();
         areaDTO.name = area.getName();
@@ -34,7 +38,7 @@ public class AreaDTO {
         areaDTO.color = area.getColor();
         areaDTO.points = area.getPoints();
         areaDTO.polygonFollowType = area.getAreaFollowType();
-//        area.getTarget().setAreas(new HashSet());
+        area.getTarget().setAreas(new HashSet());
         areaDTO.target = BasicUserDTO.convertToBasicUserDTO(area.getTarget());
         return areaDTO;
     }

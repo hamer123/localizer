@@ -40,6 +40,12 @@
             <version>3.0.19.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+
         <!-- jackson provider for resteasy -->
         <!--
         <dependency>

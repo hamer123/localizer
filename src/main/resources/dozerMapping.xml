@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping map-null="true" type="bi-directional" >
+        <class-a>com.pw.localizer.model.entity.User</class-a>
+        <class-b>com.pw.localizer.model.dto.BasicUserDTO</class-b>
+        <field>
+            <a></a>
+            <b></b>
+        </field>
+    </mapping>
+
+
+
+</mappings>

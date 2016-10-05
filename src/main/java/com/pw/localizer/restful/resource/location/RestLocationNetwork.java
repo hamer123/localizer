@@ -13,11 +13,6 @@ import javax.ws.rs.core.UriInfo;
 import com.pw.localizer.inceptor.ErrorLog;
 import com.pw.localizer.model.dto.LocationNetworkDTO;
 import com.pw.localizer.security.restful.Secured;
-import org.jboss.logging.Logger;
-
-import com.pw.localizer.model.session.RestSession;
-import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.service.location.LocationService;
 import com.pw.localizer.inceptor.LoggingInterceptor;
@@ -43,7 +38,7 @@ public class RestLocationNetwork {
 
 	@ErrorLog
 	@GET
-	@Produces( value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} )
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response findLocation(@NotNull @QueryParam("login") String login,
 								 @NotNull @QueryParam("fromDate") String fromDate,
 								 @NotNull @QueryParam("toDate") String toDate,

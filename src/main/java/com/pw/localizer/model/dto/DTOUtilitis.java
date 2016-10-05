@@ -1,9 +1,12 @@
 package com.pw.localizer.model.dto;
 
 import org.hibernate.LazyInitializationException;
+import org.hibernate.collection.internal.AbstractPersistentCollection;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.proxy.HibernateProxy;
 
+import javax.persistence.Entity;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
@@ -12,7 +15,7 @@ import java.util.Collection;
  */
 public class DTOUtilitis {
 
-    public static <T> T convertHibernateProxyToNull(T obj){
+    public static  <T> T convertHibernateProxyToNull(T obj){
         Field[] fields = obj.getClass().getDeclaredFields();
         for(Field field : fields){
             try {
@@ -25,12 +28,24 @@ public class DTOUtilitis {
                         Class<?>classType = objField.getClass();
                         //do something
                         objField.hashCode();
+                        System.out.println(objField.getClass().getDeclaredFields().length);
 
-                        if(objField instanceof Collection ||
-                           objField instanceof org.hibernate.collection.internal.AbstractPersistentCollection);//TODO
-                            //convertCollectionHibernateProxyToNull(objField);
-                        else ;
-//                            convertHibernateProxyToNull(objField);
+                        for(Annotation annotation : objField.getClass().getAnnotations()) {
+                            System.out.println(annotation);
+                            if(annotation instanceof Entity){
+                                convertHibernateProxyToNull(objField);
+                                System.out.println("!!!!!!!!!!!!!!!!!");
+                            }
+                        }
+
+                        if(objField instanceof Collection){
+                            Collection collection = (Collection) objField;
+                            convertCollectionHibernateProxyToNull(collection);
+                        } else if(objField instanceof AbstractPersistentCollection){
+                            AbstractPersistentCollection collection = (AbstractPersistentCollection)objField;
+//                            convertCollectionHibernateProxyToNull(collection);
+                            System.out.println("WHAT TO DO?");
+                        }
 
                     }
                 }catch (LazyInitializationException e){
@@ -49,10 +64,17 @@ public class DTOUtilitis {
         return obj;
     }
 
-    public static <U,T extends Collection<U>> T convertCollectionHibernateProxyToNull(T collection){
+    private static <U,T extends Collection<U>> T convertCollectionHibernateProxyToNull(T collection){
         for(U obj : collection){
-            DTOUtilitis.convertHibernateProxyToNull(obj);
+            convertHibernateProxyToNull(obj);
         }
         return collection;
     }
+
+//    private <T extends AbstractPersistentCollection> T convertCollectionHibernateProxyToNull(T abstractPersistentCollection){
+//        for(Object obj : abstractPersistentCollection){
+//            convertHibernateProxyToNull(obj);
+//        }
+//        return abstractPersistentCollection;
+//    }
 }
