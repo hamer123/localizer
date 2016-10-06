@@ -15,24 +15,6 @@ public class BasicUserDTO {
     protected String email;
     protected String phone;
 
-    public static BasicUserDTO convertToBasicUserDTO(User user){
-        BasicUserDTO basicUserDTO = new BasicUserDTO();
-        basicUserDTO.id = user.getId();
-        basicUserDTO.login = user.getLogin();
-        basicUserDTO.email = user.getEmail();
-        basicUserDTO.phone = user.getPhone();
-        return basicUserDTO;
-    }
-
-    public static User convertToUser(BasicUserDTO basicUserDTO){
-        User user = new User();
-        user.setId(basicUserDTO.getId());
-        user.setLogin(basicUserDTO.getLogin());
-        user.setEmail(basicUserDTO.getEmail());
-        user.setPhone(basicUserDTO.getPhone());
-        return user;
-    }
-
     public long getId() {
         return id;
     }

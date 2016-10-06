@@ -28,19 +28,6 @@ public class LocationDTO {
     protected Address address;
     protected double accuracy;
 
-    public static LocationDTO converToLocationDTO(Location location){
-        LocationDTO locationDTO = new LocationDTO();
-        locationDTO.user = BasicUserDTO.convertToBasicUserDTO(location.getUser());
-        locationDTO.id = location.getId();
-        locationDTO.latitude = location.getLatitude();
-        locationDTO.longitude = location.getLongitude();
-        locationDTO.date = location.getDate();
-        locationDTO.providerType = location.getProviderType();
-        locationDTO.address = location.getAddress();
-        locationDTO.accuracy = location.getAccuracy();
-        return locationDTO;
-    }
-
     public Long getId() {
         return id;
     }

@@ -40,7 +40,7 @@ public class DTOUtilitis {
 
                         if(objField instanceof Collection){
                             Collection collection = (Collection) objField;
-                            convertCollectionHibernateProxyToNull(collection);
+//                            convertCollectionHibernateProxyToNull(collection);
                         } else if(objField instanceof AbstractPersistentCollection){
                             AbstractPersistentCollection collection = (AbstractPersistentCollection)objField;
 //                            convertCollectionHibernateProxyToNull(collection);

@@ -11,53 +11,31 @@ import com.pw.localizer.model.entity.User;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserLastLocationsDTO {
-    private long userId;
-    private LocationNetwork lastLocationNetworkNasz;
-    private LocationNetwork lastLocationNetworkObcy;
-    private LocationGPS lastLocationGps;
+    private LocationNetworkDTO lastLocationNetworkNasz;
+    private LocationNetworkDTO lastLocationNetworkObcy;
+    private LocationGPSDTO lastLocationGps;
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public LocationNetwork getLastLocationNetworkNasz() {
+    public LocationNetworkDTO getLastLocationNetworkNasz() {
         return lastLocationNetworkNasz;
     }
 
-    public void setLastLocationNetworkNasz(LocationNetwork lastLocationNetworkNasz) {
+    public void setLastLocationNetworkNasz(LocationNetworkDTO lastLocationNetworkNasz) {
         this.lastLocationNetworkNasz = lastLocationNetworkNasz;
     }
 
-    public LocationNetwork getLastLocationNetworkObcy() {
+    public LocationNetworkDTO getLastLocationNetworkObcy() {
         return lastLocationNetworkObcy;
     }
 
-    public void setLastLocationNetworkObcy(LocationNetwork lastLocationNetworkObcy) {
+    public void setLastLocationNetworkObcy(LocationNetworkDTO lastLocationNetworkObcy) {
         this.lastLocationNetworkObcy = lastLocationNetworkObcy;
     }
 
-    public LocationGPS getLastLocationGps() {
+    public LocationGPSDTO getLastLocationGps() {
         return lastLocationGps;
     }
 
-    public void setLastLocationGps(LocationGPS lastLocationGps) {
+    public void setLastLocationGps(LocationGPSDTO lastLocationGps) {
         this.lastLocationGps = lastLocationGps;
-    }
-
-    public static User convertToEntity(){
-        return null;
-    }
-
-
-    public static UserLastLocationsDTO convertToDto(User user){
-        UserLastLocationsDTO userLastLocationsDTO = new UserLastLocationsDTO();
-        userLastLocationsDTO.setLastLocationGps(user.getLastLocationGPS());
-        userLastLocationsDTO.setLastLocationNetworkNasz(user.getLastLocationNetworkNaszaUsluga());
-        userLastLocationsDTO.setLastLocationNetworkObcy(user.getLastLocationNetworObcaUsluga());
-        return userLastLocationsDTO;
     }
 }

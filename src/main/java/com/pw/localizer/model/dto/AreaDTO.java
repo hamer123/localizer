@@ -27,22 +27,6 @@ public class AreaDTO {
     private AreaFollow polygonFollowType;
     private List<AreaPoint> points;
 
-    public static AreaDTO convertToDTO(Area area){
-        //lazy init converter
-        DTOUtilitis dtoUtilitis = new DTOUtilitis();
-        dtoUtilitis.convertHibernateProxyToNull(area);
-        AreaDTO areaDTO = new AreaDTO();
-        areaDTO.id = area.getId();
-        areaDTO.name = area.getName();
-        areaDTO.active = area.isActive();
-        areaDTO.color = area.getColor();
-        areaDTO.points = area.getPoints();
-        areaDTO.polygonFollowType = area.getAreaFollowType();
-        area.getTarget().setAreas(new HashSet());
-        areaDTO.target = BasicUserDTO.convertToBasicUserDTO(area.getTarget());
-        return areaDTO;
-    }
-
     public long getId() {
         return id;
     }

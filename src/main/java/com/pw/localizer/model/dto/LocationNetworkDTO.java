@@ -13,26 +13,27 @@ public class LocationNetworkDTO extends LocationDTO {
     private WifiInfo wifiInfo;
     private LocalizerService localizerService;
 
-    public static LocationNetworkDTO convertToLocationNetworkDTO(LocationNetwork locationNetwork){
-        locationNetwork = DTOUtilitis.convertHibernateProxyToNull(locationNetwork);
-        LocationNetworkDTO locationNetworkDTO = new LocationNetworkDTO();
-        locationNetworkDTO.cellInfoMobile = locationNetwork.getCellInfoMobile();
-        locationNetworkDTO.wifiInfo = locationNetwork.getWifiInfo();
-        locationNetworkDTO.localizerService = locationNetwork.getLocalizerService();
-        locationNetworkDTO.user = BasicUserDTO.convertToBasicUserDTO(locationNetwork.getUser());
-        locationNetworkDTO.id = locationNetwork.getId();
-        locationNetworkDTO.latitude = locationNetwork.getLatitude();
-        locationNetworkDTO.longitude = locationNetwork.getLongitude();
-        locationNetworkDTO.date = locationNetwork.getDate();
-        locationNetworkDTO.providerType = locationNetwork.getProviderType();
-        locationNetworkDTO.address = locationNetwork.getAddress();
-        locationNetworkDTO.accuracy = locationNetwork.getAccuracy();
-        return locationNetworkDTO;
+    public CellInfoMobile getCellInfoMobile() {
+        return cellInfoMobile;
     }
 
-    public static LocationNetwork convertToLocationNetwork(LocationNetworkDTO locationNetworkDTO){
-        LocationNetwork locationNetwork = new LocationNetwork();
-        return locationNetwork;
+    public void setCellInfoMobile(CellInfoMobile cellInfoMobile) {
+        this.cellInfoMobile = cellInfoMobile;
     }
 
+    public WifiInfo getWifiInfo() {
+        return wifiInfo;
+    }
+
+    public void setWifiInfo(WifiInfo wifiInfo) {
+        this.wifiInfo = wifiInfo;
+    }
+
+    public LocalizerService getLocalizerService() {
+        return localizerService;
+    }
+
+    public void setLocalizerService(LocalizerService localizerService) {
+        this.localizerService = localizerService;
+    }
 }

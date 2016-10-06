@@ -26,35 +26,35 @@ public class UserRestController{
     @Inject
     private UserService userService;
 
-    @GET
-    @Path("{id}/last-locations")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getLastLocations(@PathParam("id")long id){
-        User user = userRepository.findById(id);
-        if(user == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        UserLastLocationsDTO userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
-        return Response.ok(userLastLocationsDTO).build();
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("id")long id){
-        User user = userRepository.findById(id);
-        if(user == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(UserLastLocationsDTO.convertToDto(user)).build();
-    }
-
-    @PATCH
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePartialUser(@Valid User user){
-        user = userService.updatePartial(user);
-        return Response.ok(UserLastLocationsDTO.convertToDto(user)).build();
-    }
+//    @GET
+//    @Path("{id}/last-locations")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getLastLocations(@PathParam("id")long id){
+//        User user = userRepository.findById(id);
+//        if(user == null)
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        UserLastLocationsDTO userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
+//        return Response.ok(userLastLocationsDTO).build();
+//    }
+//
+//    @GET
+//    @Path("{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getUser(@PathParam("id")long id){
+//        User user = userRepository.findById(id);
+//        if(user == null)
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        return Response.ok(UserLastLocationsDTO.convertToDto(user)).build();
+//    }
+//
+//    @PATCH
+//    @Path("{id}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response updatePartialUser(@Valid User user){
+//        user = userService.updatePartial(user);
+//        return Response.ok(UserLastLocationsDTO.convertToDto(user)).build();
+//    }
 
     @GET
     @Path("login/search/findByLoginLike")

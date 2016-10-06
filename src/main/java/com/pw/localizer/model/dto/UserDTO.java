@@ -3,8 +3,6 @@ package com.pw.localizer.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pw.localizer.model.entity.*;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,32 +10,16 @@ import java.util.Set;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO extends BasicUserDTO {
-    private Set<AreaDTO> areaDTO;
+public class UserDTO {
+    private long id;
+    private String login;
+    private String email;
+    private String phone;
+    private Set<AreaDTO> areas;
     private Set<ContactInvite> contactInvite;
     private UserSetting userSetting;
-    private UserLastLocationsDTO userLastLocationsDTO;
+    private UserLastLocationsDTO userLastLocationsDTO = new UserLastLocationsDTO();
     private Avatar avatar;
-
-    public static UserDTO convertToDto(User user){
-        UserDTO userDTO = new UserDTO();
-        userDTO.id = user.getId();
-        userDTO.login = user.getLogin();
-        userDTO.email = user.getEmail();
-        userDTO.phone = user.getPhone();
-        userDTO.userSetting = user.getUserSetting();
-        userDTO.userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
-        userDTO.avatar = user.getAvatar();
-        userDTO.userLastLocationsDTO = UserLastLocationsDTO.convertToDto(user);
-
-        Set<AreaDTO>areaDTOs = new HashSet<>();
-        for(Area area : user.getAreas())
-            areaDTOs.add(AreaDTO.convertToDTO(area));
-        userDTO.areaDTO = areaDTOs;
-
-        return userDTO;
-    }
-
 
     public long getId() {
         return id;
@@ -87,12 +69,12 @@ public class UserDTO extends BasicUserDTO {
         this.userLastLocationsDTO = userLastLocationsDTO;
     }
 
-    public Set<AreaDTO> getAreaDTO() {
-        return areaDTO;
+    public Set<AreaDTO> getAreas() {
+        return areas;
     }
 
-    public void setAreaDTO(Set<AreaDTO> areaDTO) {
-        this.areaDTO = areaDTO;
+    public void setAreas(Set<AreaDTO> areas) {
+        this.areas = areas;
     }
 
     public Set<ContactInvite> getContactInvite() {

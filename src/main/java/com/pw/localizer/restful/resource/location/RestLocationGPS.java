@@ -15,6 +15,7 @@ import com.pw.localizer.security.restful.Secured;
 import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.service.location.LocationService;
+import org.dozer.Mapper;
 import org.jboss.resteasy.links.AddLinks;
 import org.jboss.resteasy.links.LinkResource;
 import org.jboss.resteasy.specimpl.LinkImpl;
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Secured
 @Path("/location/gps")
@@ -33,22 +35,33 @@ public class RestLocationGPS {
 	private LocationService locationService;
 	@Inject
 	private LocationGPSRepository locationGPSRepository;
+	@Inject
+	private Mapper mapper;
+
+	@GET
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLocation(@PathParam("id")Long id){
+		LocationGPS locationGPS = locationGPSRepository.findById(id);
+		return Response.ok(mapper.map(locationGPS,LocationGPSDTO.class)).build();
+	}
+
 
 	@ErrorLog
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createLocation(LocationGPSDTO locationGPSDTO, @Context UriInfo uri){
-		LocationGPS locationGPS = LocationGPSDTO.convertToLocationGps(locationGPSDTO);
+		LocationGPS locationGPS = mapper.map(locationGPSDTO,LocationGPS.class);
 		locationGPS = locationService.createLocationGPS(locationGPS);
 		UriBuilder uriBuilder = uri.getAbsolutePathBuilder();
 		URI sourceURI = uriBuilder.path(String.valueOf(locationGPS.getId())).build();
-		Link self = Link.fromUri(sourceURI)
-				.rel("self")
-				.title("self")
-				.type(MediaType.APPLICATION_JSON).build();
+//		Link self = Link.fromUri(sourceURI)
+//				.rel("self")
+//				.title("self")
+//				.type(MediaType.APPLICATION_JSON).build();
 		return Response.status(Response.Status.CREATED)
-				.entity(self)
+//				.entity(mapper.map(locationGPS,LocationGPSDTO.class))
 				.location(sourceURI)
 				.build();
 	}
@@ -66,8 +79,9 @@ public class RestLocationGPS {
 			Date from = sdf.parse(fromDate);
 			Date to = sdf.parse(toDate);
 			List<LocationGPS>locationGpsList = locationGPSRepository.findByLoginAndDateOrderByDate(login,from,to,maxRecords);
-			List<LocationGPSDTO>locationGPSDTOList = new ArrayList();
-			for(LocationGPS locationGPS : locationGpsList) locationGPSDTOList.add(LocationGPSDTO.convertToLocationGpsDTO(locationGPS));
+			List<LocationGPSDTO>locationGPSDTOList = locationGpsList.stream()
+					.map(l -> mapper.map(l,LocationGPSDTO.class))
+					.collect(Collectors.toList());
 			return Response.ok(locationGPSDTOList).build();
 		} catch (ParseException e) {
 			throw new WebApplicationException(e, Response.status(Response.Status.BAD_REQUEST).entity("Not supported data format, allowed format is dd-MM-yyyy hh:mm:ss ").build());

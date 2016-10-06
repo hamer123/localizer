@@ -13,6 +13,8 @@ import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.service.area.AreaService;
+import org.dozer.DozerBeanMapperSingletonWrapper;
+import org.dozer.Mapper;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -68,21 +70,21 @@ public class TestResource {
         return Response.ok(user).build();
     }
 
-    @GET
-    @Path("/test3")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getThree(){
-        User user = userRepository.findById(2L);
-        BasicUserDTO basicUserDTO = BasicUserDTO.convertToBasicUserDTO(user);
-        return Response.ok(basicUserDTO).build();
-    }
+//    @GET
+//    @Path("/test3")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getThree(){
+//        User user = userRepository.findById(2L);
+//        BasicUserDTO basicUserDTO = BasicUserDTO.convertToBasicUserDTO(user);
+//        return Response.ok(basicUserDTO).build();
+//    }
 
-    @GET
-    @Path("/test4")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getFour(){
-        return Response.ok(LocationGPSDTO.convertToLocationGpsDTO(locationGPSRepository.findById(67L))).build();
-    }
+//    @GET
+//    @Path("/test4")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getFour(){
+//        return Response.ok(LocationGPSDTO.convertToLocationGpsDTO(locationGPSRepository.findById(67L))).build();
+//    }
 
     @GET
     @Path("/test5")
@@ -104,7 +106,8 @@ public class TestResource {
 //        DTOUtilitis dtoUtilitis = new DTOUtilitis();
 //        area = dtoUtilitis.convertHibernateProxyToNull(area);
 
-        return Response.ok(AreaDTO.convertToDTO(area)).build();
+        Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
+        return Response.ok(mapper.map(area,AreaDTO.class)).build();
     }
 
 }

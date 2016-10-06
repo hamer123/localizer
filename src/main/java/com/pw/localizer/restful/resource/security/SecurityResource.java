@@ -6,6 +6,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.pw.localizer.model.dto.DTOUtilitis;
 import com.pw.localizer.model.dto.UserDTO;
 import com.pw.localizer.model.security.Credentials;
 import com.pw.localizer.model.session.RestSession;
@@ -14,6 +15,7 @@ import com.pw.localizer.security.restful.AuthenticateException;
 import com.pw.localizer.security.restful.AuthenticateService;
 import com.pw.localizer.security.restful.DatabaseAuthenticat;
 import com.pw.localizer.security.restful.Secured;
+import org.dozer.Mapper;
 import org.jboss.logging.Logger;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.singleton.RestSessionManager;
@@ -27,6 +29,8 @@ public class SecurityResource {
 	@Inject
 	private RestSessionManager restSessionManager;
 	@Inject
+	private Mapper mapper;
+	@Inject
 	private Logger logger;
 	
 	@POST
@@ -38,8 +42,11 @@ public class SecurityResource {
 			if(authenticateService.authenticate(credentials.getLogin(), credentials.getPassword())){
 				User user = userRepository.findByLoginEagerFetchAll(credentials.getLogin());
 				RestSession restSession = restSessionManager.addSession(user);
+				UserDTO userDTO = mapper.map(user,UserDTO.class, "full");
+//				user = DTOUtilitis.convertHibernateProxyToNull(user);
 				return Response.ok()
-						.entity(UserDTO.convertToDto(user))
+//						.entity()
+						.entity(userDTO)
 						.header("X-Auth-Token",restSession.getToken())
 						.build();
 			} else {
