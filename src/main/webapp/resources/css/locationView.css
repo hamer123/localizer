@@ -11,12 +11,12 @@
 	margin-right: 10px;
 }
 
-.googleMapMin{
+.gmap_min_h {
 	width:100%;
 	height:500px;
 }
 
-.googleMapMax{
+.gmap_max_h {
 	width:100%;
-	height:800px;
+	height:900px;
 }

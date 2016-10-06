@@ -1,69 +1,62 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
+<ui:composition template="/WEB-INF/views/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
 
-    <h:head>
-      <script src="https://maps.googleapis.com/maps/api/js?key=#{msg['google.api.key']}"/>
-      <h:outputStylesheet library="css" name="locationView.css"/>
-      <h:outputStylesheet library="css" name="default.css"/>
-      <title>Lokacje</title>
-    </h:head>  
-      
-    <h:body styleClass="body"> 
-      <ui:insert name="menu" >
-	    <ui:include src="/WEB-INF/views/menu_templete.xhtml" />
-	  </ui:insert>
-	  
-	  <p:growl id="growl"/>
-	  
-	  <h:form id="poll">
-        <p:poll interval="60" listener="#{location.poll}"
-                update=":#{p:component('gmap')} :#{p:component('usersOnline')} :#{p:component('daneUser')} :#{p:component('growl')}" />
-      </h:form>
+  <ui:define name="head">
+    <title>#{msg['locations']}</title>
+    <h:outputStylesheet library="css" name="locationView.css"/>
+    <h:outputScript library="js" name="locations.js"/>
+  </ui:define>
 
+  <ui:define name="content">
 
-      <h:form id="gmap-form">
-        <p:outputPanel id="gmap_follow" style="padding-bottom: 0.5%">
-          <p:gmap id="gmap" center="#{userGoogleMap.center}" zoom="#{userGoogleMap.zoom}"
-                  type="#{userGoogleMap.googleMapType}" streetView="#{userGoogleMap.streetVisible}"
-                  model="#{userGoogleMap.googleMapModelOutput}"
-                  styleClass="#{location.googleMapStyle}">
-            <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
-            <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}"/>
-            <ui:insert>
-              <ui:include src="/WEB-INF/views/location/gmapInfoWindows.xhtml"/>
-            </ui:insert>
-          </p:gmap>
-        </p:outputPanel>
-      </h:form>
+    <h:form id="poll">
+      <p:poll interval="60" listener="#{location.poll}" oncomplete="onPollComplete()"
+              update=":#{p:component('gmap')} :#{p:component('usersOnline')} :#{p:component('daneUser')} :#{p:component('growl')}" />
+    </h:form>
 
-      <p:panel id="mainPanel" header="#{msg['panel.followed.users.and.data']}" toggleable="true" toggleSpeed="500" widgetVar="panel">
-      <p:ajax event="toggle" listener="#{location.onToggleMainPanel}" update=":#{p:component('gmap')}"/>
+    <h:form id="gmap-form">
+      <p:outputPanel id="gmap_follow" style="padding-bottom: 0.5%">
+        <p:gmap id="gmap" center="#{userGoogleMap.center}" zoom="#{userGoogleMap.zoom}"
+                type="#{userGoogleMap.googleMapType}" streetView="#{userGoogleMap.streetVisible}"
+                model="#{userGoogleMap.googleMapModelOutput}" widgetVar="gmap"
+                styleClass="gmap_min_h">
+          <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
+          <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}"/>
+          <ui:insert>
+            <ui:include src="/WEB-INF/views/location/gmapInfoWindows.xhtml"/>
+          </ui:insert>
+        </p:gmap>
+      </p:outputPanel>
+    </h:form>
+
+    <p:panel id="mainPanel" header="#{msg['panel.followed.users.and.data']}" toggleable="true" toggleSpeed="500" widgetVar="panel">
+      <p:ajax event="toggle" update=":#{p:component('gmap')}" oncomplete="changeGMapHeight()"/>
       <p:tabView>
         <p:tab title="#{msg['followed.users']}">
           <ui:insert name="lokacje">
-	         <ui:include src="/WEB-INF/views/location/followUsers.xhtml" />
-	      </ui:insert> 
+            <ui:include src="/WEB-INF/views/location/followUsers.xhtml" />
+          </ui:insert>
         </p:tab>
         <p:tab title="#{msg['settings']}">
           <ui:insert name="ustawienia" >
-	         <ui:include src="/WEB-INF/views/location/settings.xhtml" />
-	      </ui:insert> 
+            <ui:include src="/WEB-INF/views/location/settings.xhtml" />
+          </ui:insert>
         </p:tab>
       </p:tabView>
-      </p:panel>
+    </p:panel>
 
-      <ui:insert>
-        <ui:include src="/WEB-INF/views/location/userDataDialog.xhtml" />
-        <ui:include src="/WEB-INF/views/location/userViewSettingDialog.xhtml"/>
-        <ui:include src="/WEB-INF/views/location/userLastLocationDialog.xhtml"/>
-        <ui:include src="/WEB-INF/views/location/userAdvanceSearch.xhtml"/>
-      </ui:insert>
-      <lokalizator:detailsDialog location="#{location.locationToDisplayDetails}"/>
-      
-    </h:body>  
-</html>
+    <ui:insert>
+      <ui:include src="/WEB-INF/views/location/userDataDialog.xhtml" />
+      <ui:include src="/WEB-INF/views/location/userViewSettingDialog.xhtml"/>
+      <ui:include src="/WEB-INF/views/location/userLastLocationDialog.xhtml"/>
+      <ui:include src="/WEB-INF/views/location/userAdvanceSearch.xhtml"/>
+    </ui:insert>
+    <lokalizator:detailsDialog location="#{location.locationToDisplayDetails}"/>
 
+  </ui:define>
+
+</ui:composition>

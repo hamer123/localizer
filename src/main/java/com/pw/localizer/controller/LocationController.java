@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 
 import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
@@ -47,8 +48,6 @@ import com.pw.localizer.singleton.RestSessionManager;
 @Named(value="location")
 public class LocationController implements Serializable{
 	private static final long serialVersionUID = -5534429129019431383L;
-	static final String GOOGLE_MAP_STYLE_MIN_WIDTH = "googleMapMin";
-	static final String GOOGLE_MAP_STYLE_MAX_WIDTH = "googleMapMax";
 
 	@Inject @DialogGMap
 	private DialogUserLocationGoogleMapController googleMapSingleUserDialogController;
@@ -78,9 +77,6 @@ public class LocationController implements Serializable{
 	private CircleFactory circleFactory;
 	@Inject
 	private Logger logger;
-
-	/** Style CSS for google map */
-	private String googleMapStyle = GOOGLE_MAP_STYLE_MIN_WIDTH;
 
 	/** Provided login */
 	private String login;
@@ -128,7 +124,7 @@ public class LocationController implements Serializable{
 	private UserAdvanceSearch userAdvanceSearch = new UserAdvanceSearch();
 
 	/** Founded users by advance search */
-	private List<User> advanceSearchFoundedUsers;
+	private List<User> advanceSearchFoundedUsers = new ArrayList();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
@@ -260,14 +256,7 @@ public class LocationController implements Serializable{
 	public void onShowUserLastLocations(User user){
 		selectUserForLastLocations = user;
 	}
-	
-	public void onToggleMainPanel(ToggleEvent event){
-		if(googleMapStyle.equals(GOOGLE_MAP_STYLE_MIN_WIDTH))
-			googleMapStyle = GOOGLE_MAP_STYLE_MAX_WIDTH;
-		else
-			googleMapStyle = GOOGLE_MAP_STYLE_MIN_WIDTH;
-	}
-	
+
 	public void onShowPolygonLocation(Area area){
 		GoogleMapComponentVisible googleMapComponentVisible = userGoogleMapController.getGoogleMapComponentVisible();
 		if(area.isActive() && !googleMapComponentVisible.isActivePolygon() || !area.isActive() && !googleMapComponentVisible.isNotActivePolygon()){
@@ -279,11 +268,15 @@ public class LocationController implements Serializable{
 		}
 	}
 	
-	public void onSetLocationToDipslayDetails(Location location){
+	public void onSetLocationToDisplayDetails(Location location){
 		if(location instanceof LocationNetwork){
-			LocationNetwork locationNetwork = (LocationNetwork)location;
-			locationNetwork.setWifiInfo( wifiInfoRepository.findByLocationId(location.getId()) );
-			locationNetwork.setCellInfoMobile( cellInfoMobileRepository.findByLocationId(location.getId()) );
+			try{
+				LocationNetwork locationNetwork = (LocationNetwork)location;
+				locationNetwork.setWifiInfo( wifiInfoRepository.findByLocationId(location.getId()) );
+				locationNetwork.setCellInfoMobile( cellInfoMobileRepository.findByLocationId(location.getId()) );
+			} catch(NoResultException e){
+				JsfMessageBuilder.errorMessage("Nie znaleziono szczegółowych danych na temat lokacji");
+			}
 		}
 		
 		locationToDisplayDetails = location;
@@ -440,10 +433,6 @@ public class LocationController implements Serializable{
 		this.selectedFollowedUserLocation = selectedFollowedUserLocation;
 	}
 
-	public String getGoogleMapStyle() {
-		return googleMapStyle;
-	}
-
 	public boolean isShowAreaEventMessage() {
 		return showAreaEventMessage;
 	}
@@ -530,10 +519,6 @@ public class LocationController implements Serializable{
 	public void setGoogleMapSingleUserDialogController(
 			DialogUserLocationGoogleMapController googleMapSingleUserDialogController) {
 		this.googleMapSingleUserDialogController = googleMapSingleUserDialogController;
-	}
-
-	public void setGoogleMapStyle(String googleMapStyle) {
-		this.googleMapStyle = googleMapStyle;
 	}
 
 	public void setLocationToDisplayDetails(Location locationToDisplayDetails) {
