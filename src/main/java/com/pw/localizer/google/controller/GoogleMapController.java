@@ -18,7 +18,6 @@ import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
@@ -66,18 +65,6 @@ public class GoogleMapController implements Serializable{
 	public void addOverlay(List<Overlay>overlays){
 		for(Overlay overlay : overlays)
 			googleMapModel.addOverlay(overlay);
-	}
-	
-	public List<Overlay>findOverlay(OverlayIdentyfikator identyfikator){
-		return googleMapModel.findOverlay(identyfikator);
-	}
-	
-	public Overlay findSingleOverlay(OverlayIdentyfikator identyfikator){
-		return googleMapModel.findSingleOverlay(identyfikator);
-	}
-	
-	public void removeOverlay(OverlayIdentyfikator identyfikator){
-		googleMapModel.removeOverlay(identyfikator);
 	}
 	
 	public void addOverlay(Overlay overlay){

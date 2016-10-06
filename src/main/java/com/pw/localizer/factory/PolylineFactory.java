@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
+import com.pw.localizer.identyfikator.OverlayUUIDBuilder;
+import com.pw.localizer.identyfikator.OverlayUUIDBuilderLocation;
 import com.pw.localizer.jsf.utilitis.PropertiesReader;
 import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.model.enums.Provider;
@@ -37,12 +38,12 @@ public class PolylineFactory implements Serializable {
 
 	public Polyline create(List<Location>locations){
 		Polyline polyline = new Polyline();
-		polyline.setId( id(locations.get(0)) );
-		polyline.setData ( locations );
-		polyline.setPaths( path(locations) );
-		polyline.setStrokeColor( color(polyline, locations.get(0)) );
-		polyline.setStrokeOpacity( POLYLINE_STROKE_OPACITY );
-		polyline.setStrokeWeight( POLYLINE_STROKE_WEIGHT );
+		polyline.setId(id(locations.get(0)));
+		polyline.setData(locations);
+		polyline.setPaths(path(locations));
+		polyline.setStrokeColor(color(polyline, locations.get(0)));
+		polyline.setStrokeOpacity(POLYLINE_STROKE_OPACITY);
+		polyline.setStrokeWeight(POLYLINE_STROKE_WEIGHT);
 		return polyline;
 	}
 
@@ -52,9 +53,9 @@ public class PolylineFactory implements Serializable {
 		locations.add(location);
 		polyline.setId(id(location));
 		polyline.setPaths(path(locations));
-		polyline.setStrokeColor( color(polyline, location) );
-		polyline.setStrokeOpacity( POLYLINE_STROKE_OPACITY );
-		polyline.setStrokeWeight( POLYLINE_STROKE_WEIGHT );
+		polyline.setStrokeColor(color(polyline, location));
+		polyline.setStrokeOpacity(POLYLINE_STROKE_OPACITY);
+		polyline.setStrokeWeight(POLYLINE_STROKE_WEIGHT);
 		return polyline;
 	}
 
@@ -79,7 +80,7 @@ public class PolylineFactory implements Serializable {
 	}
 
 	private String id(Location location){
-		return new OverlayIdentyfikator(location, OverlayType.POLYLINE).createIdentyfikator();
+		return new OverlayUUIDBuilderLocation(location, OverlayType.POLYLINE).uuid();
 	}
 	
 	private List<LatLng> path(List<Location>locations){

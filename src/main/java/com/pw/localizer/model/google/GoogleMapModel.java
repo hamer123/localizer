@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.pw.localizer.exception.NotSingleResultException;
+import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -17,7 +18,6 @@ import org.primefaces.model.map.Polygon;
 import org.primefaces.model.map.Polyline;
 import org.primefaces.model.map.Rectangle;
 
-import com.pw.localizer.jsf.utilitis.OverlayIdentyfikator;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.OverlayType;
 
@@ -103,76 +103,7 @@ public class GoogleMapModel implements MapModel, Serializable{
 		}
 		return null;
 	}
-	
-	public Overlay findSingleOverlay(OverlayIdentyfikator identyfikator){
-		List<Overlay>list = findOverlay(identyfikator);
-		if(list.size() > 1)
-			throw new NotSingleResultException();
-		else if(list.isEmpty())
-			return null;
-		else
-			return list.get(0);
-	}
-	
-	public void removeOverlay(OverlayIdentyfikator identyfikator){
-		List<Overlay>list = getOverlayList(identyfikator.createIdentyfikator());
-		
-		if(list != null){
-			removeOverlayFromList(list, identyfikator);
-		} else {
-			removeOverlayFromList(markers, identyfikator);
-			removeOverlayFromList(polylines, identyfikator);
-			removeOverlayFromList(polygons, identyfikator);
-			removeOverlayFromList(circles, identyfikator);
-			removeOverlayFromList(rectangles, identyfikator);
-		}
-	}
-	
-	public List<Overlay> findOverlay(OverlayIdentyfikator identyfikator){
-		List<Overlay>list = getOverlayList(identyfikator.createIdentyfikator());
-		List<Overlay>overlays = new ArrayList<Overlay>();
-		
-		if(list != null){
-			overlays.addAll( findOverlayFromList(list, identyfikator) );
-		} else {
-			overlays.addAll( findOverlayFromList(markers, identyfikator) );
-			overlays.addAll( findOverlayFromList(polylines, identyfikator) );
-			overlays.addAll( findOverlayFromList(polygons, identyfikator) );
-			overlays.addAll( findOverlayFromList(circles, identyfikator) );
-			overlays.addAll( findOverlayFromList(rectangles, identyfikator) );
-		}
-		
-		return overlays;
-	}
-	
-	private <T extends Overlay> List<Overlay> findOverlayFromList(List<T>list, OverlayIdentyfikator identyfikator){
-		List<Overlay>overlays = new ArrayList<Overlay>();
-		Pattern pattern = identyfikator.createPattern();
-		
-		for(Overlay overlay : list){
-			Matcher matcher = pattern.matcher(overlay.getId());
-			
-			if(matcher.matches())
-				overlays.add(overlay);
-		}
-			
-		return overlays;
-	}
-	
-	private <T extends Overlay> void removeOverlayFromList(List<T>list, OverlayIdentyfikator identyfikator){
-		Pattern pattern = identyfikator.createPattern();
-		Iterator<T>it = list.iterator();
-		
-		while(it.hasNext()){
-			T overlay = it.next();
-			Matcher matcher = pattern.matcher(overlay.getId());
-			
-			if(matcher.matches()){
-				it.remove();
-			}
-		}
-	}
-	
+
 	private List<Overlay> getOverlayList(String id){
 		List list = null;
 		
