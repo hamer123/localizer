@@ -1,5 +1,6 @@
 package com.pw.localizer.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pw.localizer.model.entity.CellInfoMobile;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.WifiInfo;
@@ -8,6 +9,8 @@ import com.pw.localizer.model.enums.LocalizerService;
 /**
  * Created by Patryk on 2016-10-02.
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationNetworkDTO extends LocationDTO {
     private CellInfoMobile cellInfoMobile;
     private WifiInfo wifiInfo;

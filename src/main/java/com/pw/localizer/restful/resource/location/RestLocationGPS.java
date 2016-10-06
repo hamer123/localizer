@@ -46,12 +46,12 @@ public class RestLocationGPS {
 		return Response.ok(mapper.map(locationGPS,LocationGPSDTO.class)).build();
 	}
 
-
 	@ErrorLog
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createLocation(LocationGPSDTO locationGPSDTO, @Context UriInfo uri){
+	public Response createLocation(@Valid LocationGPSDTO locationGPSDTO,
+								   @Context UriInfo uri){
 		LocationGPS locationGPS = mapper.map(locationGPSDTO,LocationGPS.class);
 		locationGPS = locationService.createLocationGPS(locationGPS);
 		UriBuilder uriBuilder = uri.getAbsolutePathBuilder();
