@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.pw.localizer.model.entity.Address;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.Provider;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -20,12 +22,19 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationDTO {
     protected Long id;
+    @NotNull
     protected double latitude;
+    @NotNull
     protected double longitude;
+    @NotNull
     protected BasicUserDTO user;
+    @NotNull
     protected Date date;
+    @NotNull
     protected Provider providerType;
+    @NotNull
     protected Address address;
+    @NotNull
     protected double accuracy;
 
     public Long getId() {

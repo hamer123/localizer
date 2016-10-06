@@ -11,15 +11,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SignalStrength implements Serializable{
 	@NotNull
 	private int assusLevel;
-
 	@NotNull
 	private int dbm;
-
 	@NotNull
 	private int level;
 	

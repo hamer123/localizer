@@ -6,8 +6,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement(name = "cellInfoGSM")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class CellInfoGSM extends CellInfoMobile{
 	
     private int cid;

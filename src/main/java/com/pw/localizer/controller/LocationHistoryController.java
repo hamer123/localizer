@@ -53,10 +53,10 @@ public class LocationHistoryController implements Serializable{
 	private int maxRecords = 1000;
 
 	/** Date used in query to get locations */
-	private Date older;
+	private Date from;
 
 	/** Date used in query to get locations */
-	private Date younger;
+	private Date to;
 
 	/** login */
 	private String login;
@@ -152,16 +152,16 @@ public class LocationHistoryController implements Serializable{
 	private List<LocationNetwork> findLocationNetwork(){
 		if(localizerService == LocalizerService.NASZ){
 			return locationNetworkRepository.
-					findByLoginAndDateForServiceNaszOrderByDate(login, younger, older, maxRecords);
+					findByLoginAndDateForServiceNaszOrderByDate(login, from, to, maxRecords);
 		} else {
 			return locationNetworkRepository.
-					findByLoginAndDateForServiceObcyOrderByDate(login, younger, older, maxRecords);
+					findByLoginAndDateForServiceObcyOrderByDate(login, from, to, maxRecords);
 		}
 	}
 	
 	private List<LocationGPS> findLocationGPS(){
 		return locationGPSRepository.
-				findByLoginAndDateOrderByDate(login, younger, older, maxRecords);
+				findByLoginAndDateOrderByDate(login, from, to, maxRecords);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,20 +199,20 @@ public class LocationHistoryController implements Serializable{
 		return googleMapController;
 	}
 
-	public Date getOlder() {
-		return older;
+	public Date getFrom() {
+		return from;
 	}
 
-	public void setOlder(Date older) {
-		this.older = older;
+	public void setFrom(Date from) {
+		this.from = from;
 	}
 
-	public Date getYounger() {
-		return younger;
+	public Date getTo() {
+		return to;
 	}
 
-	public void setYounger(Date younger) {
-		this.younger = younger;
+	public void setTo(Date to) {
+		this.to = to;
 	}
 
 	public void setLogin(String login) {

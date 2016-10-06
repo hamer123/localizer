@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,27 +19,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 		@NamedQuery(name="WifiInfo.findByLocationId", query="SELECT l.wifiInfo FROM LocationNetwork l WHERE l.id =:id")
 })
 @Entity
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class WifiInfo implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-
+	@NotNull
 	private int frequency;
-
+	@NotNull
 	private String bssid;
-
+	@NotNull
 	private int ipAddress;
-
+	@NotNull
 	private int linkSpeed;
-
+	@NotNull
 	private String macAddress;
-
+	@NotNull
 	private int networkId;
-
+	@NotNull
 	private int rssi;
-
+	@NotNull
 	private String ssid;
 	
 	public long getId() {

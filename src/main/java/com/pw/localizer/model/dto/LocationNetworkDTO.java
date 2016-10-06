@@ -6,14 +6,19 @@ import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.WifiInfo;
 import com.pw.localizer.model.enums.LocalizerService;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Patryk on 2016-10-02.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationNetworkDTO extends LocationDTO {
+    @NotNull
     private CellInfoMobile cellInfoMobile;
+    @NotNull
     private WifiInfo wifiInfo;
+    @NotNull
     private LocalizerService localizerService;
 
     public CellInfoMobile getCellInfoMobile() {

@@ -11,8 +11,6 @@ import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
 import com.pw.localizer.repository.user.UserRepository;
 
-
-/** NA przyszlosc mozna zmienic argument na Usera i zrobic update dla usera lokacji przez zwykle query*/
 @Stateless
 public class LocationServiceImp implements LocationService{
 	@Inject
@@ -23,9 +21,8 @@ public class LocationServiceImp implements LocationService{
 	private LocationNetworkRepository locationNetworkRepository;
 
 	@Override
-	public LocationNetwork createLocationNetwork(LocationNetwork locationNetwork, long userId) {
-		User user = userRepository.findById(userId);
-		locationNetwork.setUser(user);
+	public LocationNetwork createLocationNetwork(LocationNetwork locationNetwork) {
+		User user = userRepository.findById(locationNetwork.getUser().getId());
 		locationNetwork = locationNetworkRepository.create(locationNetwork);
 		updateUserCurrentLocationNetwork(locationNetwork, user);
 		return locationNetwork;

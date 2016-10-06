@@ -1,23 +1,23 @@
 package com.pw.localizer.model.entity;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement(name = "cellInfoLte")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class CellInfoLte extends CellInfoMobile{
+	@NotNull
     private int ci;
-
+	@NotNull
     private int mcc;
-
+	@NotNull
     private int mnc;
-
+	@NotNull
     private int pci;
-
+	@NotNull
     private int tac;
-
+	@NotNull
 	private int timingAdvance;
     
 	public int getCi() {

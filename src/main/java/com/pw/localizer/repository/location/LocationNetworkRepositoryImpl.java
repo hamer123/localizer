@@ -42,26 +42,26 @@ public class LocationNetworkRepositoryImpl implements LocationNetworkRepository{
 
 	@Override
 	public List<LocationNetwork> findAll() {
-		return em.createQuery("SLECT l FROM LocationNetwork l", LocationNetwork.class)
+		return em.createQuery("SELECT l FROM LocationNetwork l", LocationNetwork.class)
 				 .getResultList();		
 	}
 
 	@Override
-	public List<LocationNetwork> findByLoginAndDateForServiceNaszOrderByDate(String login, Date younger, Date older, int maxResults) {
-		return em.createNamedQuery("findByUserLoginAndDateYoungerThanAndOlderThanAndServiceEqualsNaszOrderByDateDesc", LocationNetwork.class)
+	public List<LocationNetwork> findByLoginAndDateForServiceNaszOrderByDate(String login, Date from, Date to, int maxResults) {
+		return em.createNamedQuery("findByUserLoginAndDateFromAndDateToAndServiceEqualsNaszOrderByDateDesc", LocationNetwork.class)
 				 .setParameter("login", login)
-				 .setParameter("younger", younger, TemporalType.TIMESTAMP)
-				 .setParameter("older", older, TemporalType.TIMESTAMP)
+				 .setParameter("from", from, TemporalType.TIMESTAMP)
+				 .setParameter("to", to, TemporalType.TIMESTAMP)
 				 .setMaxResults(maxResults)
 				 .getResultList();
 	}
 
 	@Override
-	public List<LocationNetwork> findByLoginAndDateForServiceObcyOrderByDate(String login, Date younger, Date older, int maxResults) {
-		return em.createNamedQuery("findByUserLoginAndDateYoungerThanAndOlderThanAndServiceEqualsObcyOrderByDateDesc", LocationNetwork.class)
+	public List<LocationNetwork> findByLoginAndDateForServiceObcyOrderByDate(String login, Date from, Date to, int maxResults) {
+		return em.createNamedQuery("findByUserLoginAndDateFromAndDateToAndServiceEqualsObcyOrderByDateDesc", LocationNetwork.class)
 				 .setParameter("login", login)
-				 .setParameter("younger", younger, TemporalType.TIMESTAMP)
-				 .setParameter("older", older, TemporalType.TIMESTAMP)
+				 .setParameter("from", from, TemporalType.TIMESTAMP)
+				 .setParameter("to", to, TemporalType.TIMESTAMP)
 				 .setMaxResults(maxResults)
 				 .getResultList();
 	}

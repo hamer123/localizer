@@ -9,7 +9,7 @@ import com.pw.localizer.model.entity.LocationNetwork;
 public interface LocationService {
 
 	/** Create new network location that becomes his last location */
-	LocationNetwork createLocationNetwork(LocationNetwork locationNetwork, long userId);
+	LocationNetwork createLocationNetwork(LocationNetwork locationNetwork);
 
 	/** Create new gps location that becomes his last location */
 	LocationGPS createLocationGPS(LocationGPS locationGPS);

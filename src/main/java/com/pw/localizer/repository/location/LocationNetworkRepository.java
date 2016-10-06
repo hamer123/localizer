@@ -11,6 +11,6 @@ import com.pw.localizer.repository.JpaRepository;
 @Local
 public interface LocationNetworkRepository extends JpaRepository<LocationNetwork, Long> {
 
-	List<LocationNetwork> findByLoginAndDateForServiceNaszOrderByDate(String login, Date younger, Date older, int maxResults);
-	List<LocationNetwork> findByLoginAndDateForServiceObcyOrderByDate(String login, Date younger, Date older, int maxResults);
+	List<LocationNetwork> findByLoginAndDateForServiceNaszOrderByDate(String login, Date from, Date to, int maxResults);
+	List<LocationNetwork> findByLoginAndDateForServiceObcyOrderByDate(String login, Date from, Date to, int maxResults);
 }

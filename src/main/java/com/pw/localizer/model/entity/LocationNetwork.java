@@ -12,28 +12,24 @@ import com.pw.localizer.model.enums.LocalizerService;
 import java.io.Serializable;
 
 @NamedQueries(value = {
-		@NamedQuery(name = "findByUserLoginAndDateYoungerThanAndOlderThanAndServiceEqualsNaszOrderByDateDesc",
+		@NamedQuery(name = "findByUserLoginAndDateFromAndDateToAndServiceEqualsNaszOrderByDateDesc",
 				   query = "SELECT l FROM LocationNetwork l WHERE l.user.login =:login AND "
-				   		 + "l.date > :older AND l.date < :younger AND "
+				   		 + "l.date > :from AND l.date < :to AND "
 				   		 + "l.localizerService = com.pw.localizer.model.enums.LocalizerService.NASZ "
 				   		 + "ORDER BY l.date DESC"),
-		@NamedQuery(name = "findByUserLoginAndDateYoungerThanAndOlderThanAndServiceEqualsObcyOrderByDateDesc",
+		@NamedQuery(name = "findByUserLoginAndDateFromAndDateToAndServiceEqualsObcyOrderByDateDesc",
 				   query = "SELECT l FROM LocationNetwork l WHERE l.user.login =:login AND "
-						 + "l.date > :older AND l.date < :younger AND "
+						 + "l.date > :from AND l.date < :to AND "
 						 + "l.localizerService = com.pw.localizer.model.enums.LocalizerService.OBCY "
 						 + "ORDER BY l.date DESC")
 })
 @Entity
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class LocationNetwork extends Location implements Serializable{
+	@NotNull
 	@OneToOne( orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	@XmlElementRefs(value = {
-			@XmlElementRef(name = "cellInfoLte", type = CellInfoLte.class),
-			@XmlElementRef(name = "cellInfoGSM", type = CellInfoGSM.class)
-	})
 	private CellInfoMobile cellInfoMobile;
-	
+
+	@NotNull
 	@OneToOne(orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private WifiInfo wifiInfo;
 

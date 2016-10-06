@@ -17,15 +17,12 @@
          <p:message for="login"/>
 
          <p:outputLabel value="Od kiedy"/>
-         <p:calendar id="older" value="#{locationHistory.older}" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true"
-                     locale="pl" binding="#{olderDate}"/>
-         <p:message for="older"/>
+         <p:calendar id="from" value="#{locationHistory.from}" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" locale="pl"/>
+         <p:message for="from"/>
 
          <p:outputLabel value="Do kiedy"/>
-         <p:calendar id="younger" value="#{locationHistory.younger}" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" locale="pl">
-            <f:attribute name="from" value="#{olderDate}"/>
-         </p:calendar>
-         <p:message for="younger"/>
+         <p:calendar id="to" value="#{locationHistory.to}" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" locale="pl"/>
+         <p:message for="to"/>
 
          <p:outputLabel id="output"  value="Max ilosc rekordow #{locationHistory.maxRecords}"/>
          <p:slider for="maxRecords" display="output" displayTemplate="Max ilosc rekordow {value}" maxValue="1000" minValue="2"/>
@@ -44,7 +41,7 @@
          </p:selectOneMenu>
          <p:message for="service"/>
 
-         <o:validateOrder components="older younger" message="Daty sa nie poprawnie wybrane"/>
+         <o:validateOrder components="from to" message="Daty sa nie poprawnie wybrane"/>
       </h:panelGrid>
 
       <p:commandButton value="#{msg['search']}" actionListener="#{locationHistory.onCreateRoute}"
