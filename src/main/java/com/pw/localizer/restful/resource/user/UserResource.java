@@ -19,8 +19,8 @@ import javax.ws.rs.core.Response;
  */
 
 @Path("users")
-//@Secured
-public class UserRestController{
+@Secured
+public class UserResource {
     @Inject
     private UserRepository userRepository;
     @Inject

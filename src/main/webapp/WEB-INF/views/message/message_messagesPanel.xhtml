@@ -3,9 +3,11 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
 
    <h:form>
+       <o:importConstants type="com.pw.localizer.model.enums.Provider" var="provider"/>
       <p:dataTable id="areaEvents" value="#{messageController.areaEvents}" var="areaEvent" reflow="true" rows="20" paginator="true"
                    widgetVar="areaEventsTable">
 
@@ -17,7 +19,7 @@
            <f:facet name="filter">
              <p:selectOneMenu onchange="PF('areaEventsTable').filter()" immediate="true">
                <f:selectItem itemLabel="Wszystkie" itemValue="#{null}" noSelectionOption="true" />
-               <f:selectItems value="#{messageController.provider()}" />
+               <f:selectItems value="#{provider}" />
              </p:selectOneMenu>
            </f:facet>
            <h:outputText value="#{areaEvent.location.providerType}" />

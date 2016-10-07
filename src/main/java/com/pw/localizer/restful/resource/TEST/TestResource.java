@@ -49,16 +49,16 @@ public class TestResource {
         return locationNetworkRepository.findById(id);
     }
 
-    @GET
-    @Path("/test1")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOne(){
-        Bean bean = new Bean();
-        bean.setName("ala");
-        bean.setName2("kasia");
-        bean.setName3("zosia");
-        return Response.ok(bean).build();
-    }
+//    @GET
+//    @Path("/test1")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getOne(){
+//        Bean bean = new Bean();
+//        bean.setName("ala");
+//        bean.setName2("kasia");
+//        bean.setName3("zosia");
+//        return Response.ok(bean).build();
+//    }
 
     @GET
     @Path("/test2")

@@ -49,7 +49,7 @@ public class AreaRepositoryImpl implements AreaRepository{
 	@Override
 	public List<Area> findWithEagerFetchPointsAndTargetByProviderId(long id) {
 		List<Area>polygonModels = em.createNamedQuery("Area.findWithEagerFetchPointsAndTargetByProviderId", Area.class)
-				 .setHint("javax.persistence.fetchgraph", em.getEntityGraph("Area.fetchAll"))
+//				 .setHint("javax.persistence.fetchgraph", em.getEntityGraph("Area.fetchAll"))
 				 .setParameter("id", id)
 				 .getResultList();
 		return polygonModels;

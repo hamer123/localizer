@@ -12,7 +12,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.pw.localizer.inceptor.ErrorLog;
+import com.pw.localizer.model.dto.LocationGPSDTO;
 import com.pw.localizer.model.dto.LocationNetworkDTO;
+import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.security.restful.Secured;
@@ -32,13 +34,21 @@ import java.util.stream.Collectors;
 @Secured
 @Path("/locations/network")
 @Interceptors(value = LoggingInterceptor.class)
-public class RestLocationNetwork {
+public class LocationNetworkResource {
 	@Inject
 	private LocationService locationService;
 	@Inject
 	private LocationNetworkRepository locationNetworkRepository;
 	@Inject
 	private Mapper mapper;
+
+	@GET
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLocation(@PathParam("id")Long id){
+		LocationNetwork locationNetwork = locationNetworkRepository.findById(id);
+		return Response.ok(mapper.map(locationNetwork, LocationNetworkDTO.class)).build();
+	}
 
 	@ErrorLog
 	@POST

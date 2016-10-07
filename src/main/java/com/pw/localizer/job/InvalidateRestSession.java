@@ -14,25 +14,25 @@ import com.pw.localizer.singleton.RestSessionManager;
 @Singleton
 public class InvalidateRestSession {
 	@Inject
-	private RestSessionManager restSessionSimulator;
+	private RestSessionManager restSessionManager;
 	@Inject
 	private Logger logger;
 	
 	@Schedule(minute="*/1",hour="*", persistent=false)
 	public void timeoutRestSession(){
-		logger.info(" job has started");
+		logger.info("job has started");
 		
-		for(String token : restSessionSimulator.tokens()){
-			RestSession restSession = restSessionSimulator.getSession(token);
+		for(String token : restSessionManager.tokens()){
+			RestSession restSession = restSessionManager.getSession(token);
 			if(isPassedTime(restSession.getLastUsed()))
-				restSessionSimulator.invalidationRestSession(token);
+				restSessionManager.invalidationRestSession(token);
 		}
 	}
 	
 	public boolean isPassedTime(Date date){
-		final long oneMinute = 1 * 60 * 1000;
+		final long threeMinute = 1 * 60 * 3000;
 		long currentTime = new Date().getTime();
 		
-		return currentTime - oneMinute > date.getTime();
+		return currentTime - threeMinute > date.getTime();
 	}
 }

@@ -61,7 +61,7 @@ public class RestSessionManager {
 	public boolean invalidationRestSession(String token){
 		RestSession restSession = null;
 		if((restSession = sessions.remove(token)) != null){
-			logger.info("[RestSessionSimulator] invalidationRestSession dla :" + restSession.getUser().getLogin());
+			logger.info("Invalidation Rest Session for : " + restSession.getUser().getLogin());
 			return true;
 		}
 		return false;
@@ -74,26 +74,18 @@ public class RestSessionManager {
 	
 	public List<String>getUserOnlineLogins(){
 		Collection<RestSession>restSessions = getRestSessionsCollection();
-		
 		return restSessions.stream()
 				           .map(rs -> rs.getUser().getLogin())
 				           .collect(Collectors.toList());
 	}
 	
-	public boolean isUserOnline(String login){
-		try{
-			Optional<RestSession> optionalRestSession = sessions
-					.values()
-					.stream()
-					.filter( rs -> rs.getUser().getLogin().equals(login))
-					.findFirst();
-			
-			optionalRestSession.get();			
-			return true;
-		}catch(NoSuchElementException e){
-			//
-		}
-		
-		return false;
+	public boolean isUserOnline(String login) {
+		Optional<RestSession> optionalRestSession = sessions
+				.values()
+				.stream()
+				.filter(rs -> rs.getUser().getLogin().equals(login))
+				.findFirst();
+
+		return optionalRestSession.orElse(null) == null ? false : true;
 	}
 }

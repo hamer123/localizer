@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.google.controller.GoogleMapController;
-import com.pw.localizer.model.enums.GoogleMap;
 import com.pw.localizer.model.enums.Provider;
 import com.pw.localizer.service.area.AreaService;
 import org.primefaces.event.SelectEvent;
@@ -65,13 +64,13 @@ public class MessageController implements Serializable{
 	private AreaService areaService;
 
 	private Area selectedArea;
-	private List<Area> areaList;
+	private List<Area> areas;
 	private List<AreaEvent>areaEvents;
 	
 	@PostConstruct
 	private void postConstruct(){
 		long id = localizerSession.getUser().getId();
-		areaList = areaRepository.findWithEagerFetchPointsAndTargetByProviderId(id); 
+		areas = areaRepository.findWithEagerFetchPointsAndTargetByProviderId(id);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,8 +169,8 @@ public class MessageController implements Serializable{
 		this.selectedArea = selectedPolygonModel;
 	}
 
-	public List<Area> getAreaList() {
-		return areaList;
+	public List<Area> getAreas() {
+		return areas;
 	}
 
 	public LocalizerSession getLocalizerSession() {
@@ -224,8 +223,8 @@ public class MessageController implements Serializable{
 		this.dialogMap = dialogMap;
 	}
 
-	public void setAreaList(List<Area> areaList) {
-		this.areaList = areaList;
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
 	}
 
 	public void setAreaEvents(List<AreaEvent> areaEvents) {

@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Secured
-@Path("/location/gps")
-public class RestLocationGPS {
+@Path("/locations/gps")
+public class LocationGPSResource {
 	@Inject
 	private LocationService locationService;
 	@Inject
