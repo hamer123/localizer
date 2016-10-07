@@ -2,7 +2,7 @@ package com.pw.localizer.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.pw.localizer.jackson.serializer.HibernateProxySerializer;
+
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.User;
