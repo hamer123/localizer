@@ -5,11 +5,10 @@
       xmlns:p="http://primefaces.org/ui">
 
    <h:form>
-     <p:dataTable id="areaTable" var="area" value="#{messageController.areas}"
-                  selectionMode="single" selection="#{messageController.selectedArea}" rowKey="#{area.id}">
-        <p:ajax event="rowSelect" listener="#{messageController.onAreaSelect}" 
-                update=":#{p:component('options')} :#{p:component('messages')}"/>
-                
+     <p:dataTable id="areaTable" var="area" value="#{areaEventController.areas}"
+                  selectionMode="single" selection="#{areaEventController.selectedArea}" rowKey="#{area.id}">
+        <p:ajax event="rowSelect" listener="#{areaEventController.onAreaSelect}" update=":#{p:component('gmap')} :#{p:component('area-events')}"/>
+
         <p:column headerText="Nazwa">
           <h:outputText value="#{area.name}" />
         </p:column>
@@ -20,12 +19,12 @@
         
         <p:column headerText="Typ sledzenia">
           <h:outputText value="#{area.areaFollowType}" />
-        </p:column> 
-        
-        <p:column headerText="Pokaz obszar">
-          <p:commandButton value="POKAZ" oncomplete="showGoogleMapDialog()" update=":#{p:component('locationDialog')}"
-                           actionListener="#{messageController.onDisplayAreaInDialog(area)}"/>
         </p:column>
+
+         <p:column headerText="#{msg['active']}">
+             <h:outputText value="#{area.active}" />
+         </p:column>
+
      </p:dataTable>
    </h:form>
    

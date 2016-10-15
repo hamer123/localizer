@@ -4,12 +4,12 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 
-   <h:form id="optionForm" rendered="#{messageController.selectedArea != null}">
+   <h:form id="optionForm" rendered="#{areaEventController.selectedArea != null}">
      
-     <h:panelGrid rendered="#{messageController.selectedArea.areaMessageMail.areaMailMessageMode == 'ACCEPT'
-                              and messageController.selectedArea.areaMessageMail.accept == false}" columns="2">
+     <h:panelGrid rendered="#{areaEventController.selectedArea.areaMessageMail.areaMailMessageMode == 'ACCEPT'
+                              and areaEventController.selectedArea.areaMessageMail.accept == false}" columns="2">
        <h:outputText value="Akceptuj powiadomienie o evencie (zalaczy od nowa wysylanie email w ramach eventu)" />
-       <p:commandButton value="AKCEPTUJ" action="#{messageController.onAcceptEvent}" style="margin-left:20px" update=":#{p:component('optionForm')}"/>
+       <p:commandButton value="AKCEPTUJ" action="#{areaEventController.onAcceptEvent}" style="margin-left:20px" update=":#{p:component('optionForm')}"/>
      </h:panelGrid>
    </h:form>
    

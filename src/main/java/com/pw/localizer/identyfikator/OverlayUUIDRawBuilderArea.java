@@ -18,7 +18,7 @@ public class OverlayUUIDRawBuilderArea implements OverlayUUIDBuilder{
     }
 
     private void buildUUIDRaw(){
-        this.uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+        this.uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .overlay(OverlayType.POLYGON)
                 .login(area.getProvider().getLogin())
                 .id(area.getId())

@@ -1,4 +1,4 @@
-package com.pw.localizer.google.controller;
+package com.pw.localizer.controller.google;
 
 import com.pw.localizer.exception.LocalizerServiceNotSupportedException;
 import com.pw.localizer.exception.ProviderNotSupportedException;
@@ -9,12 +9,11 @@ import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.factory.PolylineFactory;
-import com.pw.localizer.model.enums.GoogleMap;
 import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.model.enums.OverlayType;
 import com.pw.localizer.model.enums.Provider;
+import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.google.GoogleMapComponentVisible;
-import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.google.OverlayCreateFilter;
 import com.pw.localizer.model.google.UserComponentVisibility;
 import com.pw.localizer.model.session.LocalizerSession;
@@ -50,10 +49,10 @@ public class UserGoogleMapController implements Serializable{
     private LocalizerProperties localizerProperties;
 
     /** Gotowy model po renderingu */
-    private GoogleMapModel googleMapModelOutput = new GoogleMapModel();
+    private GoogleMap googleMapOutput = new GoogleMap();
 
     /** Zawartosc po utworzeniu */
-    private GoogleMapModel googleMapModel = new GoogleMapModel();
+    private GoogleMap googleMap = new GoogleMap();
 
     /** Widocznosc komponentow indywidulanie dla uzytkoniwka */
     private Map<String,UserComponentVisibility> userComponentVisibilityMap = new HashMap<>();
@@ -74,7 +73,7 @@ public class UserGoogleMapController implements Serializable{
     private boolean streetVisible = true;
 
     /** Google map type */
-    private GoogleMap googleMapType = GoogleMap.TERRAIN;
+    private com.pw.localizer.model.enums.GoogleMap googleMapType = com.pw.localizer.model.enums.GoogleMap.TERRAIN;
 
     /** Display message on overlay select ? */
     private boolean displayMessageOnSelectOverlay = true;
@@ -84,14 +83,14 @@ public class UserGoogleMapController implements Serializable{
 
     @PostConstruct
     private void postConstruct(){
-        this.googleMapType = GoogleMap.HYBRID;
+        this.googleMapType = com.pw.localizer.model.enums.GoogleMap.HYBRID;
         if(this.localizerSession.getUser() == null){
             center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
             zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
         } else {
             UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
             this.zoom = userSetting.getgMapZoom();
-            this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
+            this.center = GoogleMap.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
             this.overlayCreateFilter.setCreateActivePolygon(true);
             this.overlayCreateFilter.setCreateNotActivePolygon(true);
         }
@@ -164,19 +163,19 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void addGpsMarker(Location location){
-        List<Marker>markers = googleMapModel.getMarkers();
+        List<Marker>markers = googleMap.getMarkers();
         Marker marker = markerFactory.createMarker(location);
         markers.add(marker);
         if(filterGpsMarker(marker, OverlayUUIDConverter.uuidRaw(marker.getId())))
-            googleMapModelOutput.getMarkers().add(marker);
+            googleMapOutput.getMarkers().add(marker);
     }
 
     private void addNetworkMarker(Location location){
-        List<Marker>markers = googleMapModel.getMarkers();
+        List<Marker>markers = googleMap.getMarkers();
         Marker marker = markerFactory.createMarker(location);
         markers.add(marker);
         if(filterNetworkMarker(marker,OverlayUUIDConverter.uuidRaw(marker.getId())))
-            googleMapModelOutput.getMarkers().add(marker);
+            googleMapOutput.getMarkers().add(marker);
     }
 
     private void addCircle(User user){
@@ -194,38 +193,36 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void addCircleGps(Location location){
-        List<Circle>circles = googleMapModel.getCircles();
+        List<Circle>circles = googleMap.getCircles();
         Circle circle = circleFactory.createCircle(location);
         circles.add(circle);
         if(filterCircleGps(circle,OverlayUUIDConverter.uuidRaw(circle.getId())))
-            googleMapModelOutput.getCircles().add(circle);
+            googleMapOutput.getCircles().add(circle);
     }
 
     private void addCircleNetwork(Location location){
-        List<Circle>circles = googleMapModel.getCircles();
+        List<Circle>circles = googleMap.getCircles();
         Circle circle = circleFactory.createCircle(location);
         circles.add(circle);
         if(filterCircleNetwork(circle,OverlayUUIDConverter.uuidRaw(circle.getId())))
-            googleMapModelOutput.getCircles().add(circle);
+            googleMapOutput.getCircles().add(circle);
     }
 
     /** Polygon data is boolean active variable */
     private void addPolygon(User user){
-        List<Polygon>polygons = googleMapModel.getPolygons();
-        //TODO
-        //List<Area>areas = new ArrayList<>(user.getAreas());
+        List<Polygon>polygons = googleMap.getPolygons();
         Set<Area>areas = user.getAreas();
         for(Area area : areas){
             if(overlayCreateFilter.isCreateActivePolygon() && area.isActive()){
                 Polygon polygon = polygonFactory.create(area, true);
                 polygons.add(polygon);
                 if(filterPolygon(polygon,OverlayUUIDConverter.uuidRaw(polygon.getId())))
-                    googleMapModelOutput.getPolygons().add(polygon);
+                    googleMapOutput.getPolygons().add(polygon);
             } else if(overlayCreateFilter.isCreateNotActivePolygon() && !area.isActive()){
                 Polygon polygon = polygonFactory.create(area, false);
                 polygons.add(polygon);
                 if(filterPolygon(polygon,OverlayUUIDConverter.uuidRaw(polygon.getId())))
-                    googleMapModelOutput.getPolygons().add(polygon);
+                    googleMapOutput.getPolygons().add(polygon);
             }
         }
     }
@@ -237,7 +234,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void updatePolylineGps(User user){
         Location location = user.getLastLocationGPS();
-        OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+        OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .login(user.getLogin())
                 .provider(Provider.GPS)
                 .build();
@@ -246,7 +243,7 @@ public class UserGoogleMapController implements Serializable{
 
     private void updatePolylineNetwork(User user){
         Location location = user.getLastLocationNetworkNaszaUsluga();
-        OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+        OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .login(user.getLogin())
                 .provider(Provider.NETWORK)
                 .localizationService(LocalizerService.NASZ)
@@ -254,7 +251,7 @@ public class UserGoogleMapController implements Serializable{
         updatePolyline(location,uuidRaw);
 
         location = user.getLastLocationNetworObcaUsluga();
-        uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+        uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .login(user.getLogin())
                 .provider(Provider.NETWORK)
                 .localizationService(LocalizerService.OBCY)
@@ -283,7 +280,7 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private Polyline findPolyline(OverlayUUIDRaw uuidRaw){
-        for(Polyline polyline : googleMapModel.getPolylines()){
+        for(Polyline polyline : googleMap.getPolylines()){
             if(uuidRaw.matches(polyline.getId()))
                 return polyline;
         }
@@ -308,22 +305,22 @@ public class UserGoogleMapController implements Serializable{
     private void addPolylineGps(Location location){
         if(overlayCreateFilter.isCreateGPSPolyline()){
             Polyline polyline = polylineFactory.create(location, location.getDate());
-            googleMapModel.getPolylines().add(polyline);
+            googleMap.getPolylines().add(polyline);
             if(filterPolylineGps(OverlayUUIDConverter.uuidRaw(polyline.getId()))){
-                googleMapModelOutput.getPolylines().add(polyline);
+                googleMapOutput.getPolylines().add(polyline);
             }
         }
     }
 
     private void addPolylineNetwork(Location location){
-        List<Polyline>polylines = googleMapModel.getPolylines();
+        List<Polyline>polylines = googleMap.getPolylines();
         LocationNetwork locationNetwork = (LocationNetwork)location;
         if(locationNetwork.getLocalizerService() == LocalizerService.NASZ){
             if(overlayCreateFilter.isCreateNetworkNaszPolyline()){
                 Polyline polyline = polylineFactory.create(location,location.getDate());
                 polylines.add(polyline);
                 if(filterPolylineNetwork(OverlayUUIDConverter.uuidRaw(polyline.getId()))){
-                    googleMapModelOutput.getPolylines().add(polyline);
+                    googleMapOutput.getPolylines().add(polyline);
                 }
             }
         } else if(locationNetwork.getLocalizerService() == LocalizerService.OBCY){
@@ -331,7 +328,7 @@ public class UserGoogleMapController implements Serializable{
                 Polyline polyline = polylineFactory.create(location,location.getDate());
                 polylines.add(polyline);
                 if(filterPolylineNetwork(OverlayUUIDConverter.uuidRaw(polyline.getId()))){
-                    googleMapModelOutput.getPolylines().add(polyline);
+                    googleMapOutput.getPolylines().add(polyline);
                 }
             }
         } else {
@@ -340,58 +337,58 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void removeMarker(String login){
-        Iterator<Marker>markerIterator = googleMapModel.getMarkers().iterator();
+        Iterator<Marker>markerIterator = googleMap.getMarkers().iterator();
         while(markerIterator.hasNext()){
             Marker marker = markerIterator.next();
             String extractLogin = OverlayUUIDConverter.extractLogin(marker.getId());
             if(login.equals(extractLogin)) {
                 markerIterator.remove();
-                googleMapModelOutput.getMarkers().remove(marker);
+                googleMapOutput.getMarkers().remove(marker);
             }
         }
     }
 
     private void removeCircle(String login){
-        Iterator<Circle>circleIterator = googleMapModel.getCircles().iterator();
+        Iterator<Circle>circleIterator = googleMap.getCircles().iterator();
         while(circleIterator.hasNext()){
             Circle circle = circleIterator.next();
             String extractLogin = OverlayUUIDConverter.extractLogin(circle.getId());
             if(login.equals(extractLogin)) {
                 circleIterator.remove();
-                googleMapModelOutput.getCircles().remove(circle);
+                googleMapOutput.getCircles().remove(circle);
             }
         }
     }
 
     private void removePolygon(String login){
-        Iterator<Polygon>polygonIterator = googleMapModel.getPolygons().iterator();
+        Iterator<Polygon>polygonIterator = googleMap.getPolygons().iterator();
         while(polygonIterator.hasNext()){
             Polygon polygon = polygonIterator.next();
             String extractLogin = OverlayUUIDConverter.extractLogin(polygon.getId());
             if(login.equals(extractLogin)) {
                 polygonIterator.remove();
-                googleMapModelOutput.getPolygons().remove(polygon);
+                googleMapOutput.getPolygons().remove(polygon);
             }
         }
     }
 
     private void removePolyline(String login){
-        Iterator<Polyline>polylineIterator = googleMapModel.getPolylines().iterator();
+        Iterator<Polyline>polylineIterator = googleMap.getPolylines().iterator();
         while(polylineIterator.hasNext()){
             Polyline polyline = polylineIterator.next();
             String extractLogin = OverlayUUIDConverter.extractLogin(polyline.getId());
             if(login.equals(extractLogin)) {
                 polylineIterator.remove();
-                googleMapModelOutput.getPolylines().remove(polyline);
+                googleMapOutput.getPolylines().remove(polyline);
             }
         }
     }
 
     private void renderMarkers(){
-        List<Marker>markers = googleMapModelOutput.getMarkers();
+        List<Marker>markers = googleMapOutput.getMarkers();
         markers.clear();
 
-        for(Marker marker : googleMapModel.getMarkers()){
+        for(Marker marker : googleMap.getMarkers()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(marker.getId());
             if(uuidRaw.getProvider() == Provider.GPS){
                 if(filterGpsMarker(marker,uuidRaw))
@@ -431,10 +428,10 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void renderCircles(){
-        List<Circle>circles = googleMapModelOutput.getCircles();
+        List<Circle>circles = googleMapOutput.getCircles();
         circles.clear();
 
-        for(Circle circle : googleMapModel.getCircles()){
+        for(Circle circle : googleMap.getCircles()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(circle.getId());
             if(uuidRaw.getProvider() == Provider.GPS){
                 if(filterCircleGps(circle,uuidRaw))
@@ -475,13 +472,13 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void renderPolygons(){
-        List<Polygon>polygons = googleMapModelOutput.getPolygons();
+        List<Polygon>polygons = googleMapOutput.getPolygons();
         polygons.clear();
 
-        for(Polygon polygon : googleMapModel.getPolygons()){
+        for(Polygon polygon : googleMap.getPolygons()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(polygon.getId());
             if(filterPolygon(polygon,uuidRaw))
-                googleMapModelOutput.getPolygons().add(polygon);
+                googleMapOutput.getPolygons().add(polygon);
         }
     }
 
@@ -500,21 +497,21 @@ public class UserGoogleMapController implements Serializable{
     }
 
     private void renderPolylines(){
-        List<Polyline>polylines = googleMapModelOutput.getPolylines();
+        List<Polyline>polylines = googleMapOutput.getPolylines();
         polylines.clear();
 
-        for(Polyline polyline : googleMapModel.getPolylines()){
+        for(Polyline polyline : googleMap.getPolylines()){
             OverlayUUIDRaw uuidRaw = OverlayUUIDConverter.uuidRaw(polyline.getId());
             if(uuidRaw.getProvider() == Provider.GPS){
                 if(filterPolylineGps(uuidRaw))
-                    googleMapModelOutput.getPolylines().add(polyline);
+                    googleMapOutput.getPolylines().add(polyline);
             } else if(uuidRaw.getProvider() == Provider.NETWORK) {
                 if(uuidRaw.getLocalizationService() == LocalizerService.NASZ){
                     if(filterPolylineNetwork(uuidRaw))
-                        googleMapModelOutput.getPolylines().add(polyline);
+                        googleMapOutput.getPolylines().add(polyline);
                 } else if(uuidRaw.getLocalizationService() == LocalizerService.OBCY) {
                     if(filterPolylineNetwork(uuidRaw))
-                        googleMapModelOutput.getPolylines().add(polyline);
+                        googleMapOutput.getPolylines().add(polyline);
                 } else {
                     throw new ProviderNotSupportedException("Not supported provider " + uuidRaw.getProvider());
                 }
@@ -556,7 +553,7 @@ public class UserGoogleMapController implements Serializable{
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void onGoogleMapStateChange(StateChangeEvent event){
-        center = GoogleMapModel.center(event.getCenter());
+        center = GoogleMap.center(event.getCenter());
         zoom = event.getZoomLevel();
     }
 
@@ -610,20 +607,20 @@ public class UserGoogleMapController implements Serializable{
         this.localizerSession = localizerSession;
     }
 
-    public GoogleMapModel getGoogleMapModelOutput() {
-        return googleMapModelOutput;
+    public GoogleMap getGoogleMapOutput() {
+        return googleMapOutput;
     }
 
-    public void setGoogleMapModelOutput(GoogleMapModel googleMapModelOutput) {
-        this.googleMapModelOutput = googleMapModelOutput;
+    public void setGoogleMapOutput(GoogleMap googleMapOutput) {
+        this.googleMapOutput = googleMapOutput;
     }
 
-    public GoogleMapModel getGoogleMapModel() {
-        return googleMapModel;
+    public GoogleMap getGoogleMap() {
+        return googleMap;
     }
 
-    public void setGoogleMapModel(GoogleMapModel googleMapModel) {
-        this.googleMapModel = googleMapModel;
+    public void setGoogleMap(GoogleMap googleMap) {
+        this.googleMap = googleMap;
     }
 
     public Map<String, UserComponentVisibility> getUserComponentVisibilityMap() {
@@ -670,11 +667,11 @@ public class UserGoogleMapController implements Serializable{
         this.streetVisible = streetVisible;
     }
 
-    public GoogleMap getGoogleMapType() {
+    public com.pw.localizer.model.enums.GoogleMap getGoogleMapType() {
         return googleMapType;
     }
 
-    public void setGoogleMapType(GoogleMap googleMapType) {
+    public void setGoogleMapType(com.pw.localizer.model.enums.GoogleMap googleMapType) {
         this.googleMapType = googleMapType;
     }
 

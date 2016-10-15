@@ -17,7 +17,8 @@
          <p:message for="login"/>
 
          <p:outputLabel value="Od kiedy"/>
-         <p:calendar id="from" value="#{locationHistory.from}" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" locale="pl"/>
+         <p:calendar id="from" value="#{locationHistory.from}" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true"
+                     locale="pl" binding="#{olderDate}"/>
          <p:message for="from"/>
 
          <p:outputLabel value="Do kiedy"/>

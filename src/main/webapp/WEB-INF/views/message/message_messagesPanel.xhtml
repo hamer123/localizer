@@ -6,43 +6,43 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
 
-   <h:form>
-       <o:importConstants type="com.pw.localizer.model.enums.Provider" var="provider"/>
-      <p:dataTable id="areaEvents" value="#{messageController.areaEvents}" var="areaEvent" reflow="true" rows="20" paginator="true"
-                   widgetVar="areaEventsTable">
+    <h:form id="area-events">
+        <o:importConstants type="com.pw.localizer.model.enums.Provider" var="provider"/>
+        <p:dataTable value="#{areaEventController.areaEvents}" var="areaEvent" reflow="true" rows="50" paginator="true"
+                     widgetVar="area-events-table" style="text-align:center !important;">
 
-         <p:column headerText="Data">
-           <h:outputText value="#{areaEvent.location.date}" />
-         </p:column>
-         
-         <p:column headerText="Typ providera" filterBy="#{areaEvent.location.providerType}" filterMatchMode="exact">
-           <f:facet name="filter">
-             <p:selectOneMenu onchange="PF('areaEventsTable').filter()" immediate="true">
-               <f:selectItem itemLabel="Wszystkie" itemValue="#{null}" noSelectionOption="true" />
-               <f:selectItems value="#{provider}" />
-             </p:selectOneMenu>
-           </f:facet>
-           <h:outputText value="#{areaEvent.location.providerType}" />
-         </p:column>
-         
-         <p:column headerText="Usluga Lokalizacji">
-           <h:outputText value="#{messageController.getLocalicationService(areaEvent)}" />
-         </p:column>
-         
-         <p:column headerText="Miasto">
-           <h:outputText value="#{areaEvent.location.address.city}" />
-         </p:column>
-         
-         <p:column headerText="Ulica">
-           <h:outputText value="#{areaEvent.location.address.street}" />
-         </p:column>
-         
-         <p:column headerText="Pokaz lokacje">
-           <p:commandButton value="POKAZ" oncomplete="showGoogleMapDialog()" update=":#{p:component('locationDialog')}"
-                            actionListener="#{messageController.onDisplayLocationInDialog(areaEvent)}" />
-         </p:column>
-         
-      </p:dataTable>
-   </h:form>
+
+            <p:column headerText="Data">
+                <h:outputText value="#{areaEvent.location.date}" />
+            </p:column>
+
+            <p:column headerText="Typ providera" filterBy="#{areaEvent.location.providerType}" filterMatchMode="exact">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('area-events-table').filter()" immediate="true">
+                        <f:selectItem itemLabel="Wszystkie" itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{provider}" />
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{areaEvent.location.providerType}" />
+            </p:column>
+
+            <p:column headerText="Usluga Lokalizacji">
+                <h:outputText value="#{utilitiesApplicationService.getLocalizerService(areaEvent)}" />
+            </p:column>
+
+            <p:column headerText="Miasto">
+                <h:outputText value="#{areaEvent.location.address.city}" />
+            </p:column>
+
+            <p:column headerText="Ulica">
+                <h:outputText value="#{areaEvent.location.address.street}" />
+            </p:column>
+
+            <p:column headerText="#{msg['show.location']}">
+                <p:commandButton value="#{msg['show']}" actionListener="#{areaEventController.onDisplayLocation(areaEvent)}" update=":#{p:component('gmap')}"/>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
    
 </ui:composition>

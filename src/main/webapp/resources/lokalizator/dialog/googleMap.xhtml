@@ -5,7 +5,7 @@
       xmlns:composite="http://java.sun.com/jsf/composite">
       
       <composite:interface>
-        <composite:attribute name="googleMapController" required="true" type="com.pw.localizer.google.controller.GoogleMapController"/>
+        <composite:attribute name="googleMapController" required="true" type="com.pw.localizer.controller.google.GoogleMapController"/>
         <composite:attribute name="style" required="true" type="java.lang.String"/>
         <composite:attribute name="onChangeState" method-signature="java.lang.Void action(org.primefaces.event.map.StateChangeEvent)"/>
         <composite:attribute name="onOverlaySelect" method-signature="java.lang.Void action(org.primefaces.event.map.OverlaySelectEvent)"/>
@@ -15,7 +15,7 @@
       <composite:implementation>
          <p:gmap id="_gmap" center="#{cc.attrs.googleMapController.center}" zoom="#{cc.attrs.googleMapController.zoom}" 
                 type="#{cc.attrs.googleMapController.googleMapType}" streetView="#{cc.attrs.googleMapController.streetVisible}"
-                model="#{cc.attrs.googleMapController.googleMapModel}" 
+                model="#{cc.attrs.googleMapController.googleMap}"
                 style="#{cc.attrs.style}" >
                 
             <p:ajax event="stateChange" listener="#{cc.attrs.onChangeState}"/>

@@ -15,9 +15,9 @@
       <c:if test="#{areaEventController.validParams == true}">
       <h:form>
         <p:panel header="Event obszaru sledzenia #{areaEventController.areaEvent.area.name}">
-           <p:gmap id="gmap" center="#{areaEventController.googleMapController.center}" 
-                   zoom="#{areaEventController.googleMapController.zoom}" type="#{areaEventController.googleMapController.googleMapType}" 
-                   model="#{areaEventController.googleMapController.googleMapModel}" style="width:100%;height:600px" />
+           <p:gmap id="gmap" center="#{areaEventController.googleMapController.center}"
+                   zoom="#{areaEventController.googleMapController.zoom}" type="#{areaEventController.googleMapController.googleMapType}"
+                   model="#{areaEventController.googleMapController.googleMap}" style="width:100%;height:600px" />
            <h:panelGrid columns="2" cellpadding="5">
              <p:commandButton value="Pokaz obszar" actionListener="#{areaEventController.onPokazObszar()}"
                               update=":#{p:component('gmap')}"/>

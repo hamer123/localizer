@@ -30,7 +30,7 @@ public final class OverlayUUIDConverter {
     public static String regex(OverlayUUIDRaw uuidRaw){
         StringBuilder builderRegex = new StringBuilder();
 
-        builderRegex.append(uuidRaw.getOverlay() == null ? "*" : uuidRaw.getOverlay());
+        builderRegex.append(uuidRaw.getOverlayType() == null ? "*" : uuidRaw.getOverlayType());
         builderRegex.append("-");
         builderRegex.append(uuidRaw.getProvider() == null ? "*" : uuidRaw.getProvider());
         builderRegex.append("-");
@@ -45,7 +45,7 @@ public final class OverlayUUIDConverter {
 
     public static OverlayUUIDRaw uuidRaw(String uuid) {
         String[] parts = splitUUID(uuid);
-        return OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+        return OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .overlay(parts[0].equals("any") ? null : OverlayType.valueOf(parts[0]))
                 .provider(parts[1].equals("any") ? null : Provider.valueOf(parts[1]))
                 .localizationService(parts[2].equals("any") ? null : LocalizerService.valueOf(parts[2]))
@@ -57,7 +57,7 @@ public final class OverlayUUIDConverter {
     public static String uuid(OverlayUUIDRaw uuidRaw){
         StringBuilder builderUUID = new StringBuilder();
 
-        builderUUID.append(uuidRaw.getOverlay() == null ? "any" : uuidRaw.getOverlay());
+        builderUUID.append(uuidRaw.getOverlayType() == null ? "any" : uuidRaw.getOverlayType());
         builderUUID.append("-");
         builderUUID.append(uuidRaw.getProvider() == null ? "any" : uuidRaw.getProvider());
         builderUUID.append("-");

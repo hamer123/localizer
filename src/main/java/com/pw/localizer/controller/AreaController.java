@@ -7,7 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.controller.google.GoogleMapController;
+import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.service.area.AreaPointService;
 import com.pw.localizer.service.area.AreaService;
 import org.jboss.logging.Logger;
@@ -16,7 +17,6 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polygon;
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.factory.PolygonFactory;
-import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaMessageMail;
@@ -158,7 +158,7 @@ public class AreaController implements Serializable{
 	}
 	
 	public void onPathShow(LatLng latLng){
-		googleMapController.setCenter(GoogleMapModel.center(latLng));
+		googleMapController.setCenter(GoogleMap.center(latLng));
 	}
 	
 	public void onPathRemove(LatLng latLng){

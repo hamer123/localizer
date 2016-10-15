@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.pw.localizer.exception.NotSingleResultException;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
@@ -21,7 +18,7 @@ import org.primefaces.model.map.Rectangle;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.OverlayType;
 
-public class GoogleMapModel implements MapModel, Serializable{
+public class GoogleMap implements MapModel, Serializable{
 
 	private List<Marker> markers;
 	
@@ -33,9 +30,9 @@ public class GoogleMapModel implements MapModel, Serializable{
         
     private List<Rectangle> rectangles;
 
-	public GoogleMapModel(List<Marker> markers, List<Polyline> polylines,
-			List<Polygon> polygons, List<Circle> circles,
-			List<Rectangle> rectangles) {
+	public GoogleMap(List<Marker> markers, List<Polyline> polylines,
+                     List<Polygon> polygons, List<Circle> circles,
+                     List<Rectangle> rectangles) {
 		this.markers = markers;
 		this.polylines = polylines;
 		this.polygons = polygons;
@@ -43,7 +40,7 @@ public class GoogleMapModel implements MapModel, Serializable{
 		this.rectangles = rectangles;
 	}
 
-	public GoogleMapModel() {
+	public GoogleMap() {
 		markers = new ArrayList<Marker>();
 		polylines = new ArrayList<Polyline>();
 		polygons = new ArrayList<Polygon>();
@@ -89,6 +86,39 @@ public class GoogleMapModel implements MapModel, Serializable{
 		}
 	}
 
+	public void removeMatches(OverlayUUIDRaw uuidRaw){
+		OverlayType overlayType = uuidRaw.getOverlayType();
+		if(overlayType == null){
+			removeMatches(markers,uuidRaw);
+			removeMatches(circles,uuidRaw);
+			removeMatches(polygons,uuidRaw);
+			removeMatches(polylines,uuidRaw);
+			removeMatches(rectangles,uuidRaw);
+		} else {
+			if(overlayType == OverlayType.MARKER){
+				removeMatches(markers,uuidRaw);
+			} else if(overlayType == OverlayType.CIRCLE){
+				removeMatches(circles,uuidRaw);
+			} else if(overlayType == OverlayType.POLYGON){
+				removeMatches(polygons,uuidRaw);
+			} else if(overlayType == OverlayType.POLYLINE){
+				removeMatches(polylines,uuidRaw);
+			} else if(overlayType == OverlayType.RECTANGLE){
+				removeMatches(rectangles,uuidRaw);
+			}
+		}
+	}
+
+	private <T extends Overlay> void removeMatches(List<T>overlays, OverlayUUIDRaw uuidRaw){
+		Iterator iterator = overlays.iterator();
+		while(iterator.hasNext()){
+			Overlay overlay = (Overlay) iterator.next();
+			if(uuidRaw.matches(overlay.getId())){
+				iterator.remove();
+			}
+		}
+	}
+
 	@SuppressWarnings("unchecked")
     @Deprecated
 	public Overlay findOverlay(String id) {
@@ -104,42 +134,42 @@ public class GoogleMapModel implements MapModel, Serializable{
 		return null;
 	}
 
-	private List<Overlay> getOverlayList(String id){
+	private List<Overlay> getOverlayList(String uuid){
 		List list = null;
 		
-		if(id.startsWith(OverlayType.MARKER.toString()))
+		if(uuid.startsWith(OverlayType.MARKER.toString()))
 			list = markers;
-		else if(id.startsWith(OverlayType.POLYLINE.toString()))
+		else if(uuid.startsWith(OverlayType.POLYLINE.toString()))
 			list = polylines;
-		else if(id.startsWith(OverlayType.POLYGON.toString()))
+		else if(uuid.startsWith(OverlayType.POLYGON.toString()))
 			list = polygons;
-		else if(id.startsWith(OverlayType.CIRCLE.toString()))
+		else if(uuid.startsWith(OverlayType.CIRCLE.toString()))
 			list = circles;
-		else if(id.startsWith(OverlayType.RECTANGLE.toString()))
+		else if(uuid.startsWith(OverlayType.RECTANGLE.toString()))
 			list = rectangles;
 		
 		return list;
 	}
 	
-	
+
 	public static String center(LatLng latLng){
-		return   latLng.getLat() 
-			   + ", " 
+		return   latLng.getLat()
+			   + ", "
 			   + latLng.getLng();
 	}
-	
+
 	public static String center(double lat, double lng){
-		return   lat 
-			   + ", " 
+		return   lat
+			   + ", "
 			   + lng;
 	}
-	
+
 	public static String center(Location location){
 		return   location.getLatitude()
-			   + ", " 
+			   + ", "
 			   + location.getLongitude();
 	}
-	
+
 	public void clear(){
 		markers.clear();
 		polylines.clear();
@@ -182,8 +212,8 @@ public class GoogleMapModel implements MapModel, Serializable{
 			return this;
 		}
 		
-		public GoogleMapModel build(){
-			return new GoogleMapModel(
+		public GoogleMap build(){
+			return new GoogleMap(
 					markerList,
 					polylineList,
 					polygonList,

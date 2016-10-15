@@ -10,13 +10,17 @@ import com.pw.localizer.model.enums.Provider;
 public class OverlayUUIDRaw {
     private Long id;
     private String login;
-    private OverlayType overlay;
+    private OverlayType overlayType;
     private Provider provider;
     private LocalizerService localizationService;
 
     public boolean matches(String uuid){
         String uuidThis = OverlayUUIDConverter.uuid(this);
         return OverlayUUIDUtilitis.matches(uuid,uuidThis);
+    }
+
+    public static OverlayUUIDRawBuilder builder(){
+        return new OverlayUUIDRawBuilder();
     }
 
     public Long getId() {
@@ -27,8 +31,8 @@ public class OverlayUUIDRaw {
         return login;
     }
 
-    public OverlayType getOverlay() {
-        return overlay;
+    public OverlayType getOverlayType() {
+        return overlayType;
     }
 
     public Provider getProvider() {
@@ -42,7 +46,7 @@ public class OverlayUUIDRaw {
     public static class OverlayUUIDRawBuilder{
         OverlayUUIDRaw overlayUUIDRaw = new OverlayUUIDRaw();
 
-        public static OverlayUUIDRawBuilder insatnce(){
+        public static OverlayUUIDRawBuilder instance(){
             return new OverlayUUIDRawBuilder();
         }
 
@@ -57,7 +61,7 @@ public class OverlayUUIDRaw {
         }
 
         public OverlayUUIDRawBuilder overlay(OverlayType overlay){
-            this.overlayUUIDRaw.overlay = overlay;
+            this.overlayUUIDRaw.overlayType = overlay;
             return this;
         }
 

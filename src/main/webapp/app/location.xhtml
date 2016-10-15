@@ -22,7 +22,7 @@
       <p:outputPanel id="gmap_follow" style="padding-bottom: 0.5%">
         <p:gmap id="gmap" center="#{userGoogleMap.center}" zoom="#{userGoogleMap.zoom}"
                 type="#{userGoogleMap.googleMapType}" streetView="#{userGoogleMap.streetVisible}"
-                model="#{userGoogleMap.googleMapModelOutput}" widgetVar="gmap"
+                model="#{userGoogleMap.googleMapOutput}" widgetVar="gmap"
                 styleClass="gmap_min_h">
           <p:ajax event="stateChange" listener="#{userGoogleMap.onGoogleMapStateChange}"/>
           <p:ajax event="overlaySelect" listener="#{location.onOverlaySelect}"/>

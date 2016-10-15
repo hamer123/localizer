@@ -12,12 +12,12 @@ import javax.inject.Named;
 
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolylineFactory;
-import com.pw.localizer.google.controller.GoogleMapController;
+import com.pw.localizer.controller.google.GoogleMapController;
 import com.pw.localizer.model.enums.LocalizerService;
 import org.jboss.logging.Logger;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.model.google.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
@@ -108,7 +108,7 @@ public class LocationHistoryController implements Serializable{
 	}
 	
 	public void onLocationSelect(){
-		 googleMapController.setCenter( GoogleMapModel.center(location) );
+		 googleMapController.setCenter( GoogleMap.center(location) );
 	}
 	
 	public List<String> onAutoCompleteLogin(String login){

@@ -1,0 +1,16 @@
+.panel-locations-search{
+    width: 55%;
+}
+
+/*.panel-history-locations{*/
+    /*border: 1px solid #000000;*/
+/*}*/
+
+.panel-found-locations{
+    width: 140%;
+    float: right;
+}
+
+/*.ui-widget-content{*/
+    /*border: 0 solid #000000;*/
+/*}*/

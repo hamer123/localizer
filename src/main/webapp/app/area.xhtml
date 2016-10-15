@@ -11,7 +11,7 @@
     <ui:define name="content">
 
         <p:gmap id="gmap" center="#{areaController.googleMapController.center}" zoom="#{areaController.googleMapController.zoom}"
-                model="#{areaController.googleMapController.googleMapModel}" type="#{areaController .googleMapController.googleMapType}"
+                model="#{areaController.googleMapController.googleMap}" type="#{areaController .googleMapController.googleMapType}"
                 style=" width:100%; height:500px; margin-bottom: 0.3%">
             <p:ajax event="pointSelect" listener="#{areaController.onPointSelect}" update="gmap :#{p:component('paths')}" />
             <p:ajax event="stateChange" listener="#{areaController.googleMapController.onGoogleMapStateChange}" update="gmap" />
@@ -20,11 +20,11 @@
         <p:panel header="#{msg['follow.area.panel']}">
             <h:panelGrid columns="2" width="100%" columnClasses="panel-column, panel-column">
 
-                <p:panel id="panel-create-area" header="#{msg['create.follow.area']}" style="width: 69%;">
+                <p:panel id="panel-create-area" header="#{msg['create.follow.area']}" style="width: 60%;">
                     <ui:include src="/WEB-INF/views/area/createArea.xhtml" />
                 </p:panel>
 
-                <p:panel id="panel-exist-areas" header="#{msg['exist.follow.area']}" style="width: 130%; float: right;">
+                <p:panel id="panel-exist-areas" header="#{msg['exist.follow.area']}" style="width: 138%; float: right;">
                     <ui:include src="/WEB-INF/views/area/existArea.xhtml" />
                 </p:panel>
 

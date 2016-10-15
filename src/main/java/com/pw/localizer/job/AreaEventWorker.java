@@ -38,24 +38,25 @@ public class AreaEventWorker {
 	@PersistenceContext
 	private EntityManager em;
 
+	//// TODO: 2016-10-14  
 	private final AreaEventBuilder areaEventBuilder = new AreaEventBuilder();
 
 	@Schedule(minute="*/1", hour="*", persistent = false)
 	public void checkActiveAreaWithOnlineTarget(){
-		List<Area>areas = findActiveArea();
-		for(Area area : areas){
-			if(shouldCheckArea(area)){
+		List<Area>activeAreas = findActiveArea();
+		for(Area area : activeAreas) {
+			if(shouldCheckArea(area)) {
 				User target = area.getTarget();
-				List<Location>locations = validLocation(target);
+				List<Location>locations = validateUserLastLocation(target);
 				
-				if(area.getAreaFollowType() == AreaFollow.INSIDE){
+				if(area.getAreaFollowType() == AreaFollow.INSIDE) {
 					for(Location location : locations)
 						if(!area.contains(location))
 							createAreaEventAndUpdateLocationEventCheck(location, area);
 					
 					if(shouldChangeMessageMail(area))
 						area.getAreaMessageMail().setAccept(false);
-				}else{
+				} else {
 					for(Location location : locations)
 						if(area.contains(location))
 							createAreaEventAndUpdateLocationEventCheck(location, area);
@@ -90,7 +91,7 @@ public class AreaEventWorker {
 		return areaRepository.findByActive(true);
 	}
 	
-	private List<Location> validLocation(User user){
+	private List<Location> validateUserLastLocation(User user){
 		List<Location>locations = new ArrayList<>();
 		
 		Location location = user.getLastLocationGPS();

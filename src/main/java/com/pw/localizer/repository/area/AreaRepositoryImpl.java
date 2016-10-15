@@ -11,7 +11,6 @@ import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaPoint;
-import com.pw.localizer.repository.area.AreaRepository;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -47,11 +46,13 @@ public class AreaRepositoryImpl implements AreaRepository{
 	}
 
 	@Override
-	public List<Area> findWithEagerFetchPointsAndTargetByProviderId(long id) {
-		List<Area>polygonModels = em.createNamedQuery("Area.findWithEagerFetchPointsAndTargetByProviderId", Area.class)
-//				 .setHint("javax.persistence.fetchgraph", em.getEntityGraph("Area.fetchAll"))
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<Area> findByProviderIdEagerFetchPoints(long id) {
+		List<Area>polygonModels = em.createNamedQuery("Area.findByProviderIdEagerFetchPoints", Area.class)
+//				 .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.Area.areaPoints"))
 				 .setParameter("id", id)
 				 .getResultList();
+		polygonModels.forEach(p -> p.getPoints().size());
 		return polygonModels;
 	}
 

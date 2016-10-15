@@ -9,7 +9,7 @@
 	<h:form id="create-area">
 		<o:importConstants type="com.pw.localizer.model.enums.AreaFollow" var="areaFollow"/>
 		<o:importConstants type="com.pw.localizer.model.enums.AreaMailMessageMode" var="areaMailMessageMode"/>
-		<h:panelGrid columns="3" cellpadding="5" styleClass="panelGrid">
+		<h:panelGrid columns="3" cellpadding="5" >
 			<p:outputLabel for="name" value="#{msg['area.name']}"/>
 			<p:inputText id="name" required="true" value="#{areaController.area.name}">
 				<f:validateLength minimum="4" maximum="16"/>

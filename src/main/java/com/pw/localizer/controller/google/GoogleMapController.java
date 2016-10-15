@@ -1,4 +1,4 @@
-package com.pw.localizer.google.controller;
+package com.pw.localizer.controller.google;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,6 +9,7 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 import com.pw.localizer.model.entity.UserSetting;
+import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.session.LocalizerSession;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
@@ -18,34 +19,33 @@ import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.model.google.GoogleMapModel;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.enums.GoogleMap;
 import com.pw.localizer.singleton.LocalizerProperties;
 
 @Dependent
 @Default
 public class GoogleMapController implements Serializable{
 	private static final long serialVersionUID = -2245271606214880961L;
-	protected GoogleMapModel googleMapModel;
-	protected int zoom;
-	protected String center;
-	protected boolean streetVisible;
-	protected GoogleMap googleMapType;
-	protected Overlay lastSelectedOverlay;
-	protected boolean displayMessageOnSelectOverlay;
 
 	@Inject
 	private LocalizerProperties localizerProperties;
 	@Inject
 	private LocalizerSession localizerSession;
+
+	protected GoogleMap googleMap;
+	protected int zoom;
+	protected String center;
+	protected boolean streetVisible;
+	protected com.pw.localizer.model.enums.GoogleMap googleMapType;
+	protected Overlay lastSelectedOverlay;
+	protected boolean displayMessageOnSelectOverlay;
 	
 	@PostConstruct
 	public void postConstruct(){
-		GoogleMapModel googleMapModel = new GoogleMapModel();
-		this.googleMapModel = googleMapModel;
-		googleMapType = GoogleMap.HYBRID;
+		GoogleMap googleMap = new GoogleMap();
+		this.googleMap = googleMap;
+		googleMapType = com.pw.localizer.model.enums.GoogleMap.HYBRID;
 		streetVisible = true;
 
 		if(localizerSession == null || localizerSession.getUser() == null){
@@ -54,7 +54,7 @@ public class GoogleMapController implements Serializable{
 		} else {
 			UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
 			this.zoom = userSetting.getgMapZoom();
-			this.center = GoogleMapModel.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
+			this.center = GoogleMap.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
 		}
 	}
 
@@ -64,24 +64,24 @@ public class GoogleMapController implements Serializable{
 	
 	public void addOverlay(List<Overlay>overlays){
 		for(Overlay overlay : overlays)
-			googleMapModel.addOverlay(overlay);
+			googleMap.addOverlay(overlay);
 	}
 	
 	public void addOverlay(Overlay overlay){
-		googleMapModel.addOverlay(overlay);
+		googleMap.addOverlay(overlay);
 	}
 	
 	public void replace(List<Overlay>overlays){
-		googleMapModel.clear();
+		googleMap.clear();
 		addOverlay(overlays);
 	}
 	
 	public void clear(){
-		googleMapModel.clear();
+		googleMap.clear();
 	}
 	
 	public void onGoogleMapStateChange(StateChangeEvent event){
-		center = GoogleMapModel.center(event.getCenter());
+		center = GoogleMap.center(event.getCenter());
         zoom = event.getZoomLevel();
 	}
 	
@@ -137,12 +137,12 @@ public class GoogleMapController implements Serializable{
 	//////////////////////////////////////////////////    GETTERS SETTERS     /////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public GoogleMapModel getGoogleMapModel() {
-		return googleMapModel;
+	public GoogleMap getGoogleMap() {
+		return googleMap;
 	}
 	
-	public void setGoogleMapModel(GoogleMapModel googleMapModel) {
-		this.googleMapModel = googleMapModel;
+	public void setGoogleMap(GoogleMap googleMap) {
+		this.googleMap = googleMap;
 	}
 	
 	public int getZoom() {
@@ -169,11 +169,11 @@ public class GoogleMapController implements Serializable{
 		this.streetVisible = streetVisible;
 	}
 	
-	public GoogleMap getGoogleMapType() {
+	public com.pw.localizer.model.enums.GoogleMap getGoogleMapType() {
 		return googleMapType;
 	}
 	
-	public void setGoogleMapType(GoogleMap googleMapType) {
+	public void setGoogleMapType(com.pw.localizer.model.enums.GoogleMap googleMapType) {
 		this.googleMapType = googleMapType;
 	}
 

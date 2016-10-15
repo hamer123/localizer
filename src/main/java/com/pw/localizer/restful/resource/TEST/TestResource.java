@@ -1,9 +1,7 @@
 package com.pw.localizer.restful.resource.TEST;
 
 import com.pw.localizer.model.dto.AreaDTO;
-import com.pw.localizer.model.dto.BasicUserDTO;
 import com.pw.localizer.model.dto.DTOUtilitis;
-import com.pw.localizer.model.dto.LocationGPSDTO;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
@@ -17,6 +15,8 @@ import org.dozer.DozerBeanMapperSingletonWrapper;
 import org.dozer.Mapper;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -41,6 +41,9 @@ public class TestResource {
     private LocationGPSRepository locationGPSRepository;
     @Inject
     private AreaRepository areaRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Path("{id}")
     @GET
@@ -106,6 +109,18 @@ public class TestResource {
 //        DTOUtilitis dtoUtilitis = new DTOUtilitis();
 //        area = dtoUtilitis.convertHibernateProxyToNull(area);
 
+        Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
+        return Response.ok(mapper.map(area,AreaDTO.class)).build();
+    }
+
+    @GET
+    @Path("/test7")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSeven(){
+        Area area = entityManager.createNamedQuery("Area.findByProviderIdEagerFetchPoints", Area.class)
+                .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("graph.Area.areaPoints"))
+                .setParameter("id", 5L)
+                .getSingleResult();
         Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
         return Response.ok(mapper.map(area,AreaDTO.class)).build();
     }

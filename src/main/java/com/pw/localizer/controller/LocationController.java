@@ -12,10 +12,10 @@ import javax.persistence.NoResultException;
 
 import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
-import com.pw.localizer.google.controller.DialogUserLocationGoogleMapController;
+import com.pw.localizer.controller.google.DialogUserLocationGoogleMapController;
 import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.model.google.UserComponentVisibility;
-import com.pw.localizer.google.controller.UserGoogleMapController;
+import com.pw.localizer.controller.google.UserGoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
 import com.pw.localizer.inceptor.DurationLogging;
@@ -25,7 +25,6 @@ import com.pw.localizer.model.enums.Provider;
 import com.pw.localizer.model.query.UserAdvanceSearch;
 import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
-import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.Marker;
@@ -33,7 +32,7 @@ import org.primefaces.model.map.Overlay;
 
 import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
 import com.pw.localizer.model.google.GoogleMapComponentVisible;
-import com.pw.localizer.model.google.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
@@ -239,7 +238,7 @@ public class LocationController implements Serializable{
 	}
 	
 	public void onShowLocation(){
-		String center = GoogleMapModel.center(selectedFollowedUserLocation);
+		String center = GoogleMap.center(selectedFollowedUserLocation);
 		userGoogleMapController.setCenter(center);
 	}
 	
@@ -263,7 +262,7 @@ public class LocationController implements Serializable{
 			 JsfMessageBuilder.infoMessage("Wpierw włacz widocznosc obszarow w ustawieniach !");
 		} else {
 			AreaPoint areaPoint = area.getPoints().get(0);
-			String center = GoogleMapModel.center(areaPoint.getLat(), areaPoint.getLng());
+			String center = GoogleMap.center(areaPoint.getLat(), areaPoint.getLng());
 			userGoogleMapController.setCenter(center);
 		}
 	}

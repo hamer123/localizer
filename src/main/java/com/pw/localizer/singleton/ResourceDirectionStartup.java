@@ -14,6 +14,7 @@ import javax.ejb.Startup;
 @Singleton
 @Startup
 public class ResourceDirectionStartup implements Serializable{
+
 	@PostConstruct
 	public void initializeResourcesDirections() throws IOException {
 		/** Zaladuj plik propertisow */

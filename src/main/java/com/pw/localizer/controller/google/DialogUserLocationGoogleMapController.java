@@ -1,10 +1,10 @@
-package com.pw.localizer.google.controller;
+package com.pw.localizer.controller.google;
 
 import javax.enterprise.context.Dependent;
 
 import com.pw.localizer.model.entity.LocationNetwork;
 
-import com.pw.localizer.model.google.GoogleMapModel;
+import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.LocalizerService;
 import com.pw.localizer.qualifier.DialogGMap;
@@ -31,7 +31,7 @@ public class DialogUserLocationGoogleMapController extends GoogleMapController {
 	}
 
 	public void onShowLcation(){
-		String center = GoogleMapModel.center(selectedLocation);
+		String center = GoogleMap.center(selectedLocation);
 		setCenter(center);
 	}
 

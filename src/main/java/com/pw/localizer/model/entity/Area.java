@@ -15,6 +15,10 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.localizer.model.enums.AreaFollow;
 
+@NamedEntityGraphs({
+	@NamedEntityGraph(name = "graph.Area.areaPoints",
+			attributeNodes = {@NamedAttributeNode(value = "points", subgraph = "points")})
+})
 @Entity
 @NamedQueries(value={
 	          @NamedQuery(name="Area.updateByIdSetActive",
@@ -27,8 +31,8 @@ import com.pw.localizer.model.enums.AreaFollow;
 		                  query="DELETE FROM Area a WHERE a.id = :id"),
 		      @NamedQuery(name="Area.findAll",
 		                  query="SELECT a FROM Area a"),
-		      @NamedQuery(name="Area.findWithEagerFetchPointsAndTargetByProviderId",
-		                  query="SELECT a FROM Area a JOIN FETCH a.target WHERE a.provider.id =:id"),
+		      @NamedQuery(name= "Area.findByProviderIdEagerFetchPoints",
+		                  query="SELECT a FROM Area a WHERE a.provider.id =:id"),
 		      @NamedQuery(name="Area.findByAktywny",
 		    		      query="SELECT a FROM Area a WHERE a.active =:aktywny"),
 		      @NamedQuery(name="Area.findIdByProviderIdAndAktywny", 

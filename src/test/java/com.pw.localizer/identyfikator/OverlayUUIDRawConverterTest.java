@@ -30,7 +30,7 @@ public class OverlayUUIDRawConverterTest {
     @Test
     public void regexShouldReturnValidRegex(){
         String regex = "MARKER-GPS-any-hamer123-1";
-        OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.insatnce()
+        OverlayUUIDRaw uuidRaw = OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .overlay(OverlayType.MARKER)
                 .provider(Provider.GPS)
                 .login("hamer123")

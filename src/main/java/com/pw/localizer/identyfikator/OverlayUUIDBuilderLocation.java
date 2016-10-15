@@ -54,7 +54,7 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
     private void buildRaw(){
         if(location instanceof LocationGPS){
             LocationGPS locationGPS = (LocationGPS)location;
-            this.overlayUUIDRaw = OverlayUUIDRawBuilder.insatnce()
+            this.overlayUUIDRaw = OverlayUUIDRawBuilder.instance()
                     .id(locationGPS.getId())
                     .login(locationGPS.getUser().getLogin())
                     .overlay(overlay)
@@ -62,7 +62,7 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
                     .build();
         } else if(location instanceof LocationNetwork) {
             LocationNetwork locationNetwork = (LocationNetwork)location;
-            this.overlayUUIDRaw = OverlayUUIDRawBuilder.insatnce()
+            this.overlayUUIDRaw = OverlayUUIDRawBuilder.instance()
                     .id(locationNetwork.getId())
                     .login(locationNetwork.getUser().getLogin())
                     .overlay(overlay)
