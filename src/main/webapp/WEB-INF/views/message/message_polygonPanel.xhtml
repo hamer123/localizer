@@ -7,7 +7,8 @@
    <h:form>
      <p:dataTable id="areaTable" var="area" value="#{areaEventController.areas}"
                   selectionMode="single" selection="#{areaEventController.selectedArea}" rowKey="#{area.id}">
-        <p:ajax event="rowSelect" listener="#{areaEventController.onAreaSelect}" update=":#{p:component('gmap')} :#{p:component('area-events')}"/>
+        <p:ajax event="rowSelect" listener="#{areaEventController.onAreaSelect}" 
+                update=":#{p:component('gmap')} :#{p:component('area-events')} :#{p:component('options-panel')}"/>
 
         <p:column headerText="Nazwa">
           <h:outputText value="#{area.name}" />

@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 		@NamedQuery(name = "AreaEventGPS.findByAreaIdAndDate",
 		            query = "SELECT a FROM AreaEventGPS a WHERE a.area.id =:id AND a.date > :from")
 })
-public class AreaEventGPS extends AreaEvent{
+public class AreaEventGPS extends AreaEvent {
 
 	@OneToOne
 	private LocationGPS locationGPS;

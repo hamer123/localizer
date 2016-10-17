@@ -13,11 +13,11 @@ import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.pw.localizer.model.entity.AreaEvent;
 import org.jboss.logging.Logger;
 
 import com.pw.localizer.jsf.utilitis.AreaEventBuilder;
 import com.pw.localizer.model.entity.Area;
-import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.AreaFollow;

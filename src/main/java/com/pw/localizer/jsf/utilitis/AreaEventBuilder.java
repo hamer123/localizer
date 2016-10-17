@@ -2,14 +2,8 @@ package com.pw.localizer.jsf.utilitis;
 
 import java.util.Date;
 
-import com.pw.localizer.model.entity.Area;
+import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.entity.AreaEvent;
-import com.pw.localizer.model.entity.AreaEventGPS;
-import com.pw.localizer.model.entity.AreaEventNetwork;
-import com.pw.localizer.model.entity.AreaMessageMail;
-import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.entity.LocationGPS;
-import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.enums.AreaFollow;
 import com.pw.localizer.model.enums.AreaMailMessageMode;
 

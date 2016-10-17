@@ -7,13 +7,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.pw.localizer.controller.google.GoogleMapController;
+import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.enums.Provider;
 import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.service.area.AreaService;
 import org.omnifaces.cdi.Param;
 import org.primefaces.model.map.Polygon;
 import com.pw.localizer.model.entity.Area;
-import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;

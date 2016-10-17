@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import com.pw.localizer.controller.google.GoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDRaw;
+import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.OverlayType;
 import com.pw.localizer.model.enums.Provider;
 import com.pw.localizer.model.google.GoogleMap;
@@ -21,12 +22,7 @@ import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.model.session.LocalizerSession;
-import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.AreaEvent;
-import com.pw.localizer.model.entity.AreaMessageMail;
-import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.entity.AreaPoint;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.repository.area.message.AreaMessageMailRepository;
@@ -61,9 +57,20 @@ public class AreaEventController implements Serializable{
 	@Inject
 	private AreaService areaService;
 
+    /** selected area by user */
 	private Area selectedArea;
+
+    /** user areas */
 	private List<Area> areas;
+
+    /** founded area events */
 	private List<AreaEvent>areaEvents;
+
+    /** Date from when we search area events */
+	private Date from;
+
+    /** Date to when we search area events */
+	private Date to;
 
 	/** uuid raw to remove markers from gmap */
 	private static final OverlayUUIDRaw removeMarker = OverlayUUIDRaw.builder().overlay(OverlayType.MARKER).build();
@@ -121,6 +128,10 @@ public class AreaEventController implements Serializable{
 		dialogMap.clear();
 		Polygon polygon = polygonFactory.create(area);
 		dialogMap.addOverlay(polygon);
+	}
+
+	public boolean disableAreaEventsClear(){
+		return areaEvents.isEmpty();
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

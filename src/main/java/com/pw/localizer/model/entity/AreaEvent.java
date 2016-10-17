@@ -31,8 +31,7 @@ public abstract class AreaEvent implements Serializable{
     private Date date;
 
     private boolean mailSend;
-    
-//    @NotNull
+
     private String url;
 
 	public long getId() {
