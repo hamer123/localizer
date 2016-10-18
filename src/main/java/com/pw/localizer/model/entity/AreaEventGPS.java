@@ -10,9 +10,11 @@ import javax.persistence.OneToOne;
 		@NamedQuery(name = "AreaEventGPS.findByAreaId", 
 				    query = "SELECT a FROM AreaEventGPS a WHERE a.area.id = :id"),
 		@NamedQuery(name = "AreaEventGPS.findAllWhereMailSendIsTrue", 
-		            query = "SELECT a FROM AreaEventGPS a WHERE a.mailSend = true"),
+		            query = "SELECT a FROM AreaEventGPS a WHERE a.sendMail = true"),
 		@NamedQuery(name = "AreaEventGPS.findByAreaIdAndDate",
-		            query = "SELECT a FROM AreaEventGPS a WHERE a.area.id =:id AND a.date > :from")
+		            query = "SELECT a FROM AreaEventGPS a WHERE a.area.id =:id AND a.date > :from"),
+		@NamedQuery(name = "AreaEventGPS.findBySendMailAndAttemptToSend",
+		            query = "SELECT a FROM AreaEventGPS a WHERE a.sendMail =:sendMail AND a.attemptToSend <:attemptToSend")
 })
 public class AreaEventGPS extends AreaEvent {
 

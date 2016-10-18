@@ -67,4 +67,12 @@ public class AreaEventNetworkRepositoryImpl implements AreaEventNetworkRepositor
 				 .getResultList();
 	}
 
+	@Override
+	public List<AreaEventNetwork> findBySendMailAndAttemptToSendLowerThan(boolean sendMail, int attemptToSend) {
+		return em.createNamedQuery("AreaEventNetwork.findBySendMailAndAttemptToSendLowerThan", AreaEventNetwork.class)
+				.setParameter("sendMail", sendMail)
+				.setParameter("attemptToSend", attemptToSend)
+				.getResultList();
+	}
+
 }

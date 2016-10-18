@@ -61,6 +61,14 @@ public class AreaEventGPSRepositoryImpl implements AreaEventGPSRepository{
 	}
 
 	@Override
+	public List<AreaEventGPS> findBySendMailAndAttemptToSendLowerThan(boolean sendMail, int attemptToSend) {
+		return em.createNamedQuery("AreaEventGPS.findBySendMailAndAttemptToSend", AreaEventGPS.class)
+				.setParameter("sendMail", sendMail)
+				.setParameter("attemptToSend", attemptToSend)
+				.getResultList();
+	}
+
+	@Override
 	public List<AreaEventGPS> findByAreaIdAndDate(long id, Date from) {
 		return em.createNamedQuery("AreaEventGPS.findByAreaIdAndDate", AreaEventGPS.class)
 				 .setParameter("id", id)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
+import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -16,20 +17,17 @@ import javax.persistence.PersistenceContext;
 import com.pw.localizer.model.entity.AreaEvent;
 import com.pw.localizer.model.utilities.MailMessage;
 import org.jboss.logging.Logger;
-import com.pw.localizer.exception.AreaMialMessageException;
 import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
 import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.service.message.area.MailMessageService;
 
 @Stateless
 public class AreaMailWorker {
-	private static final int POOL_SIZE = 25;
-
-	@Inject
+	private static final int EXECUTOR_SERVICE_POOL_SIZE = 25;
+	@Resource
 	private ManagedExecutorService executorService;
 	@Inject
-	@com.pw.localizer.qualifier.AreaMailMessage
-	private MailMessageService areaSendMessage;
+	private MailMessageService mailMessageService;
 	@Inject
 	private AreaEventGPSRepository areaEventGPSRepository;
 	@Inject
@@ -37,90 +35,64 @@ public class AreaMailWorker {
 	@Inject
 	private Logger logger;
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
 	@Schedule(minute = "*/1", hour="*", persistent = false)
-	public int sendMails(){
-		Collection<Callable<Void>> tasks;
+	public void sendMails() {
+		Collection<Callable<Boolean>> tasks;
 		List<AreaEvent>areaEvents = getAreaEvents();
-		for(int i = 0; i<areaEvents.size(); i++){
+		for(int i = 0; i < areaEvents.size(); i++){
 			tasks = new ArrayList<>();
 			//create tasks
-			for(int count = 0; count < POOL_SIZE; count++){
-
+			for(int count = 0; count < EXECUTOR_SERVICE_POOL_SIZE && i < areaEvents.size(); count++, i++) {
+			    tasks.add(createTask(areaEvents.get(i)));
 			}
 			//execute tasks
 			try {
 				executorService.invokeAll(tasks);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException exception) {
+				logger.error(exception);
 			}
 		}
-//			sendMailAndUpdateStatus(areaEvent);
-//
-		return areaEvents.size();
-	}
-	
-	private void sendMailAndUpdateStatus(AreaEvent areaEvent){
-		try{
-			areaSendMessage.send(areaEvent);
-			updateStatus(areaEvent);
-		} catch(AreaMialMessageException amme){
-			logger.error(amme);
-		}
+		logger.info("Count of emails " + areaEvents.size());
 	}
 
-	private Callable<Void> createTask(AreaEvent areaEvent){
+	private Callable<Boolean> createTask(AreaEvent areaEvent) {
 		return () -> {
+		    //create message
 			MailMessage mailMessage = new MailMessage(
 					areaEvent.getArea().getProvider().getEmail(),
-					"topic", //TODO
+					String.format("Event obszaru śledzenia %s", areaEvent.getArea().getName()),
 					areaEvent.getMessage());
 			//send
 			try{
-				areaSendMessage.send(mailMessage);
-				areaEvent.setMailSend(true);
-				entityManager.merge(areaEvent);
-
-			} catch(Exception e){
-				//set count of try
+				mailMessageService.send(mailMessage);
+				areaEvent.setSendMail(false);
+			} catch(Exception exception){
+				//increment attempt
+                areaEvent.setAttemptToSend(areaEvent.getAttemptToSend() + 1);
+                logger.error(exception);
+				return false;
 			}
-
-			return null;
+			return true;
 		};
-	}
-	
-	private void updateStatus(AreaEvent areaEvent){
-		areaEvent.setMailSend(false);
 	}
 
 	private List<AreaEvent> getAreaEvents(){
-		List<AreaEvent>areaEvents = new ArrayList<AreaEvent>();
-
-		//TODO nazwy tych jebanych repo na np : findByMailSendIsTrue
-		areaEvents.addAll(areaEventNetworkRepository.findAllWhereMailSendIsTrue());
-		areaEvents.addAll(areaEventGPSRepository.findAllWhereMailSendIsTrue());
-		
+		List<AreaEvent>areaEvents = new ArrayList<>();
+		areaEvents.addAll(areaEventNetworkRepository.findBySendMailAndAttemptToSendLowerThan(true, 3));
+		areaEvents.addAll(areaEventGPSRepository.findBySendMailAndAttemptToSendLowerThan(true, 3));
 		return areaEvents;
 	}
-	
+
 	@AroundTimeout
-	public Object logMethod(InvocationContext ic) throws Exception{
+	public Object logSendingMails(InvocationContext ic) throws Exception{
 		long time = System.currentTimeMillis();
-		logger.info(" job has started");
-		Object result = null;
-		
-		try{
+		logger.info("job has started");
+		Object result;
+		try {
 			result = ic.proceed();
 			return result;
-		}finally{
-			logger.info(" job has ended after "
-			           + (System.currentTimeMillis() - time )
-			           + "ms with sended over "
-			           + result
-			           + " mails");
+		} finally {
+			logger.info("job has ended after " + (System.currentTimeMillis() - time) + "ms");
 		}
-
 	}
 }

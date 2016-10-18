@@ -10,13 +10,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.InvocationContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import com.pw.localizer.model.entity.AreaEvent;
 import org.jboss.logging.Logger;
 
-import com.pw.localizer.jsf.utilitis.AreaEventBuilder;
+import com.pw.localizer.factory.AreaEventFactory;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
@@ -33,36 +31,34 @@ public class AreaEventWorker {
 	@Inject
 	private AreaRepository areaRepository;
 	@Inject
+	private AreaEventFactory areaEventFactory;
+	@Inject
 	private Logger logger;
 
-	@PersistenceContext
-	private EntityManager em;
-
-	//// TODO: 2016-10-14  
-	private final AreaEventBuilder areaEventBuilder = new AreaEventBuilder();
-
 	@Schedule(minute="*/1", hour="*", persistent = false)
-	public void checkActiveAreaWithOnlineTarget(){
-		List<Area>activeAreas = findActiveArea();
-		for(Area area : activeAreas) {
+	public void checkActiveAreaWithOnlineTarget() {
+		for(Area area : getActiveArea()) {
 			if(shouldCheckArea(area)) {
 				User target = area.getTarget();
 				List<Location>locations = validateUserLastLocation(target);
-				
 				if(area.getAreaFollowType() == AreaFollow.INSIDE) {
-					for(Location location : locations)
-						if(!area.contains(location))
-							createAreaEventAndUpdateLocationEventCheck(location, area);
-					
-					if(shouldChangeMessageMail(area))
+					for(Location location : locations) {
+						if(!area.contains(location)) {
+							createAreaEvent(location, area);
+						}
+					}
+					if(shouldChangeMessageMail(area)) {
 						area.getAreaMessageMail().setAccept(false);
+					}
 				} else {
-					for(Location location : locations)
-						if(area.contains(location))
-							createAreaEventAndUpdateLocationEventCheck(location, area);
-					
-					if(shouldChangeMessageMail(area))
+					for(Location location : locations) {
+						if(area.contains(location)) {
+							createAreaEvent(location, area);
+						}
+					}
+					if(shouldChangeMessageMail(area)) {
 						area.getAreaMessageMail().setAccept(false);
+					}
 				}
 			}
 		}
@@ -72,35 +68,32 @@ public class AreaEventWorker {
 	public Object log(InvocationContext ic) throws Exception {
 		long time = System.currentTimeMillis();
 		try{
-			logger.info(" job has started");
+			logger.info("job has started");
 			return ic.proceed();
 		} finally{
-			logger.info(" job has ended after " + (System.currentTimeMillis() - time) + "ms");
+			logger.info("job has ended after " + (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void createAreaEventAndUpdateLocationEventCheck(Location location, Area area){
-		AreaEvent areaEvent = areaEventBuilder.create(area, location);
+	private AreaEvent createAreaEvent(Location location, Area area){
+		AreaEvent areaEvent = areaEventFactory.create(area, location);
 		location.setEventCheck(true);
-		em.persist(areaEvent);
-		areaEvent.setUrl(areaEventBuilder.createUrl(areaEvent));
+		return areaEvent;
 	}
 	
-	private List<Area>findActiveArea(){
+	private List<Area> getActiveArea(){
 		return areaRepository.findByActive(true);
 	}
 	
 	private List<Location> validateUserLastLocation(User user){
 		List<Location>locations = new ArrayList<>();
-		
 		Location location = user.getLastLocationGPS();
 		if(validateLocation(location)) locations.add(location);
 		location = user.getLastLocationNetworkNaszaUsluga();
 		if(validateLocation(location)) locations.add(location);
 		location = user.getLastLocationNetworObcaUsluga();
 		if(validateLocation(location)) locations.add(location);
-		
 		return locations;
 	}
 	

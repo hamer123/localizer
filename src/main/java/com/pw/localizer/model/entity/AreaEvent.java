@@ -2,16 +2,11 @@ package com.pw.localizer.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
@@ -30,9 +25,17 @@ public abstract class AreaEvent implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    private boolean mailSend;
+	@Max(3) @Min(0)
+	private int attemptToSend;
 
-    private String url;
+	private String accessToken;
+
+    private boolean sendMail;
+
+	@PrePersist
+	public void prePersist(){
+		this.accessToken = UUID.randomUUID().toString();
+	}
 
 	public long getId() {
 		return id;
@@ -66,21 +69,29 @@ public abstract class AreaEvent implements Serializable{
 		this.date = date;
 	}
 
-	public boolean isMailSend() {
-		return mailSend;
+	public boolean isSendMail() {
+		return sendMail;
 	}
 
-	public void setMailSend(boolean mailSend) {
-		this.mailSend = mailSend;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+	public void setSendMail(boolean mailSend) {
+		this.sendMail = mailSend;
 	}
 
 	public abstract Location getLocation();
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+    public int getAttemptToSend() {
+        return attemptToSend;
+    }
+
+    public void setAttemptToSend(int attemptToSend) {
+        this.attemptToSend = attemptToSend;
+    }
 }

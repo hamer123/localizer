@@ -21,15 +21,15 @@ public class InvalidateRestSession {
 	@Schedule(minute="*/1",hour="*", persistent=false)
 	public void timeoutRestSession(){
 		logger.info("job has started");
-		
-		for(String token : restSessionManager.tokens()){
+		for(String token : restSessionManager.tokens()) {
 			RestSession restSession = restSessionManager.getSession(token);
-			if(isPassedTime(restSession.getLastUsed()))
+			if(isPassedTime(restSession.getLastUsed())) {
 				restSessionManager.invalidationRestSession(token);
+			}
 		}
 	}
 	
-	public boolean isPassedTime(Date date){
+	boolean isPassedTime(Date date){
 		final long threeMinute = 1 * 60 * 3000;
 		long currentTime = new Date().getTime();
 		

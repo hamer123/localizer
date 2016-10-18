@@ -5,12 +5,12 @@ package com.pw.localizer.model.utilities;
  */
 public class MailMessage {
     private String address;
-    private String topic;
+    private String subject;
     private String context;
 
-    public MailMessage(String address, String topic, String context) {
+    public MailMessage(String address, String subject, String context) {
         this.address = address;
-        this.topic = topic;
+        this.subject = subject;
         this.context = context;
     }
 
@@ -22,12 +22,12 @@ public class MailMessage {
         this.address = address;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getContext() {

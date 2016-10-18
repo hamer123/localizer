@@ -13,4 +13,5 @@ public interface AreaEventNetworkRepository extends JpaRepository<AreaEventNetwo
 	List<AreaEventNetwork> findByAreaId(long id);
 	List<AreaEventNetwork> findAllWhereMailSendIsTrue();
 	List<AreaEventNetwork> findByAreaIdAndDate(long id, Date from);
+	List<AreaEventNetwork> findBySendMailAndAttemptToSendLowerThan(boolean sendMail, int attemptToSend);
 }
