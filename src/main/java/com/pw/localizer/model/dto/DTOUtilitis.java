@@ -2,17 +2,11 @@ package com.pw.localizer.model.dto;
 
 import org.hibernate.LazyInitializationException;
 import org.hibernate.collection.internal.AbstractPersistentCollection;
-import org.hibernate.collection.spi.PersistentCollection;
-import org.hibernate.proxy.HibernateProxy;
-
 import javax.persistence.Entity;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-/**
- * Created by Patryk on 2016-09-28.
- */
 public class DTOUtilitis {
 
     public static  <T> T convertHibernateProxyToNull(T obj){
@@ -70,11 +64,4 @@ public class DTOUtilitis {
         }
         return collection;
     }
-
-//    private <T extends AbstractPersistentCollection> T convertCollectionHibernateProxyToNull(T abstractPersistentCollection){
-//        for(Object obj : abstractPersistentCollection){
-//            convertHibernateProxyToNull(obj);
-//        }
-//        return abstractPersistentCollection;
-//    }
 }

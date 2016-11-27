@@ -105,7 +105,7 @@ public class CreateAccountController implements Serializable{
 			UserSetting setting = new UserSetting();
 			setting.setDefaultLatitude(latitude);
 			setting.setDefaultLongitude(longtitude);
-		    setting.setgMapZoom(googleMapController.getZoom());
+		    setting.setGMapZoom(googleMapController.getZoom());
 		    user.setUserSetting(setting);
 			ImageFileUpload imageFileUpload = this.getAvatarUploadController().getImageFileUpload();
 			//tworzenie avatara jesli wybrano upload

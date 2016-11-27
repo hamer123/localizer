@@ -30,26 +30,17 @@ public class AreaMessageMailRepositoryImpl implements AreaMessageMailRepository{
 
 	@Override
 	public void delete(AreaMessageMail entity) {
-		// TODO Auto-generated method stub
-		
+		em.remove(entity);
 	}
 
 	@Override
 	public AreaMessageMail findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.find(AreaMessageMail.class, id);
 	}
 
 	@Override
 	public List<AreaMessageMail> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return em.createQuery("SELECT amm FROM AreaMessageMail  amm", AreaMessageMail.class)
+				.getResultList();
 	}
-
-	@Override
-	public int updateAcceptById(long id, boolean accept) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

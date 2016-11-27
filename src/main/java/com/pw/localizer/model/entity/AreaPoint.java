@@ -1,5 +1,8 @@
 package com.pw.localizer.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 @Entity
 public class AreaPoint {
     @Id
@@ -34,29 +39,4 @@ public class AreaPoint {
 	}
 
 	public AreaPoint() {}
-
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public int getNumber() {
-		return number;
-	}
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	public double getLat() {
-		return lat;
-	}
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-	public double getLng() {
-		return lng;
-	}
-	public void setLng(double lng) {
-		this.lng = lng;
-	}
 }

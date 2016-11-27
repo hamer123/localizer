@@ -2,6 +2,8 @@ package com.pw.localizer.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import javax.persistence.Embedded;
@@ -13,6 +15,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 @Entity
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.WRAPPER_OBJECT, property="type")
 @JsonSubTypes({
@@ -26,20 +30,4 @@ public abstract class CellInfoMobile implements Serializable{
     
 	@Embedded
 	private SignalStrength signalStrength;
-	
-	public SignalStrength getSignalStrength() {
-		return signalStrength;
-	}
-
-	public void setSignalStrength(SignalStrength signalStrength) {
-		this.signalStrength = signalStrength;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 }

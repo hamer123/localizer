@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.pw.localizer.model.session.LocalizerSession;
 
-@WebFilter(urlPatterns={
-	"/api/**"
-})
+@WebFilter(urlPatterns = { "/app/*" })
 public class JsfRootFilter implements Filter {
 	private static final String LOGIN_URI = "/login.xhtml";
 

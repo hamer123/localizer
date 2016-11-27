@@ -7,6 +7,4 @@ import com.pw.localizer.repository.JpaRepository;
 
 @Local
 public interface AreaMessageMailRepository extends JpaRepository<AreaMessageMail, Long> {
-
-	int updateAcceptById(long id, boolean accept);
 }

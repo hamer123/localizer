@@ -12,6 +12,7 @@ import com.pw.localizer.model.enums.AreaFollow;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @NamedEntityGraphs({
 	@NamedEntityGraph(name = "graph.Area.areaPoints",
 			attributeNodes = {@NamedAttributeNode(value = "points", subgraph = "points")})

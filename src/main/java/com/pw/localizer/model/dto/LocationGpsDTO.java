@@ -1,10 +1,10 @@
 package com.pw.localizer.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * Created by Patryk on 2016-10-02.
- */
-
+@Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationGpsDTO extends LocationDTO {}

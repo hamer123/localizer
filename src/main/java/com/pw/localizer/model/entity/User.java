@@ -6,15 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.xml.bind.annotation.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pw.localizer.model.enums.Role;
+import lombok.Getter;
+import lombok.Setter;
 
 //javax.persistence.loadgraph
 @Entity
+@Getter
+@Setter
 @NamedEntityGraphs({
 	@NamedEntityGraph(name = "User.graph.areas",
 			          attributeNodes = {@NamedAttributeNode(value = "areas", subgraph = "points")},
@@ -102,103 +102,5 @@ public class User implements Serializable {
 		this.login = login;
 		this.email = email;
 		this.phone = phone;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public LocationGPS getLastLocationGPS() {
-		return lastLocationGPS;
-	}
-
-	public void setLastLocationGPS(LocationGPS lastLocationGPS) {
-		this.lastLocationGPS = lastLocationGPS;
-	}
-
-	public Set<Area> getAreas() {
-		return areas;
-	}
-
-	public void setAreas(Set<Area> polygons) {
-		this.areas = polygons;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public LocationNetwork getLastLocationNetworkNaszaUsluga() {
-		return lastLocationNetworkNaszaUsluga;
-	}
-
-	public void setLastLocationNetworkNaszaUsluga(
-			LocationNetwork lastLocationNetworkNaszaUsluga) {
-		this.lastLocationNetworkNaszaUsluga = lastLocationNetworkNaszaUsluga;
-	}
-
-	public LocationNetwork getLastLocationNetworObcaUsluga() {
-		return lastLocationNetworObcaUsluga;
-	}
-
-	public void setLastLocationNetworObcaUsluga(
-			LocationNetwork lastLocationNetworObcaUsluga) {
-		this.lastLocationNetworObcaUsluga = lastLocationNetworObcaUsluga;
-	}
-
-	public UserSetting getUserSetting() {
-		return userSetting;
-	}
-
-	public void setUserSetting(UserSetting userSetting) {
-		this.userSetting = userSetting;
-	}
-
-	public Avatar getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(Avatar avatar) {
-		this.avatar = avatar;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
 	}
 }

@@ -4,9 +4,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.pw.localizer.model.enums.LocalizationService;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@Entity
+@Getter
+@Setter
 @NamedQueries(value = {
 		@NamedQuery(name = "findByUserLoginAndDateFromAndDateToAndServiceEqualsNaszOrderByDateDesc",
 				   query = "SELECT l FROM LocationNetwork l WHERE l.user.login =:login AND "
@@ -19,43 +24,13 @@ import java.io.Serializable;
 						 + "l.localizationService = com.pw.localizer.model.enums.LocalizationService.OBCY "
 						 + "ORDER BY l.date DESC")
 })
-@Entity
 public class LocationNetwork extends Location implements Serializable{
-	@NotNull
 	@OneToOne( orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private CellInfoMobile cellInfoMobile;
 
-	@NotNull
 	@OneToOne(orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private WifiInfo wifiInfo;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(updatable = false)
 	private LocalizationService localizationService;
-
-	public CellInfoMobile getCellInfoMobile() {
-		return cellInfoMobile;
-	}
-
-	public void setCellInfoMobile(CellInfoMobile cellInfoMobile) {
-		this.cellInfoMobile = cellInfoMobile;
-	}
-
-	public WifiInfo getWifiInfo() {
-		return wifiInfo;
-	}
-
-	public void setWifiInfo(WifiInfo infoWifi) {
-		this.wifiInfo = infoWifi;
-	}
-
-	public LocalizationService getLocalizationService() {
-		return localizationService;
-	}
-
-	public void setLocalizationService(LocalizationService localizationService) {
-		this.localizationService = localizationService;
-	}
-
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" metadata-complete="false" version="3.1">
+
+    <!-- JSF Config -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -12,6 +14,14 @@
     <welcome-file-list>
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
+    <session-config>
+        <!-- Session idle timeout in min. -->
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/login.xhtml?sessionTimeout=true</location>
+    </error-page>
 
 	<!-- Restfull JAX-RS Resteasy scan -->
 	<context-param>

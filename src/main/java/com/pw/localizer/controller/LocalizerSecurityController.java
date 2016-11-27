@@ -20,31 +20,26 @@ public class LocalizerSecurityController implements Serializable{
 
 	private String login;
 	private String password;
-
-	Logger logger = Logger.getLogger(LocalizerSession.class);
 	
 	public String login(){
 		try{
 			User user = userRepository.findByLoginAndPassword(login,password);
 			localizerSession.setUser(user);
-			return "/api/location.xhtml?faces-redirect=true";
+			return "/app/location.xhtml?faces-redirect=true";
 		} catch (Exception e){
 			JsfMessageBuilder.errorMessage("Invalid or unknown credentials");
-			logger.info("Nie udana proba logowania na konto " + login);
 			return null;
 		}
 	}
 	
-	
 	public String logout(){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		logger.debug("logout successful for " + login);
 		return "/login.xhtml?faces-redirect=true";
 	}
 	
 	public String redirectIfAlreadyLogged(){
 		if(localizerSession.isLogged())
-			return "/api/logout.xhtml?faces-redirect=true";
+			return "/app/logout.xhtml?faces-redirect=true";
 		return null;
 	}
 

@@ -1,6 +1,6 @@
 package com.pw.localizer.model.entity;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 @NamedQueries(value = {
 		@NamedQuery(name = "findByUserLoginAndDateYoungerThanOlderThanOrderByDateDesc", 
@@ -8,5 +8,4 @@ import java.io.Serializable;
 })
 @Entity
 public class LocationGPS extends Location {
-
 }

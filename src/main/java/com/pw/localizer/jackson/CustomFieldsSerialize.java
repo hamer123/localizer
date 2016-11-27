@@ -4,15 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.apache.commons.lang.reflect.FieldUtils;
-
-
+import org.jboss.logging.Logger;
+import javax.inject.Inject;
 import java.io.IOException;
 
-/**
- * Created by Patryk on 2016-10-29.
- */
-
 public class CustomFieldsSerialize extends JsonSerializer<CustomFields> {
+    @Inject
+    private Logger logger;
 
     @Override
     public void serialize(CustomFields customFields, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
@@ -23,7 +21,8 @@ public class CustomFieldsSerialize extends JsonSerializer<CustomFields> {
             }
             jsonGenerator.writeEndObject();
         }  catch (IllegalAccessException e) {
-            //TODO
+            //should never occur
+            logger.error("Should never occur! something is wrong", e);
         }
     }
 }

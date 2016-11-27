@@ -93,7 +93,7 @@ public class UserGoogleMapController implements Serializable{
             zoom = localizerProperties.GoogleMapDefault().DEFAULT_ZOOM;
         } else {
             UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
-            this.zoom = userSetting.getgMapZoom();
+            this.zoom = userSetting.getGMapZoom();
             this.center = GoogleMap.center(userSetting.getDefaultLatitude(), userSetting.getDefaultLongitude());
             this.overlayCreateFilter.setCreateActivePolygon(true);
             this.overlayCreateFilter.setCreateNotActivePolygon(true);
