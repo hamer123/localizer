@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.pw.localizer.model.entity.Address;
-import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.enums.Provider;
 
 import javax.validation.constraints.NotNull;
@@ -16,7 +15,7 @@ import java.util.Date;
 
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.WRAPPER_OBJECT, property="type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "gps", value = LocationGPSDTO.class),
+    @JsonSubTypes.Type(name = "gps", value = LocationGpsDTO.class),
     @JsonSubTypes.Type(name = "network", value = LocationNetworkDTO.class)
 })
 @JsonIgnoreProperties(ignoreUnknown = true)

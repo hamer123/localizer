@@ -14,38 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.pw.localizer.model.session.LocalizerSession;
 
-
-/**
- * Servlet Filter implementation class JsfRootFilter
- */
-
-
 @WebFilter(urlPatterns={
-	"/app/*"
+	"/api/**"
 })
 public class JsfRootFilter implements Filter {
-	private final String LOGIN_URI = "/login.xhtml";
+	private static final String LOGIN_URI = "/login.xhtml";
 
 	@Inject
 	private LocalizerSession localizerSession;
 
-    /**
-     * Default constructor. 
-     */
-    public JsfRootFilter() {
-        // TODO Auto-generated constructor stub
-    }
+    public JsfRootFilter() {}
 
-	/**
-	 * @see Filter#destroy()
-	 */
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
+	public void destroy() {}
 
-	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
@@ -54,11 +35,6 @@ public class JsfRootFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
-	/**
-	 * @see Filter#init(FilterConfig)
-	 */
-	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
-	}
+	public void init(FilterConfig fConfig) throws ServletException {}
 
 }

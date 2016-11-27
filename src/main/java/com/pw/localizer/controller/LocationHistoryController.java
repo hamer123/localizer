@@ -13,10 +13,10 @@ import javax.inject.Named;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolylineFactory;
 import com.pw.localizer.controller.google.GoogleMapController;
-import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.LocalizationService;
 import org.jboss.logging.Logger;
 
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.jsf.JsfMessageBuilder;
 import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationGPS;
@@ -65,7 +65,7 @@ public class LocationHistoryController implements Serializable{
 	private Provider provider;
 
 	/** Choose service */
-	private LocalizerService localizerService;
+	private LocalizationService localizationService;
 
 	/** Selected location */
 	private Location location;
@@ -122,15 +122,11 @@ public class LocationHistoryController implements Serializable{
 	}
 
 	Marker createStart(Location location){
-		Marker startMarker = markerFactory.createMarker(location);
-		startMarker.setIcon(markerFactory.START_ROUTE_ICON_URL);
-		return startMarker;
+		return markerFactory.createStartRouteMarker(location);
 	}
 
 	Marker createEnd(Location location){
-		Marker endMarker = markerFactory.createMarker(location);
-		endMarker.setIcon(markerFactory.END_ROUTE_ICON_URL);
-		return endMarker;
+		return markerFactory.createEndRouteMarker(location);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +146,7 @@ public class LocationHistoryController implements Serializable{
 	}
 	
 	private List<LocationNetwork> findLocationNetwork(){
-		if(localizerService == LocalizerService.NASZ){
+		if(localizationService == LocalizationService.NASZ){
 			return locationNetworkRepository.
 					findByLoginAndDateForServiceNaszOrderByDate(login, from, to, maxRecords);
 		} else {
@@ -172,8 +168,8 @@ public class LocationHistoryController implements Serializable{
 		return Provider.values();
 	}
 	
-	public LocalizerService[] localizationServices(){
-		return LocalizerService.values();
+	public LocalizationService[] localizationServices(){
+		return LocalizationService.values();
 	}
 	
 	public int getMaxRecords() {
@@ -224,12 +220,12 @@ public class LocationHistoryController implements Serializable{
 	public void setProvider(Provider provider) {
 		this.provider = provider;
 	}
-	public LocalizerService getLocalizerService() {
-		return localizerService;
+	public LocalizationService getLocalizationService() {
+		return localizationService;
 	}
 
-	public void setLocalizerService(LocalizerService localizerService) {
-		this.localizerService = localizerService;
+	public void setLocalizationService(LocalizationService localizationService) {
+		this.localizationService = localizationService;
 	}
 
 	public LocationNetworkRepository getLocationNetworkRepository() {

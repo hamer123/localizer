@@ -11,11 +11,13 @@ import com.pw.localizer.controller.google.GoogleMapController;
 import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.service.area.AreaPointService;
 import com.pw.localizer.service.area.AreaService;
+import lombok.Getter;
+import lombok.Setter;
 import org.jboss.logging.Logger;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.Polygon;
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.jsf.JsfMessageBuilder;
 import com.pw.localizer.factory.PolygonFactory;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.Area;
@@ -26,6 +28,8 @@ import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.repository.area.AreaPointRepository;
 import com.pw.localizer.repository.user.UserRepository;
 
+@Getter
+@Setter
 @ViewScoped
 @Named(value= "areaController")
 public class AreaController implements Serializable{
@@ -253,75 +257,4 @@ public class AreaController implements Serializable{
 		return "Aktywuj";
 	}
 
-	public List<Area> getAreas() {
-		return areas;
-	}
-
-	public Area getArea() {
-		return area;
-	}
-
-	public void setArea(Area area) {
-		this.area = area;
-	}
-
-	public LocalizerSession getLocalizerSession() {
-		return localizerSession;
-	}
-
-	public void setLocalizerSession(LocalizerSession localizerSession) {
-		this.localizerSession = localizerSession;
-	}
-
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
-	public AreaRepository getAreaRepository() {
-		return areaRepository;
-	}
-
-	public void setAreaRepository(AreaRepository areaRepository) {
-		this.areaRepository = areaRepository;
-	}
-
-	public AreaPointRepository getPolygonPointRepository() {
-		return polygonPointRepository;
-	}
-
-	public void setPolygonPointRepository(AreaPointRepository polygonPointRepository) {
-		this.polygonPointRepository = polygonPointRepository;
-	}
-
-	public GoogleMapController getGoogleMapController() {
-		return googleMapController;
-	}
-
-	public void setGoogleMapController(GoogleMapController googleMapController) {
-		this.googleMapController = googleMapController;
-	}
-
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-	public Polygon getPolygon() {
-		return polygon;
-	}
-
-	public void setPolygon(Polygon polygon) {
-		this.polygon = polygon;
-	}
-
-	public void setAreas(List<Area> areas) {
-		this.areas = areas;
-	}
 }

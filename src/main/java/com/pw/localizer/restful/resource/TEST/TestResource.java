@@ -2,10 +2,8 @@ package com.pw.localizer.restful.resource.TEST;
 
 import com.pw.localizer.model.dto.AreaDTO;
 import com.pw.localizer.model.dto.DTOUtilitis;
-import com.pw.localizer.model.entity.Area;
-import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.query.LocationSearch;
+import com.pw.localizer.model.entity.*;
+import com.pw.localizer.model.enums.LocalizationService;
 import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.location.LocationNetworkRepository;
@@ -23,7 +21,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Patryk on 2016-09-24.
@@ -86,20 +85,20 @@ public class TestResource {
 //    @Path("/test4")
 //    @Produces(MediaType.APPLICATION_JSON)
 //    public Response getFour(){
-//        return Response.ok(LocationGPSDTO.convertToLocationGpsDTO(locationGPSRepository.findById(67L))).build();
+//        return Response.ok(LocationGpsDTO.convertToLocationGpsDTO(locationGPSRepository.findById(67L))).build();
 //    }
 
-    @GET
-    @Path("/test5")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getFive(){
-        LocationSearch locationSearch = new LocationSearch();
-        locationSearch.setFromDate(new Date());
-        locationSearch.setToDate(new Date());
-        locationSearch.setLogin("hamer123");
-
-        return Response.ok(locationSearch).build();
-    }
+//    @GET
+//    @Path("/test5")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getFive(){
+//        LocationSearch locationSearch = new LocationSearch();
+//        locationSearch.setFromDate(new Date());
+//        locationSearch.setToDate(new Date());
+//        locationSearch.setLogin("hamer123");
+//
+//        return Response.ok(locationSearch).build();
+//    }
 
     @GET
     @Path("/test6")
@@ -123,6 +122,20 @@ public class TestResource {
                 .getSingleResult();
         Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
         return Response.ok(mapper.map(area,AreaDTO.class)).build();
+    }
+
+    @GET
+    @Path("/test8")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response eight(){
+        List<AreaEvent> areaEventList = entityManager.createQuery("SELECT e FROM AreaEvent e WHERE TYPE(e) IN (AreaEventGPS)", AreaEvent.class).getResultList();
+        areaEventList = entityManager.createQuery("SELECT e FROM AreaEvent e WHERE TYPE(e) IN (AreaEventNetwork)", AreaEvent.class).getResultList();
+        areaEventList = entityManager.createQuery("SELECT e FROM AreaEventNetwork  e WHERE e.locationNetwork.localizationService <> :service", AreaEvent.class)
+                .setParameter("service", LocalizationService.NASZ)
+                .getResultList();
+        areaEventList = entityManager.createQuery("SELECT e FROM AreaEvent e WHERE TYPE(e) IN(AreaEventGPS)", AreaEvent.class)
+                .getResultList();
+        return Response.ok(areaEventList.stream().map(e -> e.getId()).collect(Collectors.toList())).build();
     }
 
 }

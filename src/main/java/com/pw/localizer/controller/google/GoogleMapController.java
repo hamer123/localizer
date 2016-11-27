@@ -18,7 +18,7 @@ import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polygon;
 
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.jsf.JsfMessageBuilder;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.singleton.LocalizerProperties;
@@ -49,8 +49,8 @@ public class GoogleMapController implements Serializable{
 		streetVisible = true;
 
 		if(localizerSession == null || localizerSession.getUser() == null){
-			center = (String) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_CENTER);
-			zoom = (int) localizerProperties.getPropertie(LocalizerProperties.GOOGLEMAP_DEFAULT_ZOOM);
+			center = localizerProperties.GoogleMapDefault().DEFAULT_CENTER;
+			zoom = localizerProperties.GoogleMapDefault().DEFAULT_ZOOM;
 		} else {
 			UserSetting userSetting = this.localizerSession.getUser().getUserSetting();
 			this.zoom = userSetting.getgMapZoom();

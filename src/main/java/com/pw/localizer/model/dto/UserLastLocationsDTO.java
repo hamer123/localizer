@@ -1,9 +1,6 @@
 package com.pw.localizer.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pw.localizer.model.entity.LocationGPS;
-import com.pw.localizer.model.entity.LocationNetwork;
-import com.pw.localizer.model.entity.User;
 
 /**
  * Created by Patryk on 2016-09-24.
@@ -13,7 +10,7 @@ import com.pw.localizer.model.entity.User;
 public class UserLastLocationsDTO {
     private LocationNetworkDTO lastLocationNetworkNasz;
     private LocationNetworkDTO lastLocationNetworkObcy;
-    private LocationGPSDTO lastLocationGps;
+    private LocationGpsDTO lastLocationGps;
 
     public LocationNetworkDTO getLastLocationNetworkNasz() {
         return lastLocationNetworkNasz;
@@ -31,11 +28,11 @@ public class UserLastLocationsDTO {
         this.lastLocationNetworkObcy = lastLocationNetworkObcy;
     }
 
-    public LocationGPSDTO getLastLocationGps() {
+    public LocationGpsDTO getLastLocationGps() {
         return lastLocationGps;
     }
 
-    public void setLastLocationGps(LocationGPSDTO lastLocationGps) {
+    public void setLastLocationGps(LocationGpsDTO lastLocationGps) {
         this.lastLocationGps = lastLocationGps;
     }
 }

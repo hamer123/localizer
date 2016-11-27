@@ -165,7 +165,7 @@ public class GoogleMap implements MapModel, Serializable{
 	}
 
 	public static String center(Location location){
-		return   location.getLatitude()
+		return location.getLatitude()
 			   + ", "
 			   + location.getLongitude();
 	}

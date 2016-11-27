@@ -1,7 +1,7 @@
 package com.pw.localizer.identyfikator;
 
 import com.pw.localizer.identyfikator.exception.OverlayUUIDExpcetion;
-import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.LocalizationService;
 import com.pw.localizer.model.enums.OverlayType;
 import com.pw.localizer.model.enums.Provider;
 
@@ -30,15 +30,15 @@ public final class OverlayUUIDConverter {
     public static String regex(OverlayUUIDRaw uuidRaw){
         StringBuilder builderRegex = new StringBuilder();
 
-        builderRegex.append(uuidRaw.getOverlayType() == null ? "*" : uuidRaw.getOverlayType());
+        builderRegex.append(uuidRaw.getOverlayType() == null ? ".*" : uuidRaw.getOverlayType());
         builderRegex.append("-");
-        builderRegex.append(uuidRaw.getProvider() == null ? "*" : uuidRaw.getProvider());
+        builderRegex.append(uuidRaw.getProvider() == null ? ".*" : uuidRaw.getProvider());
         builderRegex.append("-");
-        builderRegex.append(uuidRaw.getLocalizationService() == null ? "*" : uuidRaw.getLocalizationService());
+        builderRegex.append(uuidRaw.getLocalizationService() == null ? ".*" : uuidRaw.getLocalizationService());
         builderRegex.append("-");
-        builderRegex.append(uuidRaw.getLogin() == null ? "*" : uuidRaw.getLogin());
+        builderRegex.append(uuidRaw.getLogin() == null ? ".*" : uuidRaw.getLogin());
         builderRegex.append("-");
-        builderRegex.append(uuidRaw.getId() == null ? "*" : uuidRaw.getId());
+        builderRegex.append(uuidRaw.getId() == null ? ".*" : uuidRaw.getId());
 
         return builderRegex.toString();
     }
@@ -48,7 +48,7 @@ public final class OverlayUUIDConverter {
         return OverlayUUIDRaw.OverlayUUIDRawBuilder.instance()
                 .overlay(parts[0].equals("any") ? null : OverlayType.valueOf(parts[0]))
                 .provider(parts[1].equals("any") ? null : Provider.valueOf(parts[1]))
-                .localizationService(parts[2].equals("any") ? null : LocalizerService.valueOf(parts[2]))
+                .localizationService(parts[2].equals("any") ? null : LocalizationService.valueOf(parts[2]))
                 .login(parts[3].equals("any") ? null : parts[3])
                 .id(parts[4].equals("any") ? null : Long.valueOf(parts[4]))
                 .build();
@@ -84,9 +84,9 @@ public final class OverlayUUIDConverter {
         return parts[1].equals("any") ? null : Provider.valueOf(parts[1]);
     }
 
-    public static LocalizerService extractService(String uuid){
+    public static LocalizationService extractService(String uuid){
         String[] parts = splitUUID(uuid);
-        return parts[2].equals("any") ? null : LocalizerService.valueOf(parts[2]);
+        return parts[2].equals("any") ? null : LocalizationService.valueOf(parts[2]);
     }
 
     public static String extractLogin(String uuid){

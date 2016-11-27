@@ -14,7 +14,6 @@ import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.entity.User;
 
 @Singleton
-@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class RestSessionManager {
 	Logger logger = Logger.getLogger(RestSessionManager.class);
 	private Map<String,RestSession> sessions = new ConcurrentHashMap<String,RestSession>();

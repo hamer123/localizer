@@ -3,9 +3,10 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 
-<p:dialog widgetVar="user-advance-search" width="600" height="500" resizable="false" modal="true" dynamic="true"
+<p:dialog widgetVar="user-advance-search" width="600" height="500" resizable="false" modal="true"
           hideEffect="drop" showEffect="slide" header="#{msg['user.advance.search']}">
-    <p:ajax event="close" update=":#{p:component('founded-users')}" listener="#{location.advanceSearchFoundedUsers.clear}"/>
+    <p:ajax event="close" update=":#{p:component('founded-users')}"
+            listener="#{location.advanceSearchFoundedUsers.clear}"/>
     <h:form>
         <h:panelGrid columns="2" style="margin: 0 auto;" cellspacing="5">
 
@@ -18,7 +19,7 @@
             <p:outputLabel value="#{msg['phone']}"/>
             <p:inputText value="#{location.userAdvanceSearch.phone}"/>
 
-            <p:commandButton value="#{msg['search']}" actionListener="#{location.onUserAdvanceSearch()}" update=":#{p:component('founded-users')}"/>
+            <p:commandButton value="#{msg['search']}" action="#{location.onUserAdvanceSearch()}" update=":#{p:component('founded-users')}"/>
 
         </h:panelGrid>
         <h:panelGrid style="margin: 0 auto;">
@@ -37,8 +38,8 @@
                 </p:column>
 
                 <p:column headerText="#{msg['add.to.follow']}">
-                    <p:commandButton value="#{msg['add']}" actionListener="#{location.addUserToFollow(user.login)}"
-                                     update=":#{p:component('follow-users-table')} :#{p:component('growl')} :#{p:component('gmap')}"/>
+                    <p:commandButton value="#{msg['choose']}" action="#{location.advanceSearchAddUser(user.login)}" oncomplete="PF('user-advance-search').hide()"
+                                     update=":#{p:component('findUserByLogin')} :#{p:component('growl')} :#{p:component('gmap')}"/>
                 </p:column>
                 
             </p:dataTable>

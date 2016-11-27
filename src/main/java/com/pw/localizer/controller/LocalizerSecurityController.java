@@ -5,7 +5,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.jboss.logging.Logger;
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.jsf.JsfMessageBuilder;
 import com.pw.localizer.model.session.LocalizerSession;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.repository.user.UserRepository;
@@ -27,10 +27,10 @@ public class LocalizerSecurityController implements Serializable{
 		try{
 			User user = userRepository.findByLoginAndPassword(login,password);
 			localizerSession.setUser(user);
-			return "/app/location.xhtml?faces-redirect=true";
+			return "/api/location.xhtml?faces-redirect=true";
 		} catch (Exception e){
 			JsfMessageBuilder.errorMessage("Invalid or unknown credentials");
-			logger.info("[LocalizerSecurityController] Nie udana proba logowania na konto " + login);
+			logger.info("Nie udana proba logowania na konto " + login);
 			return null;
 		}
 	}
@@ -38,13 +38,13 @@ public class LocalizerSecurityController implements Serializable{
 	
 	public String logout(){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		logger.debug("[LocalizerSecurityController] logout successful for " + login);
+		logger.debug("logout successful for " + login);
 		return "/login.xhtml?faces-redirect=true";
 	}
 	
 	public String redirectIfAlreadyLogged(){
 		if(localizerSession.isLogged())
-			return "/app/logout.xhtml?faces-redirect=true";
+			return "/api/logout.xhtml?faces-redirect=true";
 		return null;
 	}
 

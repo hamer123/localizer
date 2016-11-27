@@ -1,19 +1,15 @@
 package com.pw.localizer.job;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.ejb.LocalBean;
-import javax.ejb.Schedule;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.InvocationContext;
-
 import com.pw.localizer.model.entity.AreaEvent;
+import com.pw.localizer.repository.area.event.AreaEventRepository;
+import com.pw.localizer.service.area.event.AreaEventService;
 import org.jboss.logging.Logger;
-
 import com.pw.localizer.factory.AreaEventFactory;
 import com.pw.localizer.model.entity.Area;
 import com.pw.localizer.model.entity.Location;
@@ -23,8 +19,7 @@ import com.pw.localizer.model.enums.AreaMailMessageMode;
 import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.singleton.RestSessionManager;
 
-@Stateless
-@LocalBean
+@Singleton
 public class AreaEventWorker {
 	@Inject
 	private RestSessionManager restSessionManager;
@@ -32,6 +27,8 @@ public class AreaEventWorker {
 	private AreaRepository areaRepository;
 	@Inject
 	private AreaEventFactory areaEventFactory;
+	@Inject
+	private AreaEventService areaEventService;
 	@Inject
 	private Logger logger;
 
@@ -67,19 +64,16 @@ public class AreaEventWorker {
 	@AroundTimeout
 	public Object log(InvocationContext ic) throws Exception {
 		long time = System.currentTimeMillis();
-		try{
-			logger.info("job has started");
-			return ic.proceed();
-		} finally{
-			logger.info("job has ended after " + (System.currentTimeMillis() - time) + "ms");
-		}
+		Object result = ic.proceed();
+		logger.info("job has ended after " + (System.currentTimeMillis() - time) + "ms");
+		return result;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private AreaEvent createAreaEvent(Location location, Area area){
 		AreaEvent areaEvent = areaEventFactory.create(area, location);
 		location.setEventCheck(true);
-		return areaEvent;
+		return areaEventService.create(areaEvent);
 	}
 	
 	private List<Area> getActiveArea(){

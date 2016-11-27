@@ -13,6 +13,7 @@ import javax.interceptor.InvocationContext;
 
 @Interceptor @ErrorLog
 public class ErrorInterceptor {
+
     @Inject
     private Logger logger;
 

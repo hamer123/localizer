@@ -1,6 +1,6 @@
 package com.pw.localizer.identyfikator;
 
-import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.LocalizationService;
 import com.pw.localizer.model.enums.OverlayType;
 import com.pw.localizer.model.enums.Provider;
 
@@ -12,7 +12,7 @@ public class OverlayUUIDRaw {
     private String login;
     private OverlayType overlayType;
     private Provider provider;
-    private LocalizerService localizationService;
+    private LocalizationService localizationService;
 
     public boolean matches(String uuid){
         String uuidThis = OverlayUUIDConverter.uuid(this);
@@ -39,7 +39,7 @@ public class OverlayUUIDRaw {
         return provider;
     }
 
-    public LocalizerService getLocalizationService() {
+    public LocalizationService getLocalizationService() {
         return localizationService;
     }
 
@@ -70,7 +70,7 @@ public class OverlayUUIDRaw {
             return this;
         }
 
-        public OverlayUUIDRawBuilder localizationService(LocalizerService localizationService){
+        public OverlayUUIDRawBuilder localizationService(LocalizationService localizationService){
             this.overlayUUIDRaw.localizationService = localizationService;
             return this;
         }

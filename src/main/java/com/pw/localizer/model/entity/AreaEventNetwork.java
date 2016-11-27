@@ -1,11 +1,10 @@
 package com.pw.localizer.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
+import javax.persistence.*;
+
 @NamedQueries(value ={
 		@NamedQuery(name  = "AreaEventNetwork.findByAreaId",
 				query = "SELECT a FROM AreaEventNetwork a WHERE a.area.id = :id"),
@@ -18,27 +17,30 @@ import javax.persistence.OneToOne;
 		@NamedQuery(name  = "AreaEventNetwork.findByAreaIdAndDate",
 				query = "SELECT a FROM AreaEventNetwork a WHERE a.area.id =:id AND a.date > :from"),
 		@NamedQuery(name = "AreaEventNetwork.findBySendMailAndAttemptToSendLowerThan",
-				query = "SELECT a FROM AreaEventNetwork a WHERE a.sendMail =:sendMail AND a.attemptToSend <:attemptToSend")
+				query = "SELECT a FROM AreaEventNetwork a WHERE a.sendMail =:sendMail AND a.attemptToSend <:attemptToSend"),
+		@NamedQuery(name = "AreaEventNetwork.deleteByArea",
+				query = "DELETE FROM AreaEventNetwork aen WHERE aen.area.id =:areaId"),
+		@NamedQuery(name = "AreaEventNetwork.deleteByAreaAndLocalizerService",
+				query = "DELETE FROM AreaEventNetwork aen WHERE aen.area.id =:areaId AND aen.locationNetwork.localizationService =:localizerService")
 })
+@Entity
+@Getter
+@Setter
 public class AreaEventNetwork extends AreaEvent {
 
 	@OneToOne
+	@JoinColumn
     private LocationNetwork locationNetwork;
-    
-    public AreaEventNetwork() {
+
+	public AreaEventNetwork() {
 	}
-    
+
     public AreaEventNetwork(LocationNetwork locationNetwork){
     	this.locationNetwork = locationNetwork;
     }
-
-	public void setLocationNetwork(LocationNetwork locationNetwork) {
-		this.locationNetwork = locationNetwork;
-	}
 
 	@Override
 	public Location getLocation() {
 		return locationNetwork;
 	}
-
 }

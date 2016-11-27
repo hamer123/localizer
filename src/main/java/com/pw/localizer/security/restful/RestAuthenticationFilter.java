@@ -1,6 +1,7 @@
 package com.pw.localizer.security.restful;
 
 import com.pw.localizer.model.session.RestSession;
+import com.pw.localizer.restful.provider.filter.LogRequest;
 import com.pw.localizer.singleton.RestSessionManager;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import javax.annotation.Priority;

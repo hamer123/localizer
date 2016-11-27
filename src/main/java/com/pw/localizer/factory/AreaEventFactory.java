@@ -1,70 +1,27 @@
 package com.pw.localizer.factory;
 
-import java.util.Date;
 import java.util.UUID;
-
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.entity.AreaEvent;
-import com.pw.localizer.model.enums.AreaFollow;
 import com.pw.localizer.model.enums.AreaMailMessageMode;
-import org.primefaces.push.annotation.Singleton;
+import com.pw.localizer.utilitis.AreaEventMessageBuilder;
 
-@Singleton
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public class AreaEventFactory {
 
 	public AreaEvent create(Area area, Location location) {
-		AreaEvent areaEvent = getAreaEventBasedOnLocationType(location);
+		AreaEvent areaEvent = createInstance(location);
 		areaEvent.setArea(area);
-		areaEvent.setDate(new Date());
+		areaEvent.setDate(location.getDate());
 		areaEvent.setSendMail(shouldSendMailMessage( area.getAreaMessageMail()));
-		areaEvent.setMessage(createAreaEventMessage(area, location));
+		areaEvent.setMessage(AreaEventMessageBuilder.create(area, location));
 		areaEvent.setAccessToken(UUID.randomUUID().toString());
 		return areaEvent;
 	}
-//
-//	public String createUrl(AreaEvent areaEvent){
-//		return   "http://localhost:8080/localizer/areaEvent/event.xhtml?"
-//			   + "id="
-//			   + areaEvent.getId()
-//			   + "&provider="
-//			   + areaEvent.getLocation().getProviderType();
-//	}
-
-	private String createAreaEventMessage(Area area, Location location) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(area.getTarget().getLogin())
-		       .append( getMessagePartFollowType(area) )
-		       .append(" dnia ")
-		       .append(location.getDate())
-		       .append(" (lokalizacja za pomoca ")
-		       .append(getMessagePartLocationProvider(location))
-		       .append(" )");
-		return builder.toString();
-	}
 	
-	private String getMessagePartLocationProvider(Location location) {
-		String provider = location.getProviderType().toString();
-		if(location instanceof LocationNetwork) {
-			LocationNetwork locationNetwork = (LocationNetwork)location;
-			provider += " ";
-			provider += locationNetwork.getLocalizerService();
-		}
-		return provider;
-	}
-	
-	private String getMessagePartFollowType(Area area) {
-		if(area.getAreaFollowType() == AreaFollow.INSIDE) {
-			return " opuscil obszar sledzenia ( "
-					+ area.getName()
-					+ " )";
-		} else {
-			return " wszedl do obszaru sledzenia ( "
-					+ area.getName()
-					+ " )";
-		}
-	}
-	
-	private AreaEvent getAreaEventBasedOnLocationType(Location location) {
+	private AreaEvent createInstance(Location location) {
 		if(location instanceof LocationNetwork) {
 			return new AreaEventNetwork((LocationNetwork) location);
 		} else if(location instanceof LocationGPS) {

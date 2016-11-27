@@ -33,19 +33,11 @@ public class UserServiceImp implements UserService, Serializable{
     private Logger logger;
 
     @Override
-    public User getUserFetchAreas(String login) {
+    public User getUserFetchArea(String login) {
         User user = userRepository.findByLogin(login);
         Set<Area> areas = user.getAreas();
         for(Area area : areas) area.getPoints().size();
         return user;
-    }
-
-    @Override
-    public List<Area> getUserAreasFetchAreaPoints(long userId) {
-        List<Area>areas = areaRepository.findByProviderId(userId);
-        for(Area area : areas)
-            area.getPoints().size();
-        return areas;
     }
 
     @Override
@@ -54,15 +46,9 @@ public class UserServiceImp implements UserService, Serializable{
     }
 
     @Override
-    public User updatePartial(User _user) {
-        User user = userRepository.findById(_user.getId());
-        user.setPassword(_user.getPassword());
-        return user;
-    }
-
-    @Override
     public User create(User user) {
         user.setRoles(createUserRoles());
+        user.setAvatar(null);
         userRepository.create(user);
         return user;
     }

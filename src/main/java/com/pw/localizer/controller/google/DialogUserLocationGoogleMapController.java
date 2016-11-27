@@ -6,8 +6,7 @@ import com.pw.localizer.model.entity.LocationNetwork;
 
 import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.entity.Location;
-import com.pw.localizer.model.enums.LocalizerService;
-import com.pw.localizer.qualifier.DialogGMap;
+import com.pw.localizer.model.enums.LocalizationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +42,9 @@ public class DialogUserLocationGoogleMapController extends GoogleMapController {
 		this.selectedLocation = selectedLocation;
 	}
 
-	public LocalizerService getLocalizationServices(Location location){
+	public LocalizationService getLocalizationServices(Location location){
 		if(location instanceof LocationNetwork)
-			return ( (LocationNetwork)location ).getLocalizerService();
+			return ( (LocationNetwork)location ).getLocalizationService();
 		return null;
 	}
 

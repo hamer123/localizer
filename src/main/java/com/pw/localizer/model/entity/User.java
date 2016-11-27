@@ -51,7 +51,9 @@ import com.pw.localizer.model.enums.Role;
 				@NamedQuery(name ="USER.findByEmail",
 						query="SELECT u FROM User u WHERE u.email =:email"),
 				@NamedQuery(name ="USER.deleteByID",
-						query="DELETE FROM User u WHERE u.id = :id")
+						query="DELETE FROM User u WHERE u.id = :id"),
+				@NamedQuery(name="USER.findByIdIn",
+						query="SELECT u FROM User u WHERE u.id IN :idCollection")
 		})
 public class User implements Serializable {
 	@Id
@@ -72,7 +74,7 @@ public class User implements Serializable {
 			+"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 	private String email;
 
-	@NotNull
+	@Pattern(regexp = "([0-9]{9})|([0-9]{3}-[0-9]{3}-[0-9]{3})|([0-9]{3} [0-9]{3} [0-9]{3})")
 	private String phone;
 
 	@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -92,7 +94,7 @@ public class User implements Serializable {
 	private LocationNetwork lastLocationNetworObcaUsluga;
 
 	@OneToMany(mappedBy = "provider", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	private Set<Area> areas = new HashSet();
+	private Set<Area> areas = new HashSet<>();
 
 	public User(){}
 

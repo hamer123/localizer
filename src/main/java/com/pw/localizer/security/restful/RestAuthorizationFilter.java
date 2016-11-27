@@ -92,10 +92,10 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 
 	private class SecurityContextRestful implements SecurityContext{
 		private List<Role>roles = new ArrayList<>();
-		private String email;
+		private String login;
 
 		public SecurityContextRestful(RestSession restSession){
-			this.email = restSession.getUser().getEmail();
+			this.login = restSession.getUser().getLogin();
 			this.roles = restSession.getUser().getRoles();
 		}
 
@@ -103,7 +103,7 @@ public class RestAuthorizationFilter implements ContainerRequestFilter{
 		public Principal getUserPrincipal() {
 			return new Principal() {
 				@Override
-				public String getName() {return email; }
+				public String getName() {return login; }
 			};
 		}
 

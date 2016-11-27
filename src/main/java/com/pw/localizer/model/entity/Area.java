@@ -1,25 +1,21 @@
 package com.pw.localizer.model.entity;
 
-
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.localizer.model.enums.AreaFollow;
+import lombok.Getter;
+import lombok.Setter;
 
 @NamedEntityGraphs({
 	@NamedEntityGraph(name = "graph.Area.areaPoints",
 			attributeNodes = {@NamedAttributeNode(value = "points", subgraph = "points")})
 })
-@Entity
 @NamedQueries(value={
 	          @NamedQuery(name="Area.updateByIdSetActive",
 			             query="UPDATE Area a SET a.active =:active WHERE a.id =:areaId"),
@@ -40,6 +36,9 @@ import com.pw.localizer.model.enums.AreaFollow;
 		      @NamedQuery(name="Area.findAreaPointsByAreaId",
 			              query ="SELECT a.points FROM Area a WHERE a.id =:id")
 })
+@Entity
+@Getter
+@Setter
 public class Area {
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
@@ -66,117 +65,17 @@ public class Area {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private AreaFollow polygonFollowType;
-
-	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
-	private List<AreaEventNetwork>areaEventNetworks;
-
-	@OneToMany(mappedBy = "area", orphanRemoval = true, fetch = FetchType.LAZY,  cascade = {CascadeType.REMOVE})
-	private List<AreaEventGPS>areaEventGPSs;
+	private AreaFollow areaFollowType;
 
 	@OneToMany(orphanRemoval = true, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@OrderBy(value = "number ASC")
-	@JoinColumn(name = "area_id")
+	@JoinColumn
 	private List<AreaPoint> points = new ArrayList();
 
 	@NotNull
 	@OneToOne(orphanRemoval = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	private AreaMessageMail areaMessageMail;
-	
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<AreaPoint> getPoints() {
-		return points;
-	}
-
-	public void setPoints(List<AreaPoint> points) {
-		this.points = points;
-	}
-
-	public User getTarget() {
-		return target;
-	}
-
-	public void setTarget(User target) {
-		this.target = target;
-	}
-
-	public User getProvider() {
-		return provider;
-	}
-
-	public void setProvider(User provider) {
-		this.provider = provider;
-	}
-
-	public AreaFollow getAreaFollowType() {
-		return polygonFollowType;
-	}
-
-	public void setAreaFollowType(AreaFollow polygonFollowType) {
-		this.polygonFollowType = polygonFollowType;
-	}
-
-	public List<AreaEventNetwork> getAreaEventNetworks() {
-		return areaEventNetworks;
-	}
-
-	public void setAreaEventNetworks(List<AreaEventNetwork> areaEventNetworks) {this.areaEventNetworks = areaEventNetworks;}
-
-	public List<AreaEventGPS> getAreaEventGPSs() {
-		return areaEventGPSs;
-	}
-
-	public void setAreaEventGPSs(List<AreaEventGPS> areaEventGPSs) {
-		this.areaEventGPSs = areaEventGPSs;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean aktywny) {
-		this.active = aktywny;
-	}
-
-	public AreaFollow getPolygonFollowType() {
-		return polygonFollowType;
-	}
-
-	public void setPolygonFollowType(AreaFollow polygonFollowType) {
-		this.polygonFollowType = polygonFollowType;
-	}
-
-	public AreaMessageMail getAreaMessageMail() {
-		return areaMessageMail;
-	}
-
-	public void setAreaMessageMail(AreaMessageMail areaMessageMail) {
-		this.areaMessageMail = areaMessageMail;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-	
 	public boolean contains(Location location){
 		Path2D path2d = createPath(getPoints());
 		Point2D point2d = new Point2D.Double(location.getLatitude(), location.getLongitude());

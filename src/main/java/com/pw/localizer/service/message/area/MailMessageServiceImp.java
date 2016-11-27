@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.pw.localizer.model.utilities.MailMessage;
+import com.pw.localizer.model.general.MailMessage;
 
 @Stateless
 public class MailMessageServiceImp implements MailMessageService {

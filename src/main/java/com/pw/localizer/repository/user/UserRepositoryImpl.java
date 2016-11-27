@@ -1,15 +1,14 @@
 package com.pw.localizer.repository.user;
 
 import java.util.List;
-
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import com.pw.localizer.model.entity.*;
-import com.pw.localizer.model.query.UserAdvanceSearch;
+import com.pw.localizer.model.general.UserAdvanceSearch;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -120,5 +119,20 @@ public class UserRepositoryImpl implements UserRepository{
 				.setParameter("login",login)
 				.setHint("javax.persistence.loadgraph",em.createEntityGraph("User.graph.areas"))
 				.getSingleResult();
+	}
+
+	@Override
+	public List<User> findByIdIn(Set<Long> idCollection) {
+		return em.createNamedQuery("USER.findByIdIn", User.class)
+				.setParameter("idCollection", idCollection)
+				.getResultList();
+	}
+
+	@Override
+	public List<User> findAll(int offset, int size) {
+		return em.createNamedQuery("USER.findAll", User.class)
+				.setMaxResults(size)
+				.setFirstResult(size * offset)
+				.getResultList();
 	}
 }

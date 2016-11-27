@@ -17,22 +17,22 @@
         <class-b>com.pw.localizer.model.dto.UserDTO</class-b>
         <field>
             <a>lastLocationGPS</a>
-            <b>userLastLocationsDTO.lastLocationGps</b>
+            <b>userLastLocations.lastLocationGps</b>
         </field>
         <field>
             <a>lastLocationNetworkNaszaUsluga</a>
-            <b>userLastLocationsDTO.lastLocationNetworkNasz</b>
+            <b>userLastLocations.lastLocationNetworkNasz</b>
         </field>
         <field>
             <a>lastLocationNetworObcaUsluga</a>
-            <b>userLastLocationsDTO.lastLocationNetworkObcy</b>
+            <b>userLastLocations.lastLocationNetworkObcy</b>
         </field>
     </mapping>
 
-    <!-- LocationGPS : LocationGPSDTO -->
+    <!-- LocationGPS : LocationGpsDTO -->
     <mapping>
         <class-a>com.pw.localizer.model.entity.LocationGPS</class-a>
-        <class-b>com.pw.localizer.model.dto.LocationGPSDTO</class-b>
+        <class-b>com.pw.localizer.model.dto.LocationGpsDTO</class-b>
         <field>
             <a>user</a>
             <b>user</b>
@@ -56,7 +56,5 @@
             <b>user</b>
         </field>
     </mapping>
-
-
 
 </mappings>

@@ -2,9 +2,8 @@ package com.pw.localizer.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pw.localizer.model.entity.CellInfoMobile;
-import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.WifiInfo;
-import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.LocalizationService;
 
 import javax.validation.constraints.NotNull;
 
@@ -19,7 +18,7 @@ public class LocationNetworkDTO extends LocationDTO {
     @NotNull
     private WifiInfo wifiInfo;
     @NotNull
-    private LocalizerService localizerService;
+    private LocalizationService localizationService;
 
     public CellInfoMobile getCellInfoMobile() {
         return cellInfoMobile;
@@ -37,11 +36,11 @@ public class LocationNetworkDTO extends LocationDTO {
         this.wifiInfo = wifiInfo;
     }
 
-    public LocalizerService getLocalizerService() {
-        return localizerService;
+    public LocalizationService getLocalizationService() {
+        return localizationService;
     }
 
-    public void setLocalizerService(LocalizerService localizerService) {
-        this.localizerService = localizerService;
+    public void setLocalizationService(LocalizationService localizationService) {
+        this.localizationService = localizationService;
     }
 }

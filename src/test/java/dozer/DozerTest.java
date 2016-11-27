@@ -2,7 +2,7 @@ package dozer;
 
 import static org.junit.Assert.*;
 import com.pw.localizer.model.dto.BasicUserDTO;
-import com.pw.localizer.model.dto.LocationGPSDTO;
+import com.pw.localizer.model.dto.LocationGpsDTO;
 import com.pw.localizer.model.dto.LocationNetworkDTO;
 import com.pw.localizer.model.dto.UserDTO;
 import com.pw.localizer.model.entity.*;
@@ -64,8 +64,8 @@ public class DozerTest {
         assertEquals(1L, userDTO.getId());
         assertEquals("hamer123", userDTO.getLogin());
         assertEquals("hamer123@vp.pl", userDTO.getEmail());
-        System.out.println(userDTO.getUserLastLocationsDTO().getLastLocationGps().getLatitude());
-        System.out.println(userDTO.getUserLastLocationsDTO().getLastLocationNetworkObcy().getLatitude());
+        System.out.println(userDTO.getUserLastLocations().getLastLocationGps().getLatitude());
+        System.out.println(userDTO.getUserLastLocations().getLastLocationNetworkObcy().getLatitude());
 
         User repeat = mapper.map(userDTO, User.class);
 
@@ -81,10 +81,10 @@ public class DozerTest {
         user.setLogin("hamer123");
         locationGPS.setUser(user);
 
-        LocationGPSDTO locationGPSDTO = mapper.map(locationGPS, LocationGPSDTO.class);
+        LocationGpsDTO locationGpsDTO = mapper.map(locationGPS, LocationGpsDTO.class);
 
-        assertEquals("hamer123", locationGPSDTO.getUser().getLogin());
-        System.out.println(locationGPSDTO.getUser().getLogin());
+        assertEquals("hamer123", locationGpsDTO.getUser().getLogin());
+        System.out.println(locationGpsDTO.getUser().getLogin());
     }
 
     @Test
@@ -99,6 +99,5 @@ public class DozerTest {
         assertTrue(locationNetworkDTO.getWifiInfo() == locationNetwork.getWifiInfo());
         assertTrue(locationNetworkDTO.getCellInfoMobile() == locationNetwork.getCellInfoMobile());
     }
-
 
 }

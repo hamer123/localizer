@@ -16,9 +16,8 @@ public class UserDTO {
     private String email;
     private String phone;
     private Set<AreaDTO> areas;
-    private Set<ContactInvite> contactInvite;
     private UserSetting userSetting;
-    private UserLastLocationsDTO userLastLocationsDTO = new UserLastLocationsDTO();
+    private UserLastLocationsDTO userLastLocations;
     private Avatar avatar;
 
     public long getId() {
@@ -61,12 +60,12 @@ public class UserDTO {
         this.avatar = avatar;
     }
 
-    public UserLastLocationsDTO getUserLastLocationsDTO() {
-        return userLastLocationsDTO;
+    public UserLastLocationsDTO getUserLastLocations() {
+        return userLastLocations;
     }
 
-    public void setUserLastLocationsDTO(UserLastLocationsDTO userLastLocationsDTO) {
-        this.userLastLocationsDTO = userLastLocationsDTO;
+    public void setUserLastLocations(UserLastLocationsDTO userLastLocations) {
+        this.userLastLocations = userLastLocations;
     }
 
     public Set<AreaDTO> getAreas() {
@@ -75,14 +74,6 @@ public class UserDTO {
 
     public void setAreas(Set<AreaDTO> areas) {
         this.areas = areas;
-    }
-
-    public Set<ContactInvite> getContactInvite() {
-        return contactInvite;
-    }
-
-    public void setContactInvite(Set<ContactInvite> contactInvite) {
-        this.contactInvite = contactInvite;
     }
 
     public UserSetting getUserSetting() {

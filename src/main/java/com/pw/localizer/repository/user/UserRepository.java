@@ -1,13 +1,16 @@
 package com.pw.localizer.repository.user;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Local;
 
 import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.query.UserAdvanceSearch;
+
+import com.pw.localizer.model.general.UserAdvanceSearch;
 import com.pw.localizer.repository.JpaRepository;
 
 @Local
@@ -22,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long>, Serializable 
 	Location findLastNetworkObcyLocationByUserId(long id);
 	List<User> findByLoginLikeAndEmailLikeAndPhoneLike(UserAdvanceSearch userAdvanceSearch);
 	User findByLoginEagerFetchAll(String login);
+	List<User> findByIdIn(Set<Long> idCollection);
+	List<User> findAll(int offset, int size);
 }

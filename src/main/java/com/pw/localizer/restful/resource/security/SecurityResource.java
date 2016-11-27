@@ -11,6 +11,7 @@ import com.pw.localizer.model.dto.UserDTO;
 import com.pw.localizer.model.security.Credentials;
 import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.repository.user.UserRepository;
+import com.pw.localizer.restful.provider.filter.LogRequest;
 import com.pw.localizer.security.restful.AuthenticateException;
 import com.pw.localizer.security.restful.AuthenticateService;
 import com.pw.localizer.security.restful.DatabaseAuthenticat;
@@ -30,9 +31,7 @@ public class SecurityResource {
 	private RestSessionManager restSessionManager;
 	@Inject
 	private Mapper mapper;
-	@Inject
-	private Logger logger;
-	
+
 	@POST
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)

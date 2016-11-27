@@ -67,7 +67,7 @@ public class OverlayUUIDBuilderLocation implements OverlayUUIDBuilder {
                     .login(locationNetwork.getUser().getLogin())
                     .overlay(overlay)
                     .provider(Provider.NETWORK)
-                    .localizationService(locationNetwork.getLocalizerService())
+                    .localizationService(locationNetwork.getLocalizationService())
                     .build();
         }
     }

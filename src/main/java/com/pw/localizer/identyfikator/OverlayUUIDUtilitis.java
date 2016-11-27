@@ -8,7 +8,7 @@ import com.pw.localizer.identyfikator.exception.OverlayUUIDExpcetion;
 public class OverlayUUIDUtilitis {
     public static boolean matches(String uuid, String uuidSecond){
         String[] partsOne = uuid.split("-");
-        String[] partsTwo = uuid.split("-");
+        String[] partsTwo = uuidSecond.split("-");
 
         if(!(partsOne.length == 5 && partsTwo.length == 5)) throw new OverlayUUIDExpcetion("Nie poprawny format uuid");
 
@@ -20,8 +20,6 @@ public class OverlayUUIDUtilitis {
     }
 
     private static boolean compareUUIDPart(String part, String partSecond){
-        if(part == "any" || partSecond == "any")
-            return true;
-        return part.equals(partSecond);
+        return part.equals("any") || partSecond.equals("any") || part.equals(partSecond);
     }
 }

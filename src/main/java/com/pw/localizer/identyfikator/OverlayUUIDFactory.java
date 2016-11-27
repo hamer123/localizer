@@ -7,6 +7,7 @@ import com.pw.localizer.model.enums.OverlayType;
 /**
  * Created by wereckip on 30.08.2016.
  */
+
 public final class OverlayUUIDFactory {
 
     private OverlayUUIDFactory(){}

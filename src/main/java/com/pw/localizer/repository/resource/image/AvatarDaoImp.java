@@ -1,10 +1,12 @@
 package com.pw.localizer.repository.resource.image;
 
 import com.pw.localizer.inceptor.DurationLogging;
+import com.pw.localizer.singleton.LocalizerProperties;
 import com.pw.localizer.singleton.ResourceDirectionStartup;
 import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.nio.file.Files;
@@ -13,9 +15,13 @@ import java.nio.file.Paths;
 /**
  * Created by Patryk on 2016-10-03.
  */
+
+@ApplicationScoped
 public class AvatarDaoImp implements AvatarDao{
     @Inject
     private Logger logger;
+    @Inject
+    private LocalizerProperties localizerProperties;
 
     @Override
     public void create(InputStream inputStream, String uuid) throws IOException {
@@ -48,7 +54,7 @@ public class AvatarDaoImp implements AvatarDao{
     @Override
     @DurationLogging
     public byte[] content(String uuid) {
-        if(uuid == null || uuid == "") {
+        if(uuid == null || uuid.equals("")) {
             return null; //throw new IllegalArgumentException("Nie poprawny format uuid " + uuid);
         }
         byte[] content = null;
@@ -62,7 +68,7 @@ public class AvatarDaoImp implements AvatarDao{
     }
 
     private String path(String uuid){
-        return  ResourceDirectionStartup.ResourceDirectionURI.AVATAR
+        return  localizerProperties.ResourcePath().AVATAR
                 + "/"
                 + uuid ;
     }

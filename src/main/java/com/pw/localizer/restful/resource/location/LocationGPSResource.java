@@ -6,30 +6,22 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import com.pw.localizer.inceptor.ErrorLog;
-import com.pw.localizer.model.dto.LocationGPSDTO;
-import com.pw.localizer.model.query.LocationSearch;
+import com.pw.localizer.model.dto.LocationGpsDTO;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.security.restful.Secured;
-import com.pw.localizer.model.session.RestSession;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.service.location.LocationService;
 import org.dozer.Mapper;
-import org.jboss.resteasy.links.AddLinks;
-import org.jboss.resteasy.links.LinkResource;
-import org.jboss.resteasy.specimpl.LinkImpl;
-
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Secured
 @Path("/locations/gps")
+@Secured
 public class LocationGPSResource {
 	@Inject
 	private LocationService locationService;
@@ -43,16 +35,16 @@ public class LocationGPSResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLocation(@PathParam("id")Long id){
 		LocationGPS locationGPS = locationGPSRepository.findById(id);
-		return Response.ok(mapper.map(locationGPS,LocationGPSDTO.class)).build();
+		return Response.ok(mapper.map(locationGPS,LocationGpsDTO.class)).build();
 	}
 
 	@ErrorLog
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createLocation(@Valid LocationGPSDTO locationGPSDTO,
+	public Response createLocation(@Valid LocationGpsDTO locationGpsDTO,
 								   @Context UriInfo uri){
-		LocationGPS locationGPS = mapper.map(locationGPSDTO,LocationGPS.class);
+		LocationGPS locationGPS = mapper.map(locationGpsDTO,LocationGPS.class);
 		locationGPS = locationService.createLocationGPS(locationGPS);
 		UriBuilder uriBuilder = uri.getAbsolutePathBuilder();
 		URI sourceURI = uriBuilder.path(String.valueOf(locationGPS.getId())).build();
@@ -60,9 +52,9 @@ public class LocationGPSResource {
 //				.rel("self")
 //				.title("self")
 //				.type(MediaType.APPLICATION_JSON).build();
-		return Response.status(Response.Status.CREATED)
-//				.entity(mapper.map(locationGPS,LocationGPSDTO.class))
+		return Response.status(Response.Status.OK)
 				.location(sourceURI)
+				.entity(mapper.map(locationGPS, LocationGpsDTO.class))
 				.build();
 	}
 
@@ -79,10 +71,10 @@ public class LocationGPSResource {
 			Date from = sdf.parse(fromDate);
 			Date to = sdf.parse(toDate);
 			List<LocationGPS>locationGpsList = locationGPSRepository.findByLoginAndDateOrderByDate(login,from,to,maxRecords);
-			List<LocationGPSDTO>locationGPSDTOList = locationGpsList.stream()
-					.map(l -> mapper.map(l,LocationGPSDTO.class))
+			List<LocationGpsDTO> locationGpsDTOList = locationGpsList.stream()
+					.map(l -> mapper.map(l,LocationGpsDTO.class))
 					.collect(Collectors.toList());
-			return Response.ok(locationGPSDTOList).build();
+			return Response.ok(locationGpsDTOList).build();
 		} catch (ParseException e) {
 			throw new WebApplicationException(e, Response.status(Response.Status.BAD_REQUEST).entity("Not supported data format, allowed format is dd-MM-yyyy hh:mm:ss ").build());
 		}

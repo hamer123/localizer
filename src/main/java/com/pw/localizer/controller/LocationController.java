@@ -3,17 +3,15 @@ package com.pw.localizer.controller;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
-
 import com.pw.localizer.factory.CircleFactory;
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.controller.google.DialogUserLocationGoogleMapController;
-import com.pw.localizer.model.enums.LocalizerService;
+import com.pw.localizer.model.enums.LocalizationService;
 import com.pw.localizer.model.google.UserComponentVisibility;
 import com.pw.localizer.controller.google.UserGoogleMapController;
 import com.pw.localizer.identyfikator.OverlayUUIDConverter;
@@ -22,32 +20,33 @@ import com.pw.localizer.inceptor.DurationLogging;
 import com.pw.localizer.model.entity.*;
 import com.pw.localizer.model.enums.OverlayType;
 import com.pw.localizer.model.enums.Provider;
-import com.pw.localizer.model.query.UserAdvanceSearch;
+import com.pw.localizer.model.general.UserAdvanceSearch;
+import com.pw.localizer.service.area.event.AreaEventService;
 import com.pw.localizer.service.user.UserService;
+import lombok.Getter;
+import lombok.Setter;
 import org.jboss.logging.Logger;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Overlay;
-
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
+import com.pw.localizer.jsf.JsfMessageBuilder;
 import com.pw.localizer.model.google.GoogleMapComponentVisible;
 import com.pw.localizer.model.google.GoogleMap;
 import com.pw.localizer.model.session.LocalizerSession;
-import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
-import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.repository.area.AreaRepository;
 import com.pw.localizer.repository.location.CellInfoMobileRepository;
 import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.repository.location.WifiInfoRepository;
-import com.pw.localizer.qualifier.DialogGMap;
+import com.pw.localizer.controller.google.DialogGMap;
 import com.pw.localizer.singleton.RestSessionManager;
 
+@Getter
+@Setter
 @ViewScoped
 @Named(value="location")
 public class LocationController implements Serializable{
 	private static final long serialVersionUID = -5534429129019431383L;
-
 	@Inject @DialogGMap
 	private DialogUserLocationGoogleMapController googleMapSingleUserDialogController;
 	@Inject
@@ -61,9 +60,7 @@ public class LocationController implements Serializable{
 	@Inject
 	private AreaRepository areaRepository;
 	@Inject
-	private AreaEventNetworkRepository areaEventNetworkRepository;
-	@Inject
-	private AreaEventGPSRepository areaEventGPSRepository;
+	private AreaEventService areaEventService;
 	@Inject
 	private RestSessionManager restSessionManager;
 	@Inject
@@ -113,7 +110,7 @@ public class LocationController implements Serializable{
 	/** User`factory in action select factory */
 	private Overlay userOverlay;
 
-	/** Session onwer active areas Id */
+	/** Session owner active areas Id */
 	private List<Long> activeAreasId;
 
 	/** From this date we get owner all active areas events */
@@ -123,15 +120,12 @@ public class LocationController implements Serializable{
 	private UserAdvanceSearch userAdvanceSearch = new UserAdvanceSearch();
 
 	/** Founded users by advance search */
-	private List<User> advanceSearchFoundedUsers = new ArrayList();
+	private List<User> advanceSearchFoundedUsers = new ArrayList<>();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////  ACTIONS   ////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Inicjalizacja poczatkowa
-     */
 	@PostConstruct
 	public void postConstruct(){
 		areaEventFromDate = new Date();
@@ -146,17 +140,16 @@ public class LocationController implements Serializable{
 	@DurationLogging
 	public void addUserToFollow(String login){
 		try{
-			if(isUserArleadyOnList(login)){
+			if(isUserAlreadyOnList(login)){
 				JsfMessageBuilder.errorMessage("Użytkownik jest już na liście");
 			} else {
-				User user = this.userService.getUserFetchAreas(login);
+				User user = this.userService.getUserFetchArea(login);
 				this.users.put(user.getLogin(),user);
 				this.userGoogleMapController.add(user);
 				JsfMessageBuilder.infoMessage("Udało się dodać uzytkownika do śledzenia");
 			}
 		} catch(Exception e){
 			JsfMessageBuilder.errorMessage("Błąd przy próbie dodania użytkownika");
-			e.printStackTrace();
 		}
 	}
 
@@ -166,7 +159,8 @@ public class LocationController implements Serializable{
      */
 	@DurationLogging
 	public void poll(){
-		updateUserComponents();
+		updateUsersData();
+		updateGoogleMapUserComponents();
 		displayAreaEventsMessages();
 	}
 
@@ -185,7 +179,6 @@ public class LocationController implements Serializable{
 			JsfMessageBuilder.infoMessage("Udało się usunąć uzytkownika z listy śledzenia");
 		} catch(Exception e){
 			JsfMessageBuilder.errorMessage("Nie udało się usunąć uzytkownika z listy śledzenia");
-			e.printStackTrace();
 		}
 	}
 
@@ -193,50 +186,57 @@ public class LocationController implements Serializable{
 	 * Wyswietl informacje w ramach zdarzen dla aktywnych aren sledzenia uzytkownikow
      */
 	 void displayAreaEventsMessages(){
-		if(isShowAreaEventMessage()) {
-			List<AreaEvent> areaEvents = getAreaEvents();
+		if(showAreaEventMessage) {
+			List<AreaEvent> areaEvents = getNewAreaEvent();
 			for (AreaEvent areaEvent : areaEvents)
 				JsfMessageBuilder.infoMessage(areaEvent.getMessage());
 		}
 	}
 
-	/** Aktualizuje dane uzytkoniwka i google controller */
-	void updateUserComponents(){
-		try{
-			for(String login : users.keySet()) {
-				User user = updateUserLastLocations(login);
-				this.userGoogleMapController.update(user, OverlayType.MARKER);
-				this.userGoogleMapController.update(user, OverlayType.CIRCLE);
-				this.userGoogleMapController.update(user, OverlayType.POLYLINE);
-				if(updateUserAreasOnPolling) {
-					user = updateUserAreas(login);
-					this.userGoogleMapController.update(user, OverlayType.POLYGON);
-				}
+	/**
+	 * Update user data
+	 */
+	void updateUsersData(){
+		for(User user : users.values()) {
+			User _user;
+			if(updateUserAreasOnPolling) {
+				_user = userRepository.findByLoginEagerFetchAll(user.getLogin());
+				user.setAreas(_user.getAreas());
+			} else {
+				_user = userRepository.findByLogin(user.getLogin());
 			}
-		} catch(Exception e){
-			JsfMessageBuilder.errorMessage("Nie udało się odnowić lokalizacji i zaktualizowac google controller");
-			e.printStackTrace();
+			user.setLastLocationGPS(_user.getLastLocationGPS());
+			user.setLastLocationNetworkNaszaUsluga(_user.getLastLocationNetworkNaszaUsluga());
+			user.setLastLocationNetworObcaUsluga(_user.getLastLocationNetworObcaUsluga());
 		}
+	}
+
+	/**
+	 * Update google map user components
+	 */
+	void updateGoogleMapUserComponents() {
+		for(User user : users.values()) {
+			userGoogleMapController.update(user, OverlayType.MARKER);
+			userGoogleMapController.update(user, OverlayType.CIRCLE);
+			userGoogleMapController.update(user, OverlayType.POLYLINE);
+			if(updateUserAreasOnPolling) {
+				userGoogleMapController.update(user, OverlayType.POLYGON);
+			}
+		}
+	}
+
+	/**
+	 * Set login on provided from advance search dialog
+	 * @param login
+	 */
+	public void advanceSearchAddUser(String login) {
+		this.login = login;
 	}
 
 	public void onUserAdvanceSearch(){
 		advanceSearchFoundedUsers = userRepository.findByLoginLikeAndEmailLikeAndPhoneLike(userAdvanceSearch);
 	}
 
-	User updateUserLastLocations(String login){
-		User user = this.users.get(login);
-		user.setLastLocationGPS((LocationGPS) this.userRepository.findLastGpsLocationByUserId(user.getId()));
-		user.setLastLocationNetworkNaszaUsluga((LocationNetwork) this.userRepository.findLastNetworkNaszLocationByUserId(user.getId()));
-		user.setLastLocationNetworObcaUsluga((LocationNetwork) this.userRepository.findLastNetworkObcyLocationByUserId(user.getId()));
-		return user;
-	}
-
-	User updateUserAreas(String login){
-		User user = this.users.get(login);
-		this.userService.getUserAreasFetchAreaPoints(user.getId());
-		return user;
-	}
-	
 	public void onShowLocation(){
 		String center = GoogleMap.center(selectedFollowedUserLocation);
 		userGoogleMapController.setCenter(center);
@@ -277,17 +277,14 @@ public class LocationController implements Serializable{
 				JsfMessageBuilder.errorMessage("Nie znaleziono szczegółowych danych na temat lokacji");
 			}
 		}
-		
 		locationToDisplayDetails = location;
 	}
 	
 	public void onShowOnlineUserLastLocations(String login){
 		User user = userRepository.findByLogin(login);
-
 		//clear
 		googleMapSingleUserDialogController.clear();
 		googleMapSingleUserDialogController.getLocations().clear();
-
 		//add
 		Location location = user.getLastLocationGPS();
 		addLocationToSingleUserGMap(location);
@@ -325,7 +322,7 @@ public class LocationController implements Serializable{
 			if(uuidRaw.getProvider() == Provider.GPS){
 				userLocation = user.getLastLocationGPS();
 			}else{
-				if(uuidRaw.getLocalizationService() == LocalizerService.NASZ)
+				if(uuidRaw.getLocalizationService() == LocalizationService.NASZ)
 					userLocation = user.getLastLocationNetworkNaszaUsluga();
 				else
 					userLocation = user.getLastLocationNetworObcaUsluga();
@@ -333,11 +330,10 @@ public class LocationController implements Serializable{
 		}
 	}
 
-	boolean isUserArleadyOnList(String login){
+	boolean isUserAlreadyOnList(String login){
 		for(String key : users.keySet())
 			if(key.equals(login))
 				return true;
-
 		return false;
 	}
 
@@ -348,7 +344,6 @@ public class LocationController implements Serializable{
 				.collect(Collectors.toList());
 	}
 
-	public void onRefresh(){}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////  UTILITIS  /////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,13 +358,13 @@ public class LocationController implements Serializable{
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** ( There is the chance to omit records ) */
-	List<AreaEvent> getAreaEvents(){
+	List<AreaEvent> getNewAreaEvent(){
 		List<AreaEvent>areaEvents = new ArrayList<>();
-		for(long id : activeAreasId){
-			areaEvents.addAll(areaEventGPSRepository.findByAreaIdAndDate(id, areaEventFromDate));
-			areaEvents.addAll(areaEventNetworkRepository.findByAreaIdAndDate(id, areaEventFromDate));
+		Date futureQueryDate = new Date();
+		for(long areaId : activeAreasId) {
+			areaEvents.addAll(areaEventService.getByAreaAndDateOlder(areaId, areaEventFromDate));
 		}
-		areaEventFromDate = new Date();
+		areaEventFromDate = futureQueryDate;
 		return areaEvents;
 	}
 
@@ -394,217 +389,7 @@ public class LocationController implements Serializable{
 		return locations;
 	}
 
-	public LocalizerService getLocalizationServices(Location location){
-		if(location instanceof LocationNetwork)
-			return ( (LocationNetwork)location ).getLocalizerService();
-		return null;
-	}
-
-	public DialogUserLocationGoogleMapController getGoogleMapSingleUserDialogController() {
-		return googleMapSingleUserDialogController;
-	}
-
-	public Location getLocationToDisplayDetails() {
-		return locationToDisplayDetails;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public User getSelectUser() {
-		return selectUserForLastLocations;
-	}
-
-	public void setSelectUser(User selectUser) {
-		this.selectUserForLastLocations = selectUser;
-	}
-
-	public Location getSelectedFollowedUserLocation() {
-		return selectedFollowedUserLocation;
-	}
-
-	public void setSelectedFollowedUserLocation(Location selectedFollowedUserLocation) {
-		this.selectedFollowedUserLocation = selectedFollowedUserLocation;
-	}
-
-	public boolean isShowAreaEventMessage() {
-		return showAreaEventMessage;
-	}
-
-	public void setShowAreaEventMessage(boolean showAreaEventMessage) {
-		this.showAreaEventMessage = showAreaEventMessage;
-	}
-
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
-	public WifiInfoRepository getWifiInfoRepository() {
-		return wifiInfoRepository;
-	}
-
-	public void setWifiInfoRepository(WifiInfoRepository wifiInfoRepository) {
-		this.wifiInfoRepository = wifiInfoRepository;
-	}
-
-	public CellInfoMobileRepository getCellInfoMobileRepository() {
-		return cellInfoMobileRepository;
-	}
-
-	public void setCellInfoMobileRepository(
-			CellInfoMobileRepository cellInfoMobileRepository) {
-		this.cellInfoMobileRepository = cellInfoMobileRepository;
-	}
-
-	public AreaRepository getAreaRepository() {
-		return areaRepository;
-	}
-
-	public void setAreaRepository(AreaRepository areaRepository) {
-		this.areaRepository = areaRepository;
-	}
-
-	public AreaEventNetworkRepository getAreaEventNetworkRepository() {
-		return areaEventNetworkRepository;
-	}
-
-	public void setAreaEventNetworkRepository(
-			AreaEventNetworkRepository areaEventNetworkRepository) {
-		this.areaEventNetworkRepository = areaEventNetworkRepository;
-	}
-
-	public AreaEventGPSRepository getAreaEventGPSRepository() {
-		return areaEventGPSRepository;
-	}
-
-	public void setAreaEventGPSRepository(
-			AreaEventGPSRepository areaEventGPSRepository) {
-		this.areaEventGPSRepository = areaEventGPSRepository;
-	}
-
-	public RestSessionManager getRestSessionManager() {
-		return restSessionManager;
-	}
-
-	public void setRestSessionManager(RestSessionManager restSessionManager) {
-		this.restSessionManager = restSessionManager;
-	}
-
-	public LocalizerSession getLocalizerSession() {
-		return localizerSession;
-	}
-
-	public void setLocalizerSession(LocalizerSession localizerSession) {
-		this.localizerSession = localizerSession;
-	}
-
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-	public void setGoogleMapSingleUserDialogController(
-			DialogUserLocationGoogleMapController googleMapSingleUserDialogController) {
-		this.googleMapSingleUserDialogController = googleMapSingleUserDialogController;
-	}
-
-	public void setLocationToDisplayDetails(Location locationToDisplayDetails) {
-		this.locationToDisplayDetails = locationToDisplayDetails;
-	}
-
-	public Map<String, User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Map<String, User> users) {
-		this.users = users;
-	}
-
-	public User getSelectUserForLastLocations() {
-		return selectUserForLastLocations;
-	}
-
-	public void setSelectUserForLastLocations(User selectUserForLastLocations) {
-		this.selectUserForLastLocations = selectUserForLastLocations;
-	}
-
-	public User getUserData() {
-		return userData;
-	}
-
-	public void setUserData(User userData) {
-		this.userData = userData;
-	}
-
-	public UserComponentVisibility getUserComponentVisibility() {
-		return userComponentVisibility;
-	}
-
-	public void setUserComponentVisibility(UserComponentVisibility userComponentVisibility) {
-		this.userComponentVisibility = userComponentVisibility;
-	}
-
-	public Overlay getUserOverlay() {
-		return userOverlay;
-	}
-
-	public void setUserOverlay(Overlay userOverlay) {
-		this.userOverlay = userOverlay;
-	}
-
-	public Avatar getUserAvatar() {
-		return userAvatar;
-	}
-
-	public void setUserAvatar(Avatar userAvatar) {
-		this.userAvatar = userAvatar;
-	}
-
-	public Location getUserLocation() {
-		return userLocation;
-	}
-
-	public void setUserLocation(Location userLocation) {
-		this.userLocation = userLocation;
-	}
-
 	public String getUserAvatarUUID(){
 		return userAvatar == null ? "" : userAvatar.getUuid();
-	}
-
-	public boolean isUpdateUserAreasOnPolling() {
-		return updateUserAreasOnPolling;
-	}
-
-	public void setUpdateUserAreasOnPolling(boolean updateUserAreasOnPolling) {
-		this.updateUserAreasOnPolling = updateUserAreasOnPolling;
-	}
-
-	public UserAdvanceSearch getUserAdvanceSearch() {
-		return userAdvanceSearch;
-	}
-
-	public void setUserAdvanceSearch(UserAdvanceSearch userAdvanceSearch) {
-		this.userAdvanceSearch = userAdvanceSearch;
-	}
-
-	public List<User> getAdvanceSearchFoundedUsers() {
-		return advanceSearchFoundedUsers;
-	}
-
-	public void setAdvanceSearchFoundedUsers(List<User> advanceSearchFoundedUsers) {
-		this.advanceSearchFoundedUsers = advanceSearchFoundedUsers;
 	}
 }

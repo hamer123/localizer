@@ -6,22 +6,18 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.inject.Inject;
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.InvocationContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import com.pw.localizer.model.entity.AreaEvent;
-import com.pw.localizer.model.utilities.MailMessage;
+import com.pw.localizer.model.general.MailMessage;
+import com.pw.localizer.service.area.event.AreaEventService;
 import org.jboss.logging.Logger;
-import com.pw.localizer.repository.area.event.AreaEventGPSRepository;
-import com.pw.localizer.repository.area.event.AreaEventNetworkRepository;
 import com.pw.localizer.service.message.area.MailMessageService;
 
-@Stateless
+@Singleton
 public class AreaMailWorker {
 	private static final int EXECUTOR_SERVICE_POOL_SIZE = 25;
 	@Resource
@@ -29,14 +25,14 @@ public class AreaMailWorker {
 	@Inject
 	private MailMessageService mailMessageService;
 	@Inject
-	private AreaEventGPSRepository areaEventGPSRepository;
-	@Inject
-	private AreaEventNetworkRepository areaEventNetworkRepository;
+	private AreaEventService areaEventService;
+
 	@Inject
 	private Logger logger;
 
-	@Schedule(minute = "*/1", hour="*", persistent = false)
+	@Schedule(second = "*/60", minute = "*", hour="*", persistent = false)
 	public void sendMails() {
+		System.out.println("WE WERE HERE !!!");
 		Collection<Callable<Boolean>> tasks;
 		List<AreaEvent>areaEvents = getAreaEvents();
 		for(int i = 0; i < areaEvents.size(); i++){
@@ -77,10 +73,7 @@ public class AreaMailWorker {
 	}
 
 	private List<AreaEvent> getAreaEvents(){
-		List<AreaEvent>areaEvents = new ArrayList<>();
-		areaEvents.addAll(areaEventNetworkRepository.findBySendMailAndAttemptToSendLowerThan(true, 3));
-		areaEvents.addAll(areaEventGPSRepository.findBySendMailAndAttemptToSendLowerThan(true, 3));
-		return areaEvents;
+		return areaEventService.getBySendMailAndAttemptToSendLowerThan(true, 3);
 	}
 
 	@AroundTimeout

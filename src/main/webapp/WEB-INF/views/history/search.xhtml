@@ -8,7 +8,7 @@
 
    <h:form>
       <o:importConstants type="com.pw.localizer.model.enums.Provider" var="provider"/>
-      <o:importConstants type="com.pw.localizer.model.enums.LocalizerService" var="service"/>
+      <o:importConstants type="com.pw.localizer.model.enums.LocalizationService" var="service"/>
       <h:panelGrid columns="3" cellpadding="5" id="searchPanel">
 
          <p:outputLabel value="Login"/>
@@ -37,7 +37,7 @@
          <p:message for="provider"/>
 
          <p:outputLabel for="service" value="Usluga lokalizacji"/>
-         <p:selectOneMenu id="service" value="#{locationHistory.localizerService}" disabled="#{locationHistory.provider != 'NETWORK'}">
+         <p:selectOneMenu id="service" value="#{locationHistory.localizationService}" disabled="#{locationHistory.provider != 'NETWORK'}">
             <f:selectItems value="#{service}"/>
          </p:selectOneMenu>
          <p:message for="service"/>

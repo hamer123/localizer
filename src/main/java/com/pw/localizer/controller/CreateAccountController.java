@@ -14,7 +14,7 @@ import javax.inject.Named;
 import com.pw.localizer.controller.google.GoogleMapController;
 import com.pw.localizer.model.entity.Avatar;
 import com.pw.localizer.model.enums.ImageType;
-import com.pw.localizer.model.upload.ImageFileUpload;
+import com.pw.localizer.model.general.ImageFileUpload;
 import com.pw.localizer.service.user.UserService;
 import org.jboss.logging.Logger;
 import org.primefaces.event.SlideEndEvent;

@@ -7,4 +7,6 @@ import java.io.Serializable;
 				    query = "SELECT l FROM LocationGPS l WHERE l.user.login =:login AND l.date > :from AND l.date < :to ORDER BY l.date DESC")
 })
 @Entity
-public class LocationGPS extends Location implements Serializable{}
+public class LocationGPS extends Location {
+
+}

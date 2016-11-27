@@ -2,32 +2,49 @@
 <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:p="http://primefaces.org/ui">
 
     <h:panelGrid id="options-panel">
+        <o:importConstants type="com.pw.localizer.controller.AreaEventController.AreaMessageType" var="areaMessageType"/>
         <h:form>
-            <h:panelGrid columns="2" rendered="#{areaEventController.selectedArea != null}">
-                <h:outputText value="Akceptuj powiadomienie o evencie" />
-                <p:commandButton value="#{msg['accept']}" action="#{areaEventController.onAcceptEvent}" update=":#{p:component('options-panel')}"
-                                 title="zalaczy od nowa wysylanie email w ramach eventu"
-                                 disabled="#{areaEventController.selectedArea.areaMessageMail.areaMailMessageMode != 'ACCEPT'
-                                          or areaEventController.selectedArea.areaMessageMail.accept != false}"/>
+            <h:panelGrid id="area-view-panel" columns="2" rendered="#{areaEventController.selectedArea != null}">
+                <h:outputText value="#{msg['approve.area.event.notification']}" />
+                <p:commandButton value="#{msg['accept']}" action="#{areaEventController.acceptAreaEventNotification}" update=":#{p:component('options-panel')}"
+                                 title="#{msg['approve.area.event']}" disabled="#{areaEventController.disableAreaEventApprove()}"/>
 
-                <p:outputLabel value="Wyczysc historie akcji"/>
-                <p:commandButton value="Wyczysc" update=":#{p:component('options-panel')}"
-                                 title=""
-                                 disabled="#{areaEventController.disableAreaEventsClear()}"/>
+                <p:outputLabel value="#{msg['clear.area.history']}"/>
+                <p:commandButton value="#{msg['clear']}" update=":#{p:component('area-view-panel')} :#{p:component('area-events-table')} :#{p:component('growl')}"
+                                 title="#{msg['clear.selected.area.history']}"
+                                 disabled="#{areaEventController.disableAreaEventsClear()}"
+                                 action="#{areaEventController.cleanAreaEventHistory()}"/>
+
+                <p:outputLabel value="#{msg['area.event.history.type']}"/>
+                <p:selectOneMenu value="#{areaEventController.areaMessageTypeToClear}">
+                    <f:selectItem itemLabel="#{msg['all']}" itemValue="#{areaMessageType.ALL}"/>
+                    <f:selectItem itemLabel="GPS" itemValue="#{areaMessageType.GPS}"/>
+                    <f:selectItem itemLabel="Network Nasz" itemValue="#{areaMessageType.NETWORK_NASZ}"/>
+                    <f:selectItem itemLabel="Network Obcy" itemValue="#{areaMessageType.NETWORK_OBCY}"/>
+                </p:selectOneMenu>
             </h:panelGrid>
         </h:form>
+        <p:separator />
         <h:form>
-            <h:panelGrid columns="2">
+            <p:messages id="messages"/>
+            <h:panelGrid columns="3" id="area-option-panel">
                 <p:outputLabel value="Od kiedy"/>
-                <p:calendar pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true"/>
+                <p:calendar id="fromDate" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" value="#{areaEventController.from}" locale="pl"/>
+                <p:message for="fromDate"/>
 
                 <p:outputLabel value="Do kiedy"/>
-                <p:calendar pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true"/>
+                <p:calendar id="toDate" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" value="#{areaEventController.to}" locale="pl"/>
+                <p:message for="toDate"/>
 
-                <p:commandButton value="#{msg['search']}"/>
+                <p:commandButton value="#{msg['search']}" actionListener="#{areaEventController.searchAreaEventFromToDate()}"
+                                 disabled="#{areaEventController.selectedArea == null}"
+                                 update=":#{p:component('area-events')} :#{p:component('messages')} :#{p:component('area-option-panel')} :#{p:component('area-view-panel')}"/>
+                <o:validateOrder components="fromDate toDate" message="Daty sa nie poprawnie wybrane"/>
             </h:panelGrid>
         </h:form>
     </h:panelGrid>

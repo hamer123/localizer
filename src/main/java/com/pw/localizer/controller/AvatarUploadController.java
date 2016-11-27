@@ -1,7 +1,7 @@
 package com.pw.localizer.controller;
 
-import com.pw.localizer.jsf.utilitis.JsfMessageBuilder;
-import com.pw.localizer.model.upload.ImageFileUpload;
+import com.pw.localizer.jsf.JsfMessageBuilder;
+import com.pw.localizer.model.general.ImageFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;

@@ -7,4 +7,5 @@ import java.io.InputStream;
 /**
  * Created by Patryk on 2016-10-03.
  */
+
 public interface AvatarDao extends ResourceDao<String, InputStream> {}
