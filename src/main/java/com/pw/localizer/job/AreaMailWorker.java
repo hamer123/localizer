@@ -26,13 +26,11 @@ public class AreaMailWorker {
 	private MailMessageService mailMessageService;
 	@Inject
 	private AreaEventService areaEventService;
-
 	@Inject
 	private Logger logger;
 
-	@Schedule(second = "*/60", minute = "*", hour="*", persistent = false)
+	@Schedule(minute="*/1", hour="*", persistent = false)
 	public void sendMails() {
-		System.out.println("WE WERE HERE !!!");
 		Collection<Callable<Boolean>> tasks;
 		List<AreaEvent>areaEvents = getAreaEvents();
 		for(int i = 0; i < areaEvents.size(); i++){
@@ -79,7 +77,6 @@ public class AreaMailWorker {
 	@AroundTimeout
 	public Object logSendingMails(InvocationContext ic) throws Exception{
 		long time = System.currentTimeMillis();
-		logger.info("job has started");
 		Object result;
 		try {
 			result = ic.proceed();

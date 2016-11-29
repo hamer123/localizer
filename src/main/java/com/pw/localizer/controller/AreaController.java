@@ -69,6 +69,7 @@ public class AreaController implements Serializable{
 		//init area
 		area = new Area();
 		area.setAreaMessageMail(new AreaMessageMail());
+		area.getAreaMessageMail();
 		area.setTarget(new User());
 	}
 	

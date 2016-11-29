@@ -3,31 +3,28 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui">
-
     <ui:define name="head">
         <title>#{msg['location.history']}</title>
         <h:outputStylesheet library="css" name="history.css"/>
     </ui:define>
-
     <ui:define name="content">
         <p:gmap id="gmap" model="#{locationHistory.googleMapController.googleMap}" type="#{locationHistory.googleMapController.googleMapType}"
                 center="#{locationHistory.googleMapController.center}" zoom="#{locationHistory.googleMapController.zoom}"
                 style=" width:100%; height:500px; margin-bottom: 0.3%">
         </p:gmap>
-
         <p:panel header="Historia Lokacji" >
-            <p:panelGrid columns="2" width="100%" columnClasses="panel-column, panel-column" layout="grid">
-
-                <p:panel id="panel-locations-search" header="Wyszukiwanie" styleClass="panel-locations-search">
-                    <ui:include src="/WEB-INF/views/history/search.xhtml" />
-                </p:panel>
-
-                <p:panel id="panel-found-locations" header="Znalezione lokacje" styleClass="panel-found-locations">
-                    <ui:include src="/WEB-INF/views/history/polyline.xhtml" />
-                </p:panel>
-
-            </p:panelGrid>
+            <div class="ui-g">
+                <div class="ui-g-3">
+                    <p:panel id="panel-locations-search" header="Wyszukiwanie">
+                        <ui:include src="/WEB-INF/views/history/search.xhtml" />
+                    </p:panel>
+                </div>
+                <div class="ui-g-9">
+                    <p:panel id="panel-found-locations" header="Znalezione lokacje">
+                        <ui:include src="/WEB-INF/views/history/polyline.xhtml" />
+                    </p:panel>
+                </div>
+            </div>
         </p:panel>
     </ui:define>
-
 </ui:composition>

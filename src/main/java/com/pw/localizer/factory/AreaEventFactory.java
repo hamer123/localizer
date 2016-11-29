@@ -15,7 +15,7 @@ public class AreaEventFactory {
 		AreaEvent areaEvent = createInstance(location);
 		areaEvent.setArea(area);
 		areaEvent.setDate(location.getDate());
-		areaEvent.setSendMail(shouldSendMailMessage( area.getAreaMessageMail()));
+		areaEvent.setSendMail(shouldSendMailMessage(area.getAreaMessageMail()));
 		areaEvent.setMessage(AreaEventMessageBuilder.create(area, location));
 		areaEvent.setAccessToken(UUID.randomUUID().toString());
 		return areaEvent;
@@ -24,10 +24,8 @@ public class AreaEventFactory {
 	private AreaEvent createInstance(Location location) {
 		if(location instanceof LocationNetwork) {
 			return new AreaEventNetwork((LocationNetwork) location);
-		} else if(location instanceof LocationGPS) {
-			return new AreaEventGPS((LocationGPS) location);
 		} else {
-			throw new IllegalArgumentException("Nie poprawy arguemnt, ta lokacja nie jest oblusgiwana " + location.getClass());
+			return new AreaEventGPS((LocationGPS) location);
 		}
 	}
 	

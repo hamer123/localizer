@@ -30,16 +30,8 @@
 			<p:colorPicker id="color" value="#{areaController.area.color}"/>
 			<p:message for="color" display="icon" />
 
-			<p:outputLabel for="mail-message" value="#{msg['send.email.on.area.event']}"/>
-			<p:selectBooleanCheckbox id="mail-message" value="#{areaController.area.areaMessageMail.active}">
-				<p:ajax event="change" update=":#{p:component('mail-message-mode')}"/>
-			</p:selectBooleanCheckbox>
-			<p:message for="mail-message"/>
-
-
 			<p:outputLabel  for="mail-message-mode" value="#{msg['mode.send.email.on.area.event']}" />
-			<p:selectOneMenu id="mail-message-mode" value="#{ areaController.area.areaMessageMail.areaMailMessageMode}" disabled="#{!areaController.area.areaMessageMail.active}"
-							 title="#{msg['mode.send.email.on.area.event.title']}" >
+			<p:selectOneMenu id="mail-message-mode" value="#{ areaController.area.areaMessageMail.areaMailMessageMode}" title="#{msg['mode.send.email.on.area.event.title']}" >
 				<f:selectItems value="#{areaMailMessageMode}"/>
 			</p:selectOneMenu>
 			<p:message for="mail-message-mode"/>
