@@ -237,11 +237,11 @@ public class AreaController implements Serializable{
 		area.setName("");
 		area.setAreaMessageMail(new AreaMessageMail());
 		area.setTarget(new User());
-		area.setPoints(new ArrayList());
+		area.setPoints(new ArrayList<>());
 	}
 
 	void clearPolygon(){
-		polygon.setPaths(new ArrayList());
+		polygon.setPaths(new ArrayList<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

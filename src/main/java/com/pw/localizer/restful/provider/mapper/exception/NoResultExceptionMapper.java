@@ -6,10 +6,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-/**
- * Created by Patryk on 2016-09-28.
- */
-
 @Provider
 public class NoResultExceptionMapper implements ExceptionMapper<NoResultException> {
 

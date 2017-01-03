@@ -30,10 +30,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
 
-/**
- * Created by wereckip on 08.09.2016.
- */
-
 @ViewScoped
 @Named(value = "userGoogleMap")
 @Getter

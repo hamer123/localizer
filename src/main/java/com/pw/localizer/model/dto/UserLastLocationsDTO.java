@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserLastLocationsDTO {
-    private LocationNetworkDTO lastLocationNetworkNasz;
-    private LocationNetworkDTO lastLocationNetworkObcy;
-    private LocationGpsDTO lastLocationGps;
+    private LocationNetworkDTO networkNasz;
+    private LocationNetworkDTO networkObcy;
+    private LocationGpsDTO gps;
 }

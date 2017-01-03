@@ -16,6 +16,8 @@ import org.dozer.Mapper;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.validation.Valid;
@@ -33,10 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-/**
- * Created by Patryk on 2016-09-24.
- */
 
 @Path("users")
 @LogRequest
@@ -67,7 +65,6 @@ public class UserResource {
         User user = userRepository.findById(id);
         if(user == null)
             throw new NoResultException("User has not been founded with id " + id);
-        user = discoverLazyFetch.discoverAndSetToNull(user);
         UserDTO userDTO = mapper.map(user, UserDTO.class, "full");
         return Response.ok(userDTO).build();
     }
@@ -86,7 +83,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("{id}/last-locations")
+    @Path("{id}/lastLocations")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLastLocations(@PathParam("id") Long id) {
         User user = userRepository.findById(id);
@@ -95,7 +92,7 @@ public class UserResource {
         }
         user = discoverLazyFetch.discoverAndSetToNull(user);
         UserDTO userDTO = mapper.map(user, UserDTO.class, "full");
-        return Response.ok(userDTO.getUserLastLocations()).build();
+        return Response.ok(userDTO.getLastLocations()).build();
     }
 
     @GET
@@ -191,8 +188,9 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateAvatar(MultipartFormDataInput input) {
         //TODO to implement
-        Map<String, List<InputPart>> inputParts = input.getFormDataMap();
-        List<InputPart>imageInputParts =  inputParts.get("image");
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+//        Map<String, List<InputPart>> inputParts = input.getFormDataMap();
+//        List<InputPart>imageInputParts =  inputParts.get("image");
+//        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+        throw new NotImplementedException();
     }
 }

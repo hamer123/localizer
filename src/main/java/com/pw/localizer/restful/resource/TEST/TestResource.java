@@ -40,6 +40,8 @@ public class TestResource {
     private LocationGPSRepository locationGPSRepository;
     @Inject
     private AreaRepository areaRepository;
+    @Inject
+    private Mapper mapper;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -136,6 +138,15 @@ public class TestResource {
         areaEventList = entityManager.createQuery("SELECT e FROM AreaEvent e WHERE TYPE(e) IN(AreaEventGPS)", AreaEvent.class)
                 .getResultList();
         return Response.ok(areaEventList.stream().map(e -> e.getId()).collect(Collectors.toList())).build();
+    }
+
+    @GET
+    @Path("/test9")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response nine(){
+        Area area = areaRepository.findById(7L);
+        AreaDTO areaDTO = mapper.map(area, AreaDTO.class);
+        return Response.ok(areaDTO).build();
     }
 
 }

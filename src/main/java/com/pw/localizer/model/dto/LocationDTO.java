@@ -8,6 +8,7 @@ import com.pw.localizer.model.enums.Provider;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -20,19 +21,16 @@ import java.util.Date;
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationDTO {
-    protected Long id;
+    private Long id;
     @NotNull
-    protected double latitude;
+    private Double latitude;
     @NotNull
-    protected double longitude;
+    private Double longitude;
+    private BasicUserDTO user;
+    private Date date;
     @NotNull
-    protected BasicUserDTO user;
-    @NotNull
-    protected Date date;
-    @NotNull
-    protected Provider providerType;
-    @NotNull
-    protected Address address;
-    @NotNull
-    protected double accuracy;
+    private Provider providerType;
+    @Valid
+    private Address address;
+    private double accuracy;
 }

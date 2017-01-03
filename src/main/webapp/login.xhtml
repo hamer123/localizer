@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"> 
-
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
   <title>Login</title>
   <h:outputStylesheet library="css" name="login.css"/>
@@ -11,15 +10,11 @@
   <f:metadata>
     <f:event listener="#{localizerSecurityController.redirectIfAlreadyLogged()}" type="preRenderView"/>
   </f:metadata>
-</h:head> 
-
+</h:head>
 <h:body styleClass="body">
-    
     <h:form>
-
         <p:messages id="messages" showDetail="false" />
         <p:panel id="panel" header="Login" styleClass="panel">
-            
             <h:panelGrid columns="3" cellpadding="5" styleClass="table" >
                 <p:outputLabel for="userName" value="User Name:" />
                 <p:inputText id="userName" value="#{localizerSecurityController.login}"
@@ -27,7 +22,6 @@
                     <f:validateLength minimum="4" />
                 </p:inputText>
                 <p:message for="userName" display="icon" />
-
                 <p:outputLabel for="password" value="Password:" />
                 <p:password id="password"
                     value="#{localizerSecurityController.password}" required="true"
@@ -35,12 +29,10 @@
                     <f:validateLength minimum="4" />
                 </p:password>
                 <p:message for="password" display="icon" />
-                
                 <p:commandButton value="Login" update="panel messages" action="#{localizerSecurityController.login()}" />
                 <p:button value="Create" outcome="/account/create/personalData" styleClass="button"/>
             </h:panelGrid>
         </p:panel>
-        
     </h:form>
 </h:body> 
 </html>

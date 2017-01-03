@@ -7,16 +7,17 @@ import com.pw.localizer.model.enums.LocalizationService;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationNetworkDTO extends LocationDTO {
-    @NotNull
+    @NotNull @Valid
     private CellInfoMobile cellInfoMobile;
-    @NotNull
+    @NotNull @Valid
     private WifiInfo wifiInfo;
-    @NotNull
+    @NotNull @Valid
     private LocalizationService localizationService;
 }

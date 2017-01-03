@@ -16,6 +16,6 @@ public class AreaDTO {
     private String name;
     private boolean active;
     private String color;
-    private AreaFollow polygonFollowType;
+    private AreaFollow areaFollowType;
     private List<AreaPoint> points;
 }

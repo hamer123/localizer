@@ -17,6 +17,6 @@ public class UserDTO {
     private String phone;
     private Set<AreaDTO> areas;
     private UserSetting userSetting;
-    private UserLastLocationsDTO userLastLocations;
+    private UserLastLocationsDTO lastLocations;
     private Avatar avatar;
 }

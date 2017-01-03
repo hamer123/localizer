@@ -6,10 +6,6 @@ import com.pw.localizer.model.enums.LocalizationService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-/**
- * Created by Patryk on 2016-10-14.
- */
-
 @Named
 @ApplicationScoped
 public class UtilitiesApplicationService {

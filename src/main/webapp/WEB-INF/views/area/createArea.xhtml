@@ -14,7 +14,7 @@
 			<p:inputText id="name" required="true" value="#{areaController.area.name}">
 				<f:validateLength minimum="4" maximum="16"/>
 			</p:inputText>
-			<p:message for="name" display="icon" />
+			<p:message for="name" display="icon"/>
 
 			<p:outputLabel for="follow-type" value="#{msg['area.follow.type']}"/>
 			<p:selectOneMenu id="follow-type" value="#{areaController.area.areaFollowType}" title="#{msg['follow.type.title']}">
@@ -42,7 +42,7 @@
 						 action="#{areaController.onSaveArea()}" style="margin: 0.5%"/>
 
 		<p:commandButton value="#{msg['clean']}" style="margin: 0.5%" action="#{areaController.onClear}"
-		                 update=":#{p:component('create-area')} :#{p:component('paths')} :#{p:component('gmap')}"/>
+		                 update=":#{p:component('create-area')} :#{p:component('paths')} :#{p:component('gmap')} :#{p:component('growl')}"/>
 
 	</h:form>
 	<h:form id="paths">

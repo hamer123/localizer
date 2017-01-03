@@ -1,6 +1,7 @@
 package com.pw.localizer.restful.resource.location;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,9 @@ import javax.ws.rs.core.UriInfo;
 import com.pw.localizer.inceptor.ErrorLog;
 import com.pw.localizer.model.dto.LocationNetworkDTO;
 import com.pw.localizer.model.entity.LocationNetwork;
+import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.LocalizationService;
+import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.restful.provider.filter.LogEntityRequest;
 import com.pw.localizer.restful.provider.filter.LogRequest;
 import com.pw.localizer.security.restful.Secured;
@@ -29,9 +32,11 @@ import java.util.stream.Collectors;
 
 @LogRequest
 @LogEntityRequest
-@Path("/locations/network")
+@Path("/users")
 @Secured
 public class LocationNetworkResource {
+	@Inject
+	private UserRepository userRepository;
 	@Inject
 	private LocationService locationService;
 	@Inject
@@ -40,7 +45,7 @@ public class LocationNetworkResource {
 	private Mapper mapper;
 
 	@GET
-	@Path("{id}")
+	@Path("/{userId}/locations/network/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLocation(@PathParam("id")Long id){
 		LocationNetwork locationNetwork = locationNetworkRepository.findById(id);
@@ -49,18 +54,25 @@ public class LocationNetworkResource {
 
 	@ErrorLog
 	@POST
+	@Path("/{userId}/lastLocations/networkNasz")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createLocation(@Valid LocationNetworkDTO locationNetworkDTO,
+	public Response createLocation(@PathParam("userId")Long userId,
+								   @Valid LocationNetworkDTO locationNetworkDTO,
 								   @Context UriInfo uriInfo){
+		User user = userRepository.findById(userId);
+		if(user == null) {
+			throw new NoResultException("User has not been founded with id " + userId);
+		}
 		LocationNetwork locationNetwork = mapper.map(locationNetworkDTO, LocationNetwork.class);
+		locationNetwork.setUser(user);
 		locationNetwork = locationService.createLocationNetwork(locationNetwork);
-//		URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(locationNetwork.getId())).build();
 		return Response.ok(mapper.map(locationNetwork, LocationNetworkDTO.class)).build();
 	}
 
 	@ErrorLog
 	@GET
+	@Path("/locations/network/search/findByUserLoginAndLocalizationServiceAndDateBetween")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findLocation(@NotNull @QueryParam("login") String login,
 								 @NotNull @QueryParam("fromDate") String fromDate,

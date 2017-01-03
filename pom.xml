@@ -36,7 +36,6 @@
             <scope>provided</scope>
         </dependency>
 
-
         <dependency>
             <groupId>net.sf.dozer</groupId>
             <artifactId>dozer</artifactId>
@@ -69,6 +68,11 @@
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>2.6.0</version>
+        </dependency>
 
         <!-- JPA Hibernate Implementation -->
         <dependency>
@@ -84,10 +88,15 @@
         </dependency>
 
         <!-- Hibernate Validation -->
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-validator</artifactId>-->
+            <!--<version>${hibernate.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.version}</version>
+            <version>5.3.4.Final</version>
         </dependency>
 
         <!-- Resteasy -->
@@ -109,6 +118,11 @@
             <version>${resteasy.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jboss.resteasy</groupId>-->
+            <!--<artifactId>resteasy-hibernatevalidator-provider</artifactId>-->
+            <!--<version>${resteasy.version}</version>-->
+        <!--</dependency>-->
 
 
         <!-- Primefaces -->
@@ -165,7 +179,6 @@
             <scope>provided</scope>
         </dependency>
 
-
         <!-- jstl -->
         <dependency>
             <groupId>jstl</groupId>
@@ -197,7 +210,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito Freamwork -->
+        <!-- Mockito Framework -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
@@ -254,8 +267,6 @@
             <version>3.1.0.CR2</version>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>

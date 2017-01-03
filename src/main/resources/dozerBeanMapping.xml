@@ -17,15 +17,15 @@
         <class-b>com.pw.localizer.model.dto.UserDTO</class-b>
         <field>
             <a>lastLocationGPS</a>
-            <b>userLastLocations.lastLocationGps</b>
+            <b>lastLocations.gps</b>
         </field>
         <field>
             <a>lastLocationNetworkNaszaUsluga</a>
-            <b>userLastLocations.lastLocationNetworkNasz</b>
+            <b>lastLocations.networkNasz</b>
         </field>
         <field>
             <a>lastLocationNetworObcaUsluga</a>
-            <b>userLastLocations.lastLocationNetworkObcy</b>
+            <b>lastLocations.networkObcy</b>
         </field>
     </mapping>
 
