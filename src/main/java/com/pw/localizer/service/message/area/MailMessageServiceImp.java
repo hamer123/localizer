@@ -28,7 +28,7 @@ public class MailMessageServiceImp implements MailMessageService {
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailMessage.getAddress()));
 		message.setSubject(mailMessage.getSubject());
 		message.setText(mailMessage.getContext());
-		logger.info("Attempt to send mail: " + message.toString());
+		logger.info("Attempt to send mail: " + mailMessage.getAddress() + ", " + mailMessage.getContext());
 		Transport.send(message);
 	}
 }
