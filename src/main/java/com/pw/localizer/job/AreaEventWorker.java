@@ -1,7 +1,9 @@
 package com.pw.localizer.job;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.AroundTimeout;
@@ -34,14 +36,16 @@ public class AreaEventWorker {
 	@Schedule(minute="*/1", hour="*", persistent = false)
 	public void work() {
 		List<Area> activeAreas = areaRepository.findByActive(true);
+		Set<Long> checkedLocation = new HashSet<>();
 		logger.info("There are " + activeAreas.size() + " actives area to check!");
 		for(Area area : activeAreas) {
 			if(shouldCheckArea(area)) {
 				User target = area.getTarget();
 				List<Location>userLastLocations = userLastLocations(target);
 				for(Location location : userLastLocations) {
-					if(shouldCreateAreaEvent(area, location)) {
+					if(shouldCreateAreaEvent(area, location) && !wasLocationCheckInPass(location, checkedLocation)) {
 						createAreaEvent(area, location);
+						checkedLocation.add(location.getId());
 						if(shouldChangeMessageMail(area)) {
 							area.getAreaMessageMail().setAccept(false);
 						}
@@ -78,10 +82,14 @@ public class AreaEventWorker {
 	}
 	
 	boolean validateLocation(Location location){
-		return  location != null &&
-				!location.isEventCheck();
+		return  location != null;
 	}
-	
+
+	/** In other schedule */
+	boolean wasLocationCheckInPass(Location location, Set<Long>checkedLocations) {
+		return location.isEventCheck() && !checkedLocations.contains(location.getId());
+	}
+
 	boolean shouldChangeMessageMail(Area area){
 		return area.getAreaMessageMail().getAreaMailMessageMode() == AreaMailMessageMode.ACCEPT;
 	}
