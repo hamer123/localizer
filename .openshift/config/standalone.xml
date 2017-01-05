@@ -380,6 +380,9 @@
             <mail-session name="default" jndi-name="java:jboss/mail/Default">
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>
             </mail-session>
+            <mail-session name="java:jboss/mail/lokalizator" jndi-name="java:jboss/mail/lokalizator">
+                <smtp-server outbound-socket-binding-ref="mail-smtp" password="stalker55" username="lokalizatoreit@gmail.com" ssl="true"/>
+            </mail-session>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:messaging-activemq:1.0">
             <server name="default" scheduled-thread-pool-max-size="${messaging.scheduled.thread.pool.max.size}" thread-pool-max-size="${messaging.thread.pool.max.size}">

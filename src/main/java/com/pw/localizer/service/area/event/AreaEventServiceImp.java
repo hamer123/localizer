@@ -15,10 +15,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Patryk on 2016-11-13.
- */
-
 @Stateless
 public class AreaEventServiceImp implements AreaEventService {
     @Inject
