@@ -34,6 +34,7 @@ public class AreaEventWorker {
 	@Schedule(minute="*/1", hour="*", persistent = false)
 	public void work() {
 		List<Area> activeAreas = areaRepository.findByActive(true);
+		logger.info("There are " + activeAreas.size() + " actives area to check!");
 		for(Area area : activeAreas) {
 			if(shouldCheckArea(area)) {
 				User target = area.getTarget();
