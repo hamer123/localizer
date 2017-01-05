@@ -36,7 +36,7 @@ public class CircleFactory implements Serializable{
 	}
 	
 	private double getRadius(Location location){
-		return location.getAccuracy() * 100;
+		return location.getAccuracy();
 	}
 	
 	private String chooseColor(Location location){

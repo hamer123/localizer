@@ -43,9 +43,12 @@ public abstract class Location implements Serializable{
 	@Embedded
 	private Address address;
 
-	@NotNull
+//	@NotNull
 	@Column(updatable = false)
 	private double accuracy;
+
+	@Column(updatable = false)
+	private float bearing;
 
 	private boolean eventCheck;
 }

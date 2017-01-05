@@ -33,4 +33,5 @@ public class LocationDTO {
     @Valid
     private Address address;
     private double accuracy;
+    private float bearing;
 }
