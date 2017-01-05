@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "AreaEvent.findAll",
 				query = "SELECT ae FROM AreaEvent ae"),
 		@NamedQuery(name = "AreaEvent.findByAreaAndYoungerAndOlder",
-				query = "SELECT ae FROM AreaEvent ae WHERE ae.date > :fromDate AND ae.date < :toDate AND ae.area.id = :areaId ORDER BY ae.date DESC"),
+				query = "SELECT ae FROM AreaEvent ae WHERE ae.date > :fromDate AND ae.date < :toDate AND ae.area.id = :areaId ORDER BY ae.date ASC"),
 		@NamedQuery(name = "AreaEvent.findByAreaAndDateOlder",
 				query = "SELECT ae FROM AreaEvent ae WHERE ae.area.id = :areaId AND ae.date > :fromDate"),
 		@NamedQuery(name = "AreaEvent.findBySendMailAndAttemptToSendLowerThan",
