@@ -37,7 +37,7 @@ public class AreaEventWorker {
 	public void work() {
 		List<Area> activeAreas = areaRepository.findByActive(true);
 		Set<Long> checkedLocation = new HashSet<>();
-		logger.info("There are " + activeAreas.size() + " actives area to check!");
+		logger.info("There are " + activeAreas.size() + " active areas to check!");
 		for(Area area : activeAreas) {
 			if(shouldCheckArea(area)) {
 				User target = area.getTarget();

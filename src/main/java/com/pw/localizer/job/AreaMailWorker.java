@@ -19,7 +19,7 @@ import com.pw.localizer.service.message.area.MailMessageService;
 
 @Singleton
 public class AreaMailWorker {
-	private static final int EXECUTOR_SERVICE_POOL_SIZE = 25;
+	private static final int EXECUTOR_SERVICE_POOL_SIZE = 50;
 	@Resource
 	private ManagedExecutorService executorService;
 	@Inject
