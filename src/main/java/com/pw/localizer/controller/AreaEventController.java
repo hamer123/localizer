@@ -189,9 +189,9 @@ public class AreaEventController implements Serializable{
 
 	private List<AreaEvent> findLatestAreaEvent(Area area) {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, DAYS_BACK_SEARCH_LATEST_AREA_EVENTS);
-		Date yesterday = cal.getTime();
-		return areaEventService.getByAreaAndOlderAndYounger(area.getId(), yesterday, new Date(), MAX_AREA_EVENT_RESULTS);
+		cal.add(Calendar.DATE, -DAYS_BACK_SEARCH_LATEST_AREA_EVENTS);
+		Date from = cal.getTime();
+		return areaEventService.getByAreaAndOlderAndYounger(area.getId(), from, new Date(), MAX_AREA_EVENT_RESULTS);
 	}
 
 	public enum AreaMessageType {
