@@ -94,7 +94,6 @@ public class AreaEventWorker {
 	}
 
 	boolean shouldCheckArea(Area area) {
-		return  restSessionManager.isUserOnline(area.getTarget().getLogin()) &&
-				area.isActive();
+		return  restSessionManager.isUserOnline(area.getTarget().getLogin());
 	}
 }

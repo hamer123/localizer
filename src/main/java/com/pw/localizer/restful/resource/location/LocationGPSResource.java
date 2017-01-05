@@ -10,6 +10,7 @@ import javax.ws.rs.core.*;
 import com.pw.localizer.inceptor.ErrorLog;
 import com.pw.localizer.model.dto.LocationGpsDTO;
 import com.pw.localizer.model.entity.User;
+import com.pw.localizer.qualifier.GPS;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.security.restful.Secured;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 public class LocationGPSResource {
 	@Inject
 	private UserRepository userRepository;
-	@Inject
+	@Inject @GPS
 	private LocationService locationService;
 	@Inject
 	private LocationGPSRepository locationGPSRepository;
@@ -56,7 +57,7 @@ public class LocationGPSResource {
 		}
 		LocationGPS locationGPS = mapper.map(locationGpsDTO,LocationGPS.class);
 		locationGPS.setUser(user);
-		locationGPS = locationService.createLocationGPS(locationGPS);
+		locationGPS = (LocationGPS) locationService.create(locationGPS);
 //		UriBuilder uriBuilder = uri.getAbsolutePathBuilder();
 //		URI sourceURI = uriBuilder.path(String.valueOf(locationGPS.getId())).build();
 //		Link self = Link.fromUri(sourceURI)

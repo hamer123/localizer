@@ -16,6 +16,7 @@ import com.pw.localizer.model.dto.LocationNetworkDTO;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.User;
 import com.pw.localizer.model.enums.LocalizationService;
+import com.pw.localizer.qualifier.Network;
 import com.pw.localizer.repository.user.UserRepository;
 import com.pw.localizer.restful.provider.filter.LogEntityRequest;
 import com.pw.localizer.restful.provider.filter.LogRequest;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class LocationNetworkResource {
 	@Inject
 	private UserRepository userRepository;
-	@Inject
+	@Inject @Network
 	private LocationService locationService;
 	@Inject
 	private LocationNetworkRepository locationNetworkRepository;
@@ -66,7 +67,7 @@ public class LocationNetworkResource {
 		}
 		LocationNetwork locationNetwork = mapper.map(locationNetworkDTO, LocationNetwork.class);
 		locationNetwork.setUser(user);
-		locationNetwork = locationService.createLocationNetwork(locationNetwork);
+		locationNetwork = (LocationNetwork) locationService.create(locationNetwork);
 		return Response.ok(mapper.map(locationNetwork, LocationNetworkDTO.class)).build();
 	}
 
