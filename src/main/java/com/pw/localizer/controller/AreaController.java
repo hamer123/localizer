@@ -67,10 +67,7 @@ public class AreaController implements Serializable{
 		polygon = polygonFactory.empty();
 		googleMapController.addOverlay(polygon);
 		//init area
-		area = new Area();
-		area.setAreaMessageMail(new AreaMessageMail());
-		area.getAreaMessageMail();
-		area.setTarget(new User());
+		setupArea();
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +83,7 @@ public class AreaController implements Serializable{
 				area = areaService.create(area);
 				areas.add(area);
 				//Clear
-				clearArea();
+				setupArea();
 				clearPolygon();
 				JsfMessageBuilder.infoMessage("Udało się utworzyć obszar śledzenia o nazwie " + area.getName() + " sledzący użytkownika " + area.getTarget().getLogin());
 			}
@@ -128,7 +125,7 @@ public class AreaController implements Serializable{
 
 	/** Clear area create panel */
 	public void onClear(){
-		clearArea();
+		setupArea();
 		clearPolygon();
 	}
 
@@ -232,10 +229,13 @@ public class AreaController implements Serializable{
 			polygon.setFillColor("#" + color);
 	}
 
-	private void clearArea(){
+	private void setupArea(){
 		area = new Area();
 		area.setName("");
-		area.setAreaMessageMail(new AreaMessageMail());
+		AreaMessageMail areaMessageMail = new AreaMessageMail();
+		areaMessageMail.setActive(true);
+		areaMessageMail.setAccept(true);
+		area.setAreaMessageMail(areaMessageMail);
 		area.setTarget(new User());
 		area.setPoints(new ArrayList<>());
 	}
