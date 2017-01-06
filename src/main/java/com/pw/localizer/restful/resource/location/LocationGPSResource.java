@@ -13,6 +13,8 @@ import com.pw.localizer.model.entity.User;
 import com.pw.localizer.qualifier.GPS;
 import com.pw.localizer.repository.location.LocationGPSRepository;
 import com.pw.localizer.repository.user.UserRepository;
+import com.pw.localizer.restful.provider.filter.LogEntityRequest;
+import com.pw.localizer.restful.provider.filter.LogRequest;
 import com.pw.localizer.security.restful.Secured;
 import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.service.location.LocationService;
@@ -23,6 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@LogRequest
+@LogEntityRequest
 @Path("/users")
 @Secured
 public class LocationGPSResource {
