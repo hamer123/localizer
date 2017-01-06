@@ -8,9 +8,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Created by Patryk on 2016-10-02.
- */
 
 @InterceptorBinding
 @Target(value = {METHOD, TYPE})

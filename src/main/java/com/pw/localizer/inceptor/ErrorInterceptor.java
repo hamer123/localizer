@@ -7,10 +7,6 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
-/**
- * Created by Patryk on 2016-10-02.
- */
-
 @Interceptor @ErrorLog
 public class ErrorInterceptor {
 

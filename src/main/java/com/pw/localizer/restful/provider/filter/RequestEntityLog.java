@@ -14,10 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * Created by Patryk on 2016-11-07.
- */
-
 @Provider
 @LogEntityRequest
 @Priority(Priorities.USER)
@@ -28,9 +24,9 @@ public class RequestEntityLog implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-
+        String contentType = requestContext.getHeaderString("Content-Type") == null ? "" : requestContext.getHeaderString("Content-Type").toLowerCase();
         if (!"POST".equals(requestContext.getMethod())
-                || !MediaType.APPLICATION_JSON_TYPE.equals(requestContext.getMediaType())
+                || !contentType.startsWith("application/json")
                 || requestContext.getEntityStream() == null) {
             return;
         }

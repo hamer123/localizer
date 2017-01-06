@@ -12,10 +12,6 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
-/**
- * Created by Patryk on 2016-11-06.
- */
-
 @Provider
 @LogResponse
 @Priority(Priorities.USER)
