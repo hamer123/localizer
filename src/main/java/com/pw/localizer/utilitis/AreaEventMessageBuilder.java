@@ -6,8 +6,8 @@ import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.enums.AreaFollow;
 
 public class AreaEventMessageBuilder {
-    private static final String ENTRANCE_AREA_BY_TARGET = " wszedł do obszaru śledzenia '%s' ";
-    private static final String LOWERING_AREA_BY_TARGET = " opuścił obszar śledzenia '%s' ";
+    private static final String ENTRANCE_AREA_BY_TARGET = " wszedł do obszaru śledzenia [ %s ] ";
+    private static final String LOWERING_AREA_BY_TARGET = " opuścił obszar śledzenia [ %s ] ";
 
     private AreaEventMessageBuilder () {}
 

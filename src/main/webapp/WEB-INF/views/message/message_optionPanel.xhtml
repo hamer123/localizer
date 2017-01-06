@@ -31,7 +31,7 @@
         </h:form>
         <p:separator />
         <h:form>
-            <p:messages id="messages"/>
+            <!--<p:messages id="messages"/>-->
             <h:panelGrid columns="3" id="area-option-panel">
                 <p:outputLabel value="Od kiedy"/>
                 <p:calendar id="fromDate" pattern="MM/dd/yyyy HH:mm:ss" effect="fold" required="true" value="#{areaEventController.from}" locale="pl"/>
@@ -43,7 +43,7 @@
 
                 <p:commandButton value="#{msg['search']}" actionListener="#{areaEventController.searchAreaEventFromToDate()}"
                                  disabled="#{areaEventController.selectedArea == null}"
-                                 update=":#{p:component('area-events')} :#{p:component('messages')} :#{p:component('area-option-panel')} :#{p:component('area-view-panel')}"/>
+                                 update=":#{p:component('area-events')} :#{p:component('area-option-panel')} :#{p:component('area-view-panel')}"/>
                 <o:validateOrder components="fromDate toDate" message="Daty sa nie poprawnie wybrane"/>
             </h:panelGrid>
         </h:form>
