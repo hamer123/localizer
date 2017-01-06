@@ -55,7 +55,7 @@ public class LocationNetworkResource {
 
 	@ErrorLog
 	@POST
-	@Path("/{userId}/lastLocations/networkNasz")
+	@Path("/{userId}/lastLocations/network/obcy")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createLocation(@PathParam("userId")Long userId,
