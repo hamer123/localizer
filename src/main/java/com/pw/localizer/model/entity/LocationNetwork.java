@@ -25,10 +25,12 @@ import java.io.Serializable;
 						 + "ORDER BY l.date DESC")
 })
 public class LocationNetwork extends Location implements Serializable{
-	@OneToOne( orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinColumn(nullable = true)
 	private CellInfoMobile cellInfoMobile;
 
-	@OneToOne(orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinColumn(nullable = true)
 	private WifiInfo wifiInfo;
 
 	@Enumerated(EnumType.STRING)

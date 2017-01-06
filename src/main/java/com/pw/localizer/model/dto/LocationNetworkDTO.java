@@ -14,10 +14,10 @@ import javax.validation.constraints.NotNull;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationNetworkDTO extends LocationDTO {
-    @NotNull @Valid
+    @Valid
     private CellInfoMobile cellInfoMobile;
-    @NotNull @Valid
+    @Valid
     private WifiInfo wifiInfo;
-    @NotNull @Valid
+    @NotNull
     private LocalizationService localizationService;
 }
