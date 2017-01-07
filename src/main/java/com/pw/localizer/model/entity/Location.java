@@ -46,11 +46,5 @@ public abstract class Location implements Serializable{
 	@Column(updatable = false)
 	private double accuracy;
 
-	@Column(updatable = false)
-	private float bearing;
-
-//    @Column(nullable = true)
-    private String networkType;
-
 	private boolean eventCheck;
 }

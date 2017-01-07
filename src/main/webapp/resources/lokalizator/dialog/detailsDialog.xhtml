@@ -13,22 +13,26 @@
       
       <p:dialog id="details" header="#{msg['data.details']}" widgetVar="LocationDetails" modal="true">
 
-          <p:panel header="Generalne">
+          <p:panel header="Dokładność">
               <h:panelGrid columns="2" cellpadding="2">
                   <p:outputLabel value="Dokładność"/>
                   <h:outputText value="#{cc.attrs.location.accuracy} m"/>
-
-                  <p:outputLabel value="Bearing"/>
-                  <h:outputText value="#{cc.attrs.location.bearing}"/>
-
-                  <p:outputLabel value="Typ sieci"/>
-                  <h:outputText value="#{cc.attrs.location.networkType}"/>
               </h:panelGrid>
           </p:panel>
       
          <p:outputPanel header="Network" 
                   rendered="#{cc.attrs.location.class.name == 'com.pw.localizer.model.entity.LocationNetwork'}">
-          
+
+             <p:panel header="Sieć">
+                 <h:panelGrid columns="2" cellpadding="2">
+                     <p:outputLabel value="Bearing"/>
+                     <h:outputText value="#{cc.attrs.location.bearing}"/>
+
+                     <p:outputLabel value="Typ sieci"/>
+                     <h:outputText value="#{cc.attrs.location.networkType}"/>
+                 </h:panelGrid>
+             </p:panel>
+
            <p:panel header="LTE" 
                     rendered="#{cc.attrs.location.cellInfoMobile.class.name == 'com.pw.localizer.model.entity.CellInfoLte'}">
             <h:panelGrid columns="2" cellpadding="2">

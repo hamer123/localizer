@@ -35,4 +35,10 @@ public class LocationNetwork extends Location implements Serializable{
 
 	@Enumerated(EnumType.STRING)
 	private LocalizationService localizationService;
+
+	@Column(updatable = false)
+	private float bearing;
+
+	//@Column(nullable = true)
+	private String networkType;
 }
