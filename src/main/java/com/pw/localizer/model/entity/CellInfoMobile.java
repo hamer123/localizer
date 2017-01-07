@@ -18,7 +18,7 @@ import javax.persistence.InheritanceType;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.WRAPPER_OBJECT, property="type")
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, property="type")
 @JsonSubTypes({
 		@JsonSubTypes.Type(name = "gsm", value = CellInfoGSM.class),
 		@JsonSubTypes.Type(name = "lte", value = CellInfoLte.class)

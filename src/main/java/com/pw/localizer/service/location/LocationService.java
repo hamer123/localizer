@@ -7,8 +7,11 @@ import com.pw.localizer.model.entity.LocationGPS;
 import com.pw.localizer.model.entity.LocationNetwork;
 
 @Local
-public interface LocationService {
+public interface LocationService<T extends Location> {
 
     /** Create Location */
-    Location create(Location location);
+    T create(T location);
+
+    /** Fetch others relation */
+    T fetchRelations(T location);
 }

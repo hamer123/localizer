@@ -18,8 +18,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Setter
 public class SignalStrength implements Serializable{
 	private int assusLevel;
-
 	private int dbm;
-
 	private int level;
 }

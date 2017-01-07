@@ -2,7 +2,9 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:lokalizator="http://java.sun.com/jsf/composite/lokalizator/dialog">
+
     <ui:define name="head">
         <title>#{msg['location.history']}</title>
         <h:outputStylesheet library="css" name="history.css"/>
@@ -26,5 +28,7 @@
                 </div>
             </div>
         </p:panel>
+
+        <lokalizator:detailsDialog location="#{locationHistory.selectedLocation}"/>
     </ui:define>
 </ui:composition>

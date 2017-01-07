@@ -34,7 +34,7 @@ public class LocationGPSResource {
 	@Inject
 	private UserRepository userRepository;
 	@Inject @GPS
-	private LocationService locationService;
+	private LocationService<LocationGPS> locationService;
 	@Inject
 	private LocationGPSRepository locationGPSRepository;
 	@Inject

@@ -9,11 +9,14 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 
 import com.pw.localizer.factory.MarkerFactory;
 import com.pw.localizer.factory.PolylineFactory;
 import com.pw.localizer.controller.google.GoogleMapController;
 import com.pw.localizer.model.enums.LocalizationService;
+import com.pw.localizer.qualifier.Network;
+import com.pw.localizer.service.location.LocationService;
 import org.jboss.logging.Logger;
 
 import com.pw.localizer.jsf.JsfMessageBuilder;
@@ -46,6 +49,8 @@ public class LocationHistoryController implements Serializable{
 	private PolylineFactory polylineFactory;
 	@Inject
 	private MarkerFactory markerFactory;
+	@Inject @Network
+	LocationService<LocationNetwork> networkLocationService;
 	@Inject
 	private Logger logger;
 
@@ -75,6 +80,9 @@ public class LocationHistoryController implements Serializable{
 
 	/** Locations */
 	private List<Location>locationList = new ArrayList<>();
+
+	/** Selected location to display its details */
+	private Location selectedLocation;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////   ACTIONS    /////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +127,17 @@ public class LocationHistoryController implements Serializable{
 		double lengthDouble = routeService.calculateLengthMeters(polyline);
 		String length = new DecimalFormat("#.##").format(lengthDouble);
 		JsfMessageBuilder.infoMessage(length + " meters");
+	}
+
+	public void onSetLocationToDisplayDetails(Location location){
+		if(location instanceof LocationNetwork){
+			try{
+				networkLocationService.fetchRelations((LocationNetwork) location);
+			} catch(NoResultException e){
+				JsfMessageBuilder.errorMessage("Nie znaleziono szczegółowych danych na temat lokacji");
+			}
+		}
+		selectedLocation = location;
 	}
 
 	Marker createStart(Location location){
@@ -295,5 +314,13 @@ public class LocationHistoryController implements Serializable{
 
 	public void setLocationList(List<Location> locationList) {
 		this.locationList = locationList;
+	}
+
+	public Location getSelectedLocation() {
+		return selectedLocation;
+	}
+
+	public void setSelectedLocation(Location selectedLocation) {
+		this.selectedLocation = selectedLocation;
 	}
 }

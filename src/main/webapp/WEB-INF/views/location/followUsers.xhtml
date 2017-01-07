@@ -97,7 +97,7 @@
                    <p:column headerText="#{msg['details']}">
                      <p:commandButton value="#{msg['show']}" actionListener="#{location.onSetLocationToDisplayDetails(cur_location)}"
                                       oncomplete="PF('LocationDetails').show();" update=":#{p:component('details')}"
-                                      disabled="#{cur_location.providerType != 'NETWORK'}"/>
+                                      /> <!-- disabled="#{cur_location.providerType != 'NETWORK'}" -->
                    </p:column>
                  </p:dataTable>
                 </h:form>

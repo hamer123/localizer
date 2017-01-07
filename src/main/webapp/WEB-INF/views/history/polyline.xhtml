@@ -46,8 +46,14 @@
            
            <p:column headerText="Ulica">
              <h:outputText value="#{loc.address.street}" />
-           </p:column>  
-           
+           </p:column>
+
+            <p:column headerText="#{msg['details']}">
+                <p:commandButton value="#{msg['show']}" actionListener="#{locationHistory.onSetLocationToDisplayDetails(loc)}"
+                                 oncomplete="PF('LocationDetails').show();" update=":#{p:component('details')}"
+                /> <!-- disabled="#{cur_location.providerType != 'NETWORK'}" -->
+            </p:column>
+
         </p:dataTable>
       </h:form>
 </ui:composition>

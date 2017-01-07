@@ -39,7 +39,7 @@ public class LocationNetworkResource {
 	@Inject
 	private UserRepository userRepository;
 	@Inject @Network
-	private LocationService locationService;
+	private LocationService<LocationNetwork> locationService;
 	@Inject
 	private LocationNetworkRepository locationNetworkRepository;
 	@Inject
