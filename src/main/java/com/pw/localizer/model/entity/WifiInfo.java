@@ -20,20 +20,12 @@ public class WifiInfo implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-
 	private int frequency;
-
 	private String bssid;
-
 	private int ipAddress;
-
 	private int linkSpeed;
-
 	private String macAddress;
-
 	private int networkId;
-
 	private int rssi;
-
 	private String ssid;
 }

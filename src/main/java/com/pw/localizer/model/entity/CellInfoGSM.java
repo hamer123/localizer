@@ -9,12 +9,8 @@ import javax.persistence.Entity;
 @Entity
 public class CellInfoGSM extends CellInfoMobile{
     private int cid;
-
     private int lac;
-
     private int mcc;
-
     private int mnc;
-
     private int psc;
 }
