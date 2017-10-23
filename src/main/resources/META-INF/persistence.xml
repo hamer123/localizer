@@ -9,7 +9,7 @@
 		  <property name="hibernate.hbm2ddl.auto" value="update"/>
 		  <property name="hibernate.show_sql" value="true"/>
 		  <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/import.sql" />
-		  <property name="javax.persistence.jdbc.url" value="mysql://mysql:3306/sampledb"/>
+		  <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sampledb"/>
 		  <property name="javax.persistence.jdbc.user" value="userL2W"/>
 		  <property name="javax.persistence.jdbc.password" value="KohYhm8nmT2eIf31"/>
 	  </properties>
