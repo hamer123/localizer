@@ -16,7 +16,7 @@ public class ReadValueTest {
     @Test
     public void testReadValue() throws IOException {
         String json = "{\n" +
-                "    \"lastLocationNetworkNasz\": {\n" +
+                "    \"networkNasz\": {\n" +
                 "      \"network\": {\n" +
                 "        \"id\": 185,\n" +
                 "        \"latitude\": 51.6585053,\n" +
@@ -64,7 +64,7 @@ public class ReadValueTest {
                 "        \"localizerService\": \"NASZ\"\n" +
                 "      }\n" +
                 "    },\n" +
-                "    \"lastLocationNetworkObcy\": {\n" +
+                "    \"networkObcy\": {\n" +
                 "      \"network\": {\n" +
                 "        \"id\": 166,\n" +
                 "        \"latitude\": 51.6344053,\n" +
@@ -112,14 +112,14 @@ public class ReadValueTest {
                 "        \"localizerService\": \"OBCY\"\n" +
                 "      }\n" +
                 "    },\n" +
-                "    \"lastLocationGps\": null" +
+                "    \"gps\": null" +
                 "    }\n" +
                 "  }";
 
-        String json2 = "{\"lastLocationNetworkNasz\":null,\"lastLocationNetworkObcy\":null,\"lastLocationGps\":{\"id\":1,\"latitude\":123.123,\"longitude\":321.321,\"user\":null,\"date\":null,\"providerType\":null,\"address\":null,\"accuracy\":0.0}}";
+        String json2 = "{\"networkNasz\":null,\"networkObcy\":null,\"gps\":{\"id\":1,\"latitude\":123.123,\"longitude\":321.321,\"user\":null,\"date\":null,\"providerType\":null,\"address\":null,\"accuracy\":0.0}}";
 
         json2 = "{\n" +
-                "  \"lastLocationNetworkNasz\": {\n" +
+                "  \"networkNasz\": {\n" +
                 "    \"network\": {\n" +
                 "      \"id\": 185,\n" +
                 "      \"latitude\": 51.6585053,\n" +
@@ -167,7 +167,7 @@ public class ReadValueTest {
                 "      \"localizerService\": \"NASZ\"\n" +
                 "    }\n" +
                 "  },\n" +
-                "  \"lastLocationNetworkObcy\": {\n" +
+                "  \"networkObcy\": {\n" +
                 "    \"network\": {\n" +
                 "      \"id\": 166,\n" +
                 "      \"latitude\": 51.6344053,\n" +
@@ -215,7 +215,7 @@ public class ReadValueTest {
                 "      \"localizerService\": \"OBCY\"\n" +
                 "    }\n" +
                 "  },\n" +
-                "  \"lastLocationGps\": {\n" +
+                "  \"gps\": {\n" +
                 "    \"gps\": {\n" +
                 "      \"id\": 97,\n" +
                 "      \"latitude\": 51.6364053,\n" +
@@ -236,6 +236,8 @@ public class ReadValueTest {
                 "    }\n" +
                 "  }\n" +
                 "}";
+
+
 
         UserLastLocationsDTO userLastLocationsDTO = objectMapper.readValue(json, UserLastLocationsDTO.class);
         userLastLocationsDTO = objectMapper.readValue(json2, UserLastLocationsDTO.class);

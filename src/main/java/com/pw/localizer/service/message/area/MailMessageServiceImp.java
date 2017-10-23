@@ -16,7 +16,7 @@ import org.jboss.logging.Logger;
 @Stateless
 public class MailMessageServiceImp implements MailMessageService {
 
-	@Resource//(name = "java:jboss/mail/lokalizator")
+	@Resource(name = "java:jboss/mail/lokalizator")
 	private Session session;
 
 	@Inject

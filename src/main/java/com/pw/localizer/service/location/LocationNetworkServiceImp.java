@@ -1,9 +1,7 @@
 package com.pw.localizer.service.location;
 
-import com.pw.localizer.model.entity.Location;
 import com.pw.localizer.model.entity.LocationNetwork;
 import com.pw.localizer.model.entity.User;
-import com.pw.localizer.model.entity.WifiInfo;
 import com.pw.localizer.model.enums.LocalizationService;
 import com.pw.localizer.qualifier.Network;
 import com.pw.localizer.repository.location.CellInfoMobileRepository;

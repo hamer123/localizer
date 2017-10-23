@@ -6,13 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -28,6 +22,6 @@ public abstract class CellInfoMobile implements Serializable{
 	@GeneratedValue(strategy=GenerationType.TABLE)
     private long id;
     
-	@Embedded
+	@OneToOne(orphanRemoval = true, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
 	private SignalStrength signalStrength;
 }

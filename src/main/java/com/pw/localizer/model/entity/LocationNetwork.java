@@ -26,11 +26,11 @@ import java.io.Serializable;
 })
 public class LocationNetwork extends Location implements Serializable{
 	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	@JoinColumn(nullable = true)
+	@JoinColumn
 	private CellInfoMobile cellInfoMobile;
 
 	@OneToOne(optional = false, orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	@JoinColumn(nullable = true)
+	@JoinColumn
 	private WifiInfo wifiInfo;
 
 	@Enumerated(EnumType.STRING)
