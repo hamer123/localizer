@@ -2,13 +2,16 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="localizer" transaction-type="JTA">
 	  <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-	  <jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source>
+	  <!--<jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source>-->
 
 	  <properties>
 		  <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		  <property name="hibernate.hbm2ddl.auto" value="update"/>
 		  <property name="hibernate.show_sql" value="true"/>
 		  <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/import.sql" />
+		  <property name="javax.persistence.jdbc.url" value="mysql://mysql:3306/sampledb"/>
+		  <property name="javax.persistence.jdbc.user" value="userL2W"/>
+		  <property name="javax.persistence.jdbc.password" value="KohYhm8nmT2eIf31"/>
 	  </properties>
 	</persistence-unit>
 </persistence>
