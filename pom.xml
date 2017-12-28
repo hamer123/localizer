@@ -315,6 +315,7 @@
                     </configuration>
                 </plugin>
                 <!-- GMavenPlus plugin -->
+                <!--
                 <plugin>
                     <groupId>org.codehaus.gmavenplus</groupId>
                     <artifactId>gmavenplus-plugin</artifactId>
@@ -327,6 +328,7 @@
                         </execution>
                     </executions>
                 </plugin>
+                -->
             </plugins>
         </build>
     </profile>
