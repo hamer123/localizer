@@ -28,9 +28,9 @@ public class InvalidateRestSession {
 	}
 	
 	boolean isPassedTime(Date date){
-		final long threeMinute = 3 * 60 * 1000;
+		final long time = 30 * 60 * 1000;
 		long currentTime = new Date().getTime();
 		
-		return currentTime - threeMinute > date.getTime();
+		return currentTime - time > date.getTime();
 	}
 }
